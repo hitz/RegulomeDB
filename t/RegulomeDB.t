@@ -32,8 +32,9 @@ my (@triple) = ("chr11",6608467,6618467);
 my $rdb = RegulomeDB->new({ type=>'multi', dbdir=>'./RegulomeDB/RDB'});
 isa_ok($rdb,'RegulomeDB');
 for my $c (keys %$sampleBED) {
-	my ($format, @check) = $rdb->check_coord($c);
-	print Dumper $rdb->process(@check);
+	my ($format, $check) = $rdb->check_coord($c);
+	is(ref($check),'ARRAY',"checking return of check_coord");
+	print Dumper $rdb->process($check);
 }
 
 
