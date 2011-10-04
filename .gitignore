@@ -9,5 +9,6 @@ pm_to_blib
 #*#
 log/*.log
 t/benchmark/*
+t/temp.out
 RegulomeDB/RDB/*.db
 SnpDB/*.db

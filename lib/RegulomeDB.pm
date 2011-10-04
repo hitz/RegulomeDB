@@ -4,7 +4,6 @@ BEGIN {
 }
 use DBI;
 use base 'Class::Accessor';
-use List::Flatten;
 use Data::Dumper;
 @CHRS = (1..22,"X","Y"); # human chromosomes;
 
