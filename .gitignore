@@ -1,0 +1,13 @@
+.project
+Meta.yml
+Makefile
+blib
+inc
+Makefile.old
+pm_to_blib
+*~
+#*#
+log/*.log
+t/benchmark/*
+RegulomeDB/RDB/*.db
+SnpDB/*.db
