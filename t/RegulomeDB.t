@@ -36,49 +36,59 @@ my $sampleGFF = {
 
 # generic is tested as Range in SnpDB.t
 
-my (@pos) = ("chr11",6608467);
-
+my (@pos1) = ("chrx",6608467);
+my (@pos2) = ("y", 138022519);
 #my $rdb = RegulomeDB->new({ type=>'multi', dbdir=>'./data/RegulomeDB'});
 my $r = Test::Mojo->new('Regulome')->app();
 #$r->log->handle('STDERR');
 #$r->log->debug("TEST");
 my $rdb = $r->rdb;
 isa_ok($rdb,'RegulomeDB');
-my ($format, $chk) = $r->check_coord(\@pos);
+my ($format, $chk) = $r->check_coord(\@pos1);
 is(ref($chk),'ARRAY',"check_coord returns ARRAY_REF");
+is(ref($chk->[0]),'ARRAY',"check_coord returns ARRAY_REF of ARRAY_REF");
+($format, $chk) = $r->check_coord(\@pos2);
 
 for my $c (keys %$sampleBED) {
 	($format, $chk) = $r->check_coord($c);
+	is(scalar(@$chk), 1, "BED returns 1 SNP");
+	my $snp = $chk->[0];
 	is($format, 'BED - 0 Based');
-	my $scan = $rdb->process(@$chk);
-	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$c}->{results},"Check BED results $chk->[0] $chk->[1]");
-	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$c}->{refs},"Check BED refs $chk->[0] $chk->[1]");
-	is($rdb->score($scan), $sampleBED->{$c}->{score}, "Check BED score $chk->[0] $chk->[1]");
+	my $scan = $rdb->process($snp);
+	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$c}->{results},"Check BED results $snp->[0] $snp->[1]");
+	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$c}->{refs},"Check BED refs $snp->[0] $snp->[1]");
+	is($rdb->score($scan), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
 }
 
 for my $vcf (keys %$sampleVCF) {
 	($format, $chk) = $r->check_coord($vcf);
 	is($format, 'VCF - 1 Based');
-	my $scan = $rdb->process(@$chk);
-	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{results},"Check VCF results $chk->[0] $chk->[1]");
-	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{refs},"Check VCF refs $chk->[0] $chk->[1]");
-	is($rdb->score($scan), $sampleBED->{$sampleVCF->{$vcf}}->{score}, "Check VCF score $chk->[0] $chk->[1]");
+	is(scalar(@$chk), 1, "BED returns 1 SNP");
+	my $snp = $chk->[0];
+	my $scan = $rdb->process($snp);
+	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{results},"Check VCF results $snp->[0] $snp->[1]");
+	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{refs},"Check VCF refs $snp->[0] $snp->[1]");
+	is($rdb->score($scan), $sampleBED->{$sampleVCF->{$vcf}}->{score}, "Check VCF score $snp->[0] $snp->[1]");
 }
 
 for my $gff (keys %$sampleGFF) {
 	($format, $chk) = $r->check_coord($gff);
 	is($format, 'GFF - 1 Based');
-	my $scan = $rdb->process(@$chk);
-	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleGFF->{$gff}}->{results},"Check GFF results $chk->[0] $chk->[1]");
-	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleGFF->{$gff}}->{refs},"Check GFF refs $chk->[0] $chk->[1]");
-	is($rdb->score($scan), $sampleBED->{$sampleGFF->{$gff}}->{score}, "Check GFF score $chk->[0] $chk->[1]");
+	is(scalar(@$chk), 1, "BED returns 1 SNP");
+	my $snp = $chk->[0];
+	my $scan = $rdb->process($snp);
+	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleGFF->{$gff}}->{results},"Check GFF results $snp->[0] $snp->[1]");
+	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleGFF->{$gff}}->{refs},"Check GFF refs $snp->[0] $snp->[1]");
+	is($rdb->score($scan), $sampleBED->{$sampleGFF->{$gff}}->{score}, "Check GFF score $snp->[0] $snp->[1]");
 }
 
 for my $bed (keys %$sampleFullBED) {
 	($format, $chk) = $r->check_coord($bed);
 	is($format, 'BED - 0 Based');
-	my $scan = $rdb->process(@$chk);
-	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{results},"Check full BED results $chk->[0] $chk->[1]");
-	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{refs},"Check full BED refs $chk->[0] $chk->[1]");
-	is($rdb->score($scan), $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score $chk->[0] $chk->[1]");
+	is(scalar(@$chk), 1, "BED returns 1 SNP");
+	my $snp = $chk->[0];
+	my $scan = $rdb->process($snp);
+	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{results},"Check full BED results $snp->[0] $snp->[1]");
+	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{refs},"Check full BED refs $snp->[0] $snp->[1]");
+	is($rdb->score($scan), $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score $snp->[0] $snp->[1]");
 }

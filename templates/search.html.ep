@@ -5,12 +5,16 @@
        % my @attrs = (method => 'POST', enctype => 'multipart/form-data');
        %= form_for running => @attrs => begin
            %= text_area 'data', rows => '40', style =>"width: 400px;" => begin
+rs13343114
 11 5248490	5248491
-4:33493..132333
-chr6    138043309 138047320
+4:33493..36333
+chr6    138043309 138043310
 7 88888 99999
-chr4 222 666
  x:55041617-55041641
+ chr1	41981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G
+ chrX	user	      TF_binding_site	48644374	48644376	.		+	0	PMID=1656391
+ chrY	59033300	rs62604356	C	T	1927.89	HIGH	GT_MATCH=0.50;AL_MATCH=0.50;PLAT=CG,IL;VAL=N/A;SM=IL_BLOOD,IL_SALIVA,CG_BLOOD,CG_SALIVAGT:A1:A2	1/1:T:T
+ dummy
            % end
           %= submit_button 'Submit'
        % end    

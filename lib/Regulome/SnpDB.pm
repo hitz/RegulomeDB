@@ -59,7 +59,8 @@ sub _init {
 
 sub getSNPbyRange(){
 	my $self = shift;
-	my ($chr, $min, $max)  = @_[0..2];
+	my $coords = shift;
+	my ($chr, $min, $max)  = ($coords->[0], $coords->[1], $coords->[2]);
 	$max = $min unless $max =~ /^\d+$/;
 	my $sth = $self->sth->{$chr} || die "could not find chromosome $chr";
 	$sth->execute($min, $max);

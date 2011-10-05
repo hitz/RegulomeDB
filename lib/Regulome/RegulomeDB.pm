@@ -133,9 +133,9 @@ sub score() {
 }
 sub process(){
 	my $self = shift;
-	my ($chr, $min)  = @_[0..1];
-	my $sth = $self->sth->{$chr} || die "could not find chromosome $chr";
-	$sth->execute($min, $min);
+	my $coords = shift; # [chr, position]
+	my $sth = $self->sth->{$coords->[0]} || die "could not find chromosome: $coords->[0]";
+	$sth->execute($coords->[1],$coords->[1]);
 	my $results = $sth->fetchall_arrayref();
 	
 	return $results;

@@ -43,11 +43,9 @@ sub startup {
 				# dbsnp ID, not sure if ss#### is used in our DB
 				$format = 'dbSNPid';
 				my $dbSNPid = $1;
-				return ( $format, $self->snpdb->getSNPbyRsid($dbSNPid) );
+				return ( $format, [ $self->snpdb->getSNPbyRsid($dbSNPid) ] );
 
-			} elsif ( $input =~
-					  /(chr|^)(\d+|[xy])(:|\s+)(\d+)(\.\.|-|\s+)(\d+)(.*)/i )
-			{
+			} elsif ( $input =~ /(chr|^)(\d+|[xy])(:|\s+)(\d+)(\.\.|-|\s+)(\d+)(.*)/i ) {
 
 				# BED chromsome(space)min(space)max
 				$chr = $2;
@@ -92,8 +90,9 @@ sub startup {
 				}
 			}
 			$self->app->log->debug("format: $format invalid chromosome id: ($chr) [$input]")
-			  unless $chr =~ /(chr|^)(\d+|[xXyY])/;
+			  unless $chr =~ /(chr|^)(\d+|[xy])/i;
 			$chr = "chr$chr" unless $chr =~ /^chr/;
+			$chr =~ s/([xy])/\u$1/;
 			$self->app->log->debug("format: $format invalid min coordinate $min [$input]")
 			  	unless $min =~ /^(\d+)$/;
 
@@ -103,9 +102,9 @@ sub startup {
 				
 				$self->app->log->debug("WARNING: 2-bp range [$chr, $min, $max] detected, did you mean to specify only a single bp?")
 					 if $max == $min+1;
-				return ( $format, $self->snpdb->getSNPbyRange( $chr, $min, $max ) );
+				return ( $format, $self->snpdb->getSNPbyRange( [$chr, $min, $max] ) );
 			}
-			return ( $format, [ ( $chr, $min, $max ) ] );
+			return ( $format, [ [$chr, $min] ] );
 
 		}
 	);
@@ -165,12 +164,11 @@ sub startup {
 				my $n = @$snps;
 				$self->app->log->debug("Found $n SNPS");
 				for my $snp (@$snps) {
-					my ( $chr, $pos ) = $snp->[ 0 .. 1 ];
 					$self->app->log->debug(
-							  "Looking up $chr,$pos [Detected format $format]");
-				    my $res = $self->rdb->process( $chr, $pos );
+							  "Looking up $snp->[0], $snp->[1] [Detected format $format]");
+				    my $res = $self->rdb->process($snp);
 					push @res, {
-						snpid   => $self->snpdb->getRsid($chr,$pos),
+						snpid   => $self->snpdb->getRsid($snp),
 						score   => $self->rdb->score($res),
 						results => [ map $_->[0], @$res ],
 						refs    => [ map $_->[1], @$res ]
