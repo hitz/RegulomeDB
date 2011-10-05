@@ -37,9 +37,9 @@ sub startup {
 			# try to guess the format
 
 			my $format = "Unknown";
-			my ( $chr, $min, $max );
-			if ( $input =~ /([rs]s\d+)/ ) {
-
+			my ( $chr, $min, $max ) = ('None',-1,-1);
+			if ( $input =~ /^\s*([rs]s\d+)\s*$/ ) { 
+                # note that "big formats" might also have rs# in them!
 				# dbsnp ID, not sure if ss#### is used in our DB
 				$format = 'dbSNPid';
 				my $dbSNPid = $1;
@@ -77,13 +77,13 @@ sub startup {
 						# looks like VCF
 						$min    = $1 - 1;
 						$max    = $min;
-						$format = 'VCF - 1 based';
-					} elsif ( $f[4] =~ /(^\d+$)/ ) {
+						$format = 'VCF - 1 Based';
+					} elsif ( $f[3] =~ /(^\d+$)/ ) {
 
 						# looks like GFF
 						$min    = $1 - 1;
-						$max    = $1 - 1 if $f[5] =~ /(^\d+$)/;
-						$format = 'GFF - 1 based';
+						$max    = $1 - 1 if $f[4] =~ /(^\d+$)/;
+						$format = 'GFF - 1 Based';
 					} else {
 						$self->app->log->debug("I thought this was VCF or GFF but I couldn't parse it: $input" );
 					}
@@ -94,19 +94,16 @@ sub startup {
 			$self->app->log->debug("format: $format invalid chromosome id: ($chr) [$input]")
 			  unless $chr =~ /(chr|^)(\d+|[xXyY])/;
 			$chr = "chr$chr" unless $chr =~ /^chr/;
-			$self->app->log->debug(
-						 "format: $format invalid min coordinate $min [$input]")
-			  unless $min =~ /^(\d+)$/;
+			$self->app->log->debug("format: $format invalid min coordinate $min [$input]")
+			  	unless $min =~ /^(\d+)$/;
 
 			if ( $min > $max ) {
-				$self->app->log->debug(
-									"Min cannot be greater than max! [$input]");
+				$self->app->log->debug("Min cannot be greater than max! [$input]");
 			} elsif ( $max > $min ) {
-				$self->app->log->debug(
-"WARNING: 2-bp range [$chr, $min, $max] detected, did you mean to specify only a single bp?"
-				) if $max == $min+1;
-				return ( $format,
-						 $self->snpdb->getSNPbyRange( $chr, $min, $max ) );
+				
+				$self->app->log->debug("WARNING: 2-bp range [$chr, $min, $max] detected, did you mean to specify only a single bp?")
+					 if $max == $min+1;
+				return ( $format, $self->snpdb->getSNPbyRange( $chr, $min, $max ) );
 			}
 			return ( $format, [ ( $chr, $min, $max ) ] );
 

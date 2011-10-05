@@ -9,7 +9,7 @@ use base 'Class::Accessor';
 use Data::Dumper;
 my @CHRS = (1..22,"X","Y"); # human chromosomes;
 
-RegulomeDB->mk_accessors(qw/dbh sth type dbfile dbdir/);
+RegulomeDB->mk_accessors(qw/dbh dbs sth type dbfile dbdir/);
 # maybe put in some generic base class...
 sub new {
 	
@@ -51,7 +51,7 @@ sub _init {
 	} else {
 		die "Please specify 'single' or 'multi' as type parameter.";
 	}
-	$self->dbh($dbh);
+	$self->dbs($dbh);
 	$self->sth($sth);
 	
 }
@@ -141,16 +141,15 @@ sub process(){
 	return $results;
 }
 
-sub DD_DESTROY { # not sure this is needed
+sub DESTROY { 
 	my $self = shift;
 	if($self->type eq "single") {
 		$self->dbh->disconnect;
 	} else {
-#		print STDERR Dumper $self->dbh;
-		for my $key (keys %{$self->dbh}) {
-#			$self->dbh->{$key}->disconnect;
+		for my $key (keys %{$self->dbs}) {
+			$self->dbs->{$key}->disconnect if $self->dbs->{$key};
 		}
-}
+	}
 	
 }
 1;

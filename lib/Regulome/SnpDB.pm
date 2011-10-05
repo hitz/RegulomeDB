@@ -37,7 +37,7 @@ sub _init {
 		$dbh->commit;
 		for my $chr (@CHRS) {
 			my $stch = "chr" . $chr;
-			$sth->{$stch} = $dbh->prepare_cached("SELECT chrom, position, position FROM data, data_" . $stch . "_index  WHERE data.id=data_" . $stch . "_index.id AND minX >= ? AND maxX <= ?");
+			$sth->{$stch} = $dbh->prepare_cached("SELECT chrom, position FROM data, data_" . $stch . "_index  WHERE data.id=data_" . $stch . "_index.id AND minX >= ? AND maxX <= ?");
 		}
 		$self->dbs->{common} = $dbh;
 	} elsif ($self->type eq 'multi') {
@@ -49,7 +49,7 @@ sub _init {
 
 	$dbh2->do($cache_statement);
 	$dbh2->commit;	
-	$sth->{rsid2pos} = $dbh2->prepare_cached("SELECT chrom, position, position FROM data WHERE rsid = ?");
+	$sth->{rsid2pos} = $dbh2->prepare_cached("SELECT chrom, position FROM data WHERE rsid = ?");
 	$sth->{pos2rsid} = $dbh2->prepare_cached("SELECT rsid FROM data WHERE chrom == ? AND position == ?");
 	$self->dbs->{all} = $dbh2;
 
@@ -65,7 +65,7 @@ sub getSNPbyRange(){
 	$sth->execute($min, $max);
 	my $results = $sth->fetchall_arrayref();
 	
-	return $results->[0];
+	return $results; #[ [chr, pos],[] ...]
 }
 
 sub getSNPbyRsid(){
@@ -76,24 +76,24 @@ sub getSNPbyRsid(){
 	$sth->execute($rsid);
 	my $results = $sth->fetchall_arrayref();
 	
-	return $results->[0]; # (chr, position OR empty)
+	return $results->[0]; # [chr, position] OR empty)
 }
 
 sub getRsid() {
 	my $self = shift;
-	my ($chr, $pos) = @_[0..1];
+	my $coords = shift; ## [ chr, pos ]
 	
 	my $sth = $self->sth->{pos2rsid};
-	$sth->execute($chr, $pos);
+	$sth->execute($coords->[0],$coords->[1]);
 	my $results = $sth->fetchall_arrayref();
 	
 	return $results->[0]->[0];	
 	
 }
-sub DD_DESTROY { #not sure this is needed
+sub DESTROY { 
 	my $self = shift;
-	$self->dbs->{all}->disconnect;
-	$self->dbs->{common}->disconnect;
+	$self->dbs->{all}->disconnect if $self->dbs->{all};
+	$self->dbs->{common}->disconnect if $self->dbs->{common};
 	
 }
 1;
