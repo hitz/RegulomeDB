@@ -2,8 +2,8 @@
 use Mojolicious::Lite;
 use Mojolicious::Plugin::Database;
 use lib 'lib';
-use RegulomeDB; # temporary workaround
-use SnpDB;
+use Regulome::RegulomeDB; # temporary workaround
+use Regulome::SnpDB;
 
 #$ENV{MOJO_MAX_MESSAGE_SIZE} = 5000000000; # 5 GB upload limit
 $ENV{MOJO_CHUNK_SIZE} = 131072; # 128K ~1000 VCF lines

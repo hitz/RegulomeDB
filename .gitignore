@@ -1,3 +1,14 @@
+.*
+!.gitignore
+!.perltidyrc
+*~
+blib
+Makefile*
+!Makefile.PL
+*META.*
+MANIFEST*
+!MANIFEST.SKIP
+pm_to_blib
 .project
 Meta.yml
 Makefile
@@ -5,10 +16,9 @@ blib
 inc
 Makefile.old
 pm_to_blib
-*~
 #*#
 log/*.log
 t/benchmark/*
 t/temp.out
-RegulomeDB/RDB/*.db
-SnpDB/*.db
+data/RegulomeDB/*.db
+data/SnpDB/*.db

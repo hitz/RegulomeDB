@@ -1,0 +1,25 @@
+% layout 'default';
+% title 'Search ReguomeDB';
+<div id='search'>
+   <div id='manual_input'>
+       % my @attrs = (method => 'POST', enctype => 'multipart/form-data');
+       %= form_for running => @attrs => begin
+           %= text_area 'data', rows => '40', style =>"width: 400px;" => begin
+11 5248490	5248491
+4:33493..132333
+chr6    138043309 138047320
+7 88888 99999
+chr4 222 666
+ x:55041617-55041641
+           % end
+          %= submit_button 'Submit'
+       % end    
+   </div>
+   </div>
+   <div id='upload'>
+       %= form_for running => @attrs => begin
+          %= file_field 'file_data'
+          %= submit_button 'Upload'
+       % end
+   </div>
+</div>

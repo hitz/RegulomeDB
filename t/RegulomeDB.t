@@ -1,19 +1,23 @@
 use strict;
 use warnings;
 use Test::More 'no_plan';
+use Test::Mojo;
 use Data::Dumper;
 
-use lib "../lib";
-use RegulomeDB;
-my $sampleBED = {
-"chr1    10488313        10488314" => 1.1,
-"chr1    46649045        46649046" => 1.2,
-"chr1    100001200       100001201" => 1.3,
-"chr6    138043309       138043310" => 1.4,
-"chr6    137891882       137891883" => 1.5,
-"chr6    138022519       138022520" => 2,
-"chr6    138047319       138047320" => 3
-};
+use lib "./lib";
+use_ok ('Regulome');
+
+use_ok("Regulome::RegulomeDB");
+my $sampleDataFile = 't/data/sampleBED.pm';
+my $sampleBED = do $sampleDataFile || die "Could not open $sampleDataFile";
+=pod
+ a hash of 
+"bed input" => { score => ..
+		         results => ..
+		         refs => ..
+	}
+}
+=cut
 
 my $sampleVCF = {};
 
@@ -22,20 +26,25 @@ my $sampleGeneric = {};
 my $sampleGFF = {};
 
 my $scoreTest = {
-	[] => 5,
-	['PWM_ELF5'] => 4,
-	['PWM_FOXI1','PWM_FOXP1','PWM_HFH1(FOXQ1)'] => 4,
 };
 
-my (@triple) = ("chr11",6608467,6618467);
+my (@pos) = ("chr11",6608467);
 
-my $rdb = RegulomeDB->new({ type=>'multi', dbdir=>'./RegulomeDB/RDB'});
+#my $rdb = RegulomeDB->new({ type=>'multi', dbdir=>'./data/RegulomeDB'});
+my $r = Test::Mojo->new('Regulome')->app();
+#$r->log->handle('STDERR');
+#$r->log->debug("TEST");
+my $rdb = $r->rdb;
 isa_ok($rdb,'RegulomeDB');
-for my $c (keys %$sampleBED) {
-	my ($format, $check) = $rdb->check_coord($c);
-	is(ref($check),'ARRAY',"checking return of check_coord");
-	print Dumper $rdb->process($check);
-}
+my ($format, $chk) = $r->check_coord();
+is(ref($chk),'ARRAY',"check_coord returns ARRAY_REF");
 
+for my $c (keys %$sampleBED) {
+	($format, $chk) = $r->check_coord($c);
+	my $scan = $rdb->process(@$chk);
+	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$c}->{results},"Check BED results $chk->[0] $chk->[1]");
+	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$c}->{refs},"Check BED refs $chk->[0] $chk->[1]");
+	is($rdb->score($scan), $sampleBED->{$c}->{score}, "Check Score $chk->[0] $chk->[1]");
+}
 
 

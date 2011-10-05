@@ -1,0 +1,17 @@
+% layout 'default';
+% title 'Running ReguomeDB search...';
+<div id='input'>
+   <h1>Input Data</h1>
+  <pre>
+   % for (my $i=0; $i<@$coords;$i++) {
+    %= "$i $coords->[$i]"
+    % }
+  </pre>
+  <pre>Left over:<%= $remnant %></pre>
+</div>
+<div id='output'>
+  <h1>Results</h1>
+  <pre>
+   %= dumper $result
+  </pre>
+<div>
