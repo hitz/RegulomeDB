@@ -126,7 +126,7 @@ my $snpResult = { rs55998931 => [
 
 my $snpdb = SnpDB->new({ type=>'single', 
 					     dbfile_all=>'./data/SnpDB/dbSNP132.db',
-						 dbfile_common =>'./data/SnpDB/dbSNP132.db'});
+						 dbfile_common =>'./data/SnpDB/dbSNP132Common.db'});
 isa_ok($snpdb,'SnpDB');
 
 while (my ($snpid, $c) = each (%$commonTest)) {
