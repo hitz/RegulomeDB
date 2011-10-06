@@ -1,17 +1,25 @@
 % layout 'default';
 % title 'Running ReguomeDB search...';
 <div id='input'>
-   <h1>Input Data</h1>
-  <pre>
-   % for (my $i=0; $i<@$coords;$i++) {
-    %= "$i $coords->[$i]"
-    % }
-  </pre>
-  <pre>Left over:<%= $remnant %></pre>
+   <p>The search has evaluated <%= scalar(@$coords) %> input line(s) and found <%= $nsnps %> SNP(s).</p>
+   <% if ($remnant) { %>
+   <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
+   <% } %> 
 </div>
 <div id='output'>
-  <h1>Results</h1>
-  <pre>
-   %= dumper $result
-  </pre>
-<div>
+  <h1>Summary of SNP analysis</h1>
+  <div id='summary_graphic><p class='note'>Graphic coming soon!</p></div>
+  <div id='summary_table'>
+     <table id='snp_analysis' class='display' cellspacing='0' cellpadding='0' border='0'></table>
+  </div>
+</div>
+<div id='timer'>
+% my ($elapsed, $rps) = profile 'page';
+%= "Elapsed: $elapsed s $rps /s" 
+</div>
+%= javascript "/js/jquery.dataTables.min.js"
+<script>
+	$(function() {
+		$('#snp_analysis').dataTable(<%= b($snpDataTable) %>);
+		});
+</script>

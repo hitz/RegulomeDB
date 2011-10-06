@@ -1,10 +1,13 @@
 % layout 'default';
 % title 'Search ReguomeDB';
-<div id='search'>
-   <div id='manual_input'>
+<div id='banner'>
+    <%=image '/images/logo_v2.jpg', alt => 'Regulome Logo' %>
+</div>
+<div id='manual_input'>
+	<p class='note'>Enter dbSNP ID(s) and/or list of coordinates (Example)</p>
        % my @attrs = (method => 'POST', enctype => 'multipart/form-data');
        %= form_for running => @attrs => begin
-           %= text_area 'data', rows => '40', style =>"width: 400px;" => begin
+           %= text_area 'data', rows => '20', id =>'input_text' => begin
 rs13343114
 11 5248490	5248491
 4:33493..36333
@@ -18,12 +21,24 @@ chr6    138043309 138043310
            % end
           %= submit_button 'Submit'
        % end    
-   </div>
-   </div>
-   <div id='upload'>
-       %= form_for running => @attrs => begin
-          %= file_field 'file_data'
-          %= submit_button 'Upload'
-       % end
-   </div>
 </div>
+<div id='upload'>
+	  <p class='note'>Or upload a file</p>
+       %= form_for running => @attrs => begin
+           %= file_field 'file_data', id => 'file_upload'
+          %= submit_button 'Upload', class=> 'alignright'
+       % end
+</div>
+<script>
+	$(function() {
+	    $('#file_upload').styleFileInput({
+		    addClearLink : true,
+		    textTagName : 'strong',
+		    textAttributes : {
+ 	      		text : 'No file selected.'
+    	 	}
+    	 });
+		$( "input:submit, input:button" ).button();
+    });
+</script>
+

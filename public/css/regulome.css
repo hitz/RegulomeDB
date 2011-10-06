@@ -1,0 +1,129 @@
+
+* {margin: 0; padding: 0}
+
+img {
+  border: none;
+}
+
+/************************************************
+*	Hyperlinks									*
+************************************************/
+
+a:link,a:visited	{ color:#375830; text-decoration:none; outline:none;}
+a:hover,a:active	{ color:#375830; text-decoration:underline; outline:none;}
+
+body 
+{ 
+  background-color: #ffffff;
+  font-family: arial, sans-serif;
+  color: #000000;
+  font-size: 100%; 
+}  
+
+body>div {
+   width: 1000px;
+   margin: 0px auto;
+}
+
+.note {
+    text-align: left;
+    font-style: italic; 
+    margin: 3px 0px;
+}
+
+div.clearfloats { clear: both; }
+
+.alignright {float: right; }
+
+#header
+{
+  height: 50px;
+  text-align: left;   
+  width: 1000px;
+  margin: 0px auto;
+  background: #375830;
+}
+
+#logo
+{
+  float: left;
+}
+
+#headerright
+{
+  float: right;
+  width: 600px;
+  height: 50px;
+  text-align: right;
+}
+
+#headerright>a:link,a:visited
+	{ color:#eff3ea; text-decoration:none; outline:none;}
+#headerright>a:hover,a:active	
+    { color:#eff3ea; text-decoration:underline; outline:none;}
+
+
+#manual_input
+{
+  width: 600px;
+}
+
+#input_text
+{
+  margin: 5px 0px;
+  width: 600px;
+}
+
+#upload
+{
+  width: 600px;
+}
+
+#snp_analysis
+{
+    width: 100%;
+}
+
+tr, td { border: 1px solid #CBC7BD; padding: 10px}
+tr.odd { background-color: #eff3eb; }
+
+img.ens_browser { width: 250px; }
+/*****************************************
+** For styled file input              ****
+******************************************/
+
+span#stylefileinput-file_upload
+{
+    position:relative;
+}
+
+span#stylefileinput-file_upload span
+{
+    position:absolute;
+    display:block;
+    top:-2px;
+    overflow:hidden;
+    z-index:1;
+    width:75px;
+    height:24px;
+    opacity:0;
+    filter:alpha(opacity=0)
+}
+
+span#stylefileinput-file_upload span input
+{
+    position:absolute;
+    left:-140px;
+    cursor:pointer
+}
+
+span#stylefileinput-file_upload input.stylefileinput-button
+{
+    position:relative;
+    z-index:0
+}
+
+span#stylefileinput-file_upload strong
+{
+    margin:0 10px
+}

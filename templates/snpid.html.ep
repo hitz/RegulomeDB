@@ -1,0 +1,11 @@
+% layout 'default';
+% title 'Regulome SNP';
+<h1>Data supporting <%= $chr %>:<%= $pos %> (<%= $rsid %>)
+<div id='genomic_region'>
+</div>
+<div id='other_db'>
+</div>
+<div id='binding_site'>
+</div>
+<div id='other_region'>
+</div>

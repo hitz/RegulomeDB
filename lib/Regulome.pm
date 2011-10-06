@@ -8,6 +8,7 @@ use Regulome::SnpDB;
 sub startup {
 	my $self = shift;
 
+	#$self->log->level('error');
 	my $regDB = RegulomeDB->new(
 								 {
 								   type  => 'multi',
@@ -19,7 +20,7 @@ sub startup {
 						   {
 							 type          => 'single',
 							 dbfile_all    => 'data/SnpDB/dbSNP132.db',
-							 dbfile_common => 'data/SnpDB/dbSNP132common.db',
+							 dbfile_common => 'data/SnpDB/dbSNP132Common.db',
 						   }
 	);
 
@@ -112,6 +113,8 @@ sub startup {
 	# Documentation browser under "/perldoc" (this plugin requires Perl 5.10)
 	$self->plugin('PODRenderer');
 	$self->secret("fortnight");
+	$self->plugin('RequestTimer');
+	
 
 	# Routes
 	my $r = $self->routes;
@@ -121,6 +124,19 @@ sub startup {
 
 	$r->any(
 		'/search' => sub {
+		}
+	);
+
+	$r->any(
+		'/snp/:id/' => sub {
+			my $self = shift;
+			my $rsid = $self->param('id');
+			my $coord = $self->snpdb->getSNPbyRsid($rsid);
+			$self->to('not found') unless $coord;
+			$self->stash({rsid => $rsid,
+						  chr  => $coord->[0],
+						  pos  => $coord->[1]
+			});
 		}
 	);
 
@@ -140,42 +156,52 @@ sub startup {
 				$self->app->log->debug("Processing data from file...");
 			}
 
-			$data =~ s/(.+\n)(.+)$/$1/;    # trim trailing
+			$data =~ s/(.+\n)([^\n]*)$/$1/;    # trim trailing
 			my $remnant = $2;                       # we will need this later
 			my $input = [ split( "\n", $data ) ];
 			$self->stash( coords  => $input );
 			$self->stash( remnant => $remnant );
 
-			## for each line input
-			## skip comments (/^#)
-			## detect format
-			# ".."  (chr)c# min..max
-			# VCF (chr)c# min dbSNPid [crap]
-			# GFF (chr)c# (source) (featureType) min max [ crap ]
-			# rs[0-9]+
-			## LOOKUP in DBSNP to get coordinate
-			## store previous input data somewhere
-
-			my @res = ();
+	        my $ensembleLink = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewTop?r=';
+	        # must append X:50030991;export=png
+			my @dataTable = ();
+			my @dtColumns = ({ sTitle => 'Coordinate', sClass => 'center'},
+							 { sTitle => 'dbSNP ID', sClass => 'center'},
+							 { sTitle => 'Score', sClass => 'center'}, 
+							 { sTitle => 'Nearby Genes', sClass => 'center'});
+			my $n;
 			for my $c (@$input) {
 				next if ( $c =~ /^#/ );
 				next unless $c =~ /\d+/;    # got to have some numbers!
 				my ( $format, $snps ) = $self->check_coord($c);
-				my $n = @$snps;
-				$self->app->log->debug("Found $n SNPS");
+				$n += scalar( @$snps );
 				for my $snp (@$snps) {
 					$self->app->log->debug(
 							  "Looking up $snp->[0], $snp->[1] [Detected format $format]");
 				    my $res = $self->rdb->process($snp);
-					push @res, {
-						snpid   => $self->snpdb->getRsid($snp),
-						score   => $self->rdb->score($res),
-						results => [ map $_->[0], @$res ],
-						refs    => [ map $_->[1], @$res ]
-					}
+#						snpid   => $self->snpdb->getRsid($snp),
+#						score   => $self->rdb->score($res),
+#						results => [ map $_->[0], @$res ],
+#						refs    => [ map $_->[1], @$res ],
+				    
+				    my $coordStr = $snp->[0].':'.$snp->[1];
+				    my $ensembleStr= $coordStr.';export=png';
+				    $ensembleStr =~ s/^chr//;
+				    my $snpID = $self->snpdb->getRsid($snp) || "Unknown SNP";
+					push @dataTable, [
+						$coordStr, 
+						$self->link_to($snpID,"/snp/$snpID"), 
+						$self->rdb->score($res),
+						$self->image($ensembleLink.$ensembleStr, 'class' => 'ens_browser'),
+					];
 				}
 			}
-			$self->stash( result => \@res );
+			$self->stash(snpDataTable => Mojo::JSON->new->encode({aaData => \@dataTable,
+																  aoColumns => \@dtColumns,
+																  bJQueryUI => 'true',
+																  bFilter   => 0,
+																  }) );
+			$self->stash( nsnps => $n );
 
 		}
 	);

@@ -1,4 +1,24 @@
 <!doctype html><html>
-  <head><title><%= title %></title></head>
-  <body><%= content %></body>
+  <head><title><%= title %></title>
+   %= stylesheet 'css/regulome.css' 
+   %= stylesheet 'css/custom-theme/jquery-ui-1.8.16.custom.css'
+  </head>
+  <body>
+   %= javascript "/js/jquery-1.6.4.min.js"
+   %= javascript "/js/jquery-ui-1.8.16.custom.min.js"
+   %= javascript "/js/jquery.style-file-input.js"
+   %= javascript "/js/underscore-min.js"
+  <div id="header">
+     <div id="logo">
+       <%=link_to index => begin %>
+       <%=image '/images/logo_transparent_v2.gif', alt => 'Regulome Logo', height=> 50 %>
+       <% end %>
+     </div>
+     <div id="headerright">
+       <%= link_to about => begin %>About<% end %>
+	   <%= link_to help  => begin %>Help<% end %>
+	 </div>
+  </div>  
+  <%= content %>
+  </body>
 </html>
