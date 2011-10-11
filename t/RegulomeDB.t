@@ -49,32 +49,45 @@ is(ref($chk),'ARRAY',"check_coord returns ARRAY_REF");
 is(ref($chk->[0]),'ARRAY',"check_coord returns ARRAY_REF of ARRAY_REF");
 ($format, $chk) = $r->check_coord(\@pos2);
 
+
+#open (OUT,">tmp.pm");
+#my $out = {};
 for my $c (keys %$sampleBED) {
 	($format, $chk) = $r->check_coord($c);
 	is(scalar(@$chk), 1, "BED returns 1 SNP");
 	my $snp = $chk->[0];
-	is($format, 'BED - 0 Based');
+	is($format, 'BED - 0 Based',"Check BED format");
 	my $scan = $rdb->process($snp);
+	# note: coordinates of process thrown out, checked in SnpDB.t
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$c}->{results},"Check BED results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$c}->{refs},"Check BED refs $snp->[0] $snp->[1]");
-	is($rdb->score($scan), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
+	is(my $sc = $rdb->score($scan), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
+	is($rdb->full_score($scan)->{score}, $sampleBED->{$c}->{score}, "Check BED score_full $snp->[0] $snp->[1]");
+#	$out->{$c} = {
+#		refs => [ map $_->[1], @$scan ],
+#		results => [ map $_->[0], @$scan ],
+#		score => $sc
+#	};
 }
+#print OUT Dumper $out;
 
 for my $vcf (keys %$sampleVCF) {
 	($format, $chk) = $r->check_coord($vcf);
-	is($format, 'VCF - 1 Based');
-	is(scalar(@$chk), 1, "BED returns 1 SNP");
+	is($format, 'VCF - 1 Based', "Check VCF format");
+	is(scalar(@$chk), 1, "VCF returns 1 SNP");
 	my $snp = $chk->[0];
 	my $scan = $rdb->process($snp);
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{results},"Check VCF results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{refs},"Check VCF refs $snp->[0] $snp->[1]");
 	is($rdb->score($scan), $sampleBED->{$sampleVCF->{$vcf}}->{score}, "Check VCF score $snp->[0] $snp->[1]");
+	is($rdb->full_score($scan)->{score}, $sampleBED->{$sampleVCF->{$vcf}}->{score}, "Check VCF score_full $snp->[0] $snp->[1]");
 }
+
 
 for my $gff (keys %$sampleGFF) {
 	($format, $chk) = $r->check_coord($gff);
-	is($format, 'GFF - 1 Based');
-	is(scalar(@$chk), 1, "BED returns 1 SNP");
+	is($format, 'GFF - 1 Based',"check GFF format");
+	is(scalar(@$chk), 1, "GFF returns 1 SNP");
 	my $snp = $chk->[0];
 	my $scan = $rdb->process($snp);
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleGFF->{$gff}}->{results},"Check GFF results $snp->[0] $snp->[1]");
@@ -84,11 +97,13 @@ for my $gff (keys %$sampleGFF) {
 
 for my $bed (keys %$sampleFullBED) {
 	($format, $chk) = $r->check_coord($bed);
-	is($format, 'BED - 0 Based');
+	is($format, 'BED - 0 Based', "check full BED format");
 	is(scalar(@$chk), 1, "BED returns 1 SNP");
 	my $snp = $chk->[0];
 	my $scan = $rdb->process($snp);
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{results},"Check full BED results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{refs},"Check full BED refs $snp->[0] $snp->[1]");
 	is($rdb->score($scan), $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score $snp->[0] $snp->[1]");
+	is($rdb->full_score($scan)->{score}, $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score_full $snp->[0] $snp->[1]");
+	#print Dumper $scan;
 }

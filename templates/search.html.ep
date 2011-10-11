@@ -17,13 +17,12 @@ chr6    138043309 138043310
  chr1	41981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G
  chrX	user	      TF_binding_site	48644374	48644376	.		+	0	PMID=1656391
  chrY	59033300	rs62604356	C	T	1927.89	HIGH	GT_MATCH=0.50;AL_MATCH=0.50;PLAT=CG,IL;VAL=N/A;SM=IL_BLOOD,IL_SALIVA,CG_BLOOD,CG_SALIVAGT:A1:A2	1/1:T:T
- dummy
            % end
           %= submit_button 'Submit'
        % end    
 </div>
 <div id='upload'>
-	  <p class='note'>Or upload a file</p>
+	  <p class='note'>Or upload a file (only first ~2,000 lines will be processed)</p>
        %= form_for running => @attrs => begin
            %= file_field 'file_data', id => 'file_upload'
           %= submit_button 'Upload', class=> 'alignright'
@@ -38,7 +37,7 @@ chr6    138043309 138043310
  	      		text : 'No file selected.'
     	 	}
     	 });
-		$( "input:submit, input:button" ).button();
+		$( "input:submit" ).button();
     });
 </script>
 

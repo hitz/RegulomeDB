@@ -1,7 +1,7 @@
 % layout 'default';
 % title 'Running ReguomeDB search...';
 <div id='input'>
-   <p>The search has evaluated <%= scalar(@$coords) %> input line(s) and found <%= $nsnps %> SNP(s).</p>
+   <p>The search has evaluated <strong><%= scalar(@$coords) %></strong> input line(s) and found <strong><%= $nsnps %></strong> SNP(s).</p>
    <% if ($remnant) { %>
    <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
    <% } %> 

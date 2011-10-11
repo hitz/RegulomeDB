@@ -1,11 +1,23 @@
 % layout 'default';
 % title 'Regulome SNP';
-<h1>Data supporting <%= $chr %>:<%= $pos %> (<%= $rsid %>)
+<div id='banner'>
+<h1>Data supporting <%= $chr %>:<%= $pos %> (<%= $snpid %>) </h1>
+<h2>Score: <%= $score %></h2>
+<div>
 <div id='genomic_region'>
 </div>
 <div id='other_db'>
 </div>
-<div id='binding_site'>
+  <div id='detail_table'>
+     <table id='snp_detail' class='display' cellspacing='0' cellpadding='0' border='0'></table>
+  </div>
+</div>
 </div>
 <div id='other_region'>
 </div>
+%= javascript "/js/jquery.dataTables.min.js"
+<script>
+	$(function() {
+		$('#snp_detail').dataTable(<%= b($snpDataTable) %>);
+		});
+</script>  

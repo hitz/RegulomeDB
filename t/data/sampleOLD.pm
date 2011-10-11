@@ -1,15 +1,33 @@
-$VAR1 = {
+return {
+          'chr10    61004       61005' => {
+                                                   'refs' => [
+                                                               
+                                                             ],
+                                                   'score' => 5,
+                                                   'results' => [
+                                                                  
+                                                                ]
+                                                 },
+          'chr10    64009      64010' => {
+                                                   'refs' => [
+                                                               'CTCF_ren.pwm'
+                                                             ],
+                                                   'score' => 4,
+                                                   'results' => [
+                                                                  'PWM_ELF5'
+                                                                ]
+                                                 },
           'chr10    65587       65588' => {
-                                            'refs' => [
-                                                        'CTCF_ren.pwm',
-                                                        'CTCF_ren.pwm'
-                                                      ],
-                                            'score' => 4,
-                                            'results' => [
-                                                           'PWM_HSF2',
-                                                           'PWM_Oct-1'
-                                                         ]
-                                          },
+                                                   'refs' => [
+                                                               'CTCF_ren.pwm',
+                                                               'CTCF_ren.pwm'
+                                                             ],
+                                                   'score' => 4,
+                                                   'results' => [
+                                                                  'PWM_HSF2',
+                                                                  'PWM_Oct-1'
+                                                                ]
+                                                 },
           'chr6    138047319       138047320' => {
                                                    'refs' => [
                                                                'NCP000'
@@ -24,7 +42,6 @@ $VAR1 = {
                                                                'NCP000',
                                                                'NCP000',
                                                                'PMID21106904',
-                                                               'CTCF_ren.pwm',
                                                                'CTCF_ren.pwm',
                                                                'CTCF_ren.pwm',
                                                                'CTCF_ren.pwm',
@@ -45,7 +62,6 @@ $VAR1 = {
                                                                   'FP_H1hesc_Sp1',
                                                                   'PWM_STAT',
                                                                   'PWM_STAT1',
-                                                                  'PWM_STAT1',
                                                                   'PWM_STAT5A(homodimer)',
                                                                   'PWM_STAT5B(homodimer)',
                                                                   'PWM_Sp1',
@@ -65,8 +81,6 @@ $VAR1 = {
                                                                'NCP000',
                                                                'NCP000',
                                                                'NCP000',
-                                                               'NCP000',
-                                                               'NCP000',
                                                                'NCP000'
                                                              ],
                                                    'score' => '1.5',
@@ -74,8 +88,6 @@ $VAR1 = {
                                                                   'DNase_Lncap',
                                                                   'PWM_HOXA13',
                                                                   'TF_HEK293b_KAP1',
-                                                                  'TF_HEK293b_KAP1',
-                                                                  'TF_HepG2_FOXA1',
                                                                   'TF_HepG2_FOXA1',
                                                                   'TF_HepG2_FOXA2',
                                                                   'TF_U2OS_KAP1'
@@ -217,47 +229,8 @@ $VAR1 = {
                                                               'PMID21106904',
                                                               'PMID21106904',
                                                               'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
-                                                              'PMID21106904',
                                                               'CTCF_ren.pwm',
                                                               'CTCF_ren.pwm',
-                                                              'CTCF_ren.pwm',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
-                                                              'NCP000',
                                                               'NCP000',
                                                               'NCP000',
                                                               'NCP000',
@@ -431,63 +404,43 @@ $VAR1 = {
                                                                  'DNase_Wi38',
                                                                  'DNase_Wi38Ohtam',
                                                                  'FP_8988t_CTCF',
-                                                                 'FP_8988t_CTCF',
                                                                  'FP_8988t_GATA-1',
-                                                                 'FP_A549_CTCF',
                                                                  'FP_A549_CTCF',
                                                                  'FP_A549_GATA-1',
                                                                  'FP_AosmcSerumfree_CTCF',
-                                                                 'FP_AosmcSerumfree_CTCF',
                                                                  'FP_AosmcSerumfree_GATA-1',
-                                                                 'FP_Fibrobl_CTCF',
                                                                  'FP_Fibrobl_CTCF',
                                                                  'FP_Fibrobl_GATA-1',
                                                                  'FP_Fibrop_CTCF',
-                                                                 'FP_Fibrop_CTCF',
                                                                  'FP_Fibrop_GATA-1',
-                                                                 'FP_Gliobla_CTCF',
                                                                  'FP_Gliobla_CTCF',
                                                                  'FP_Gliobla_GATA-1',
                                                                  'FP_Gm12878_CTCF',
-                                                                 'FP_Gm12878_CTCF',
                                                                  'FP_Gm12878_GATA-1',
-                                                                 'FP_Gm12891_CTCF',
                                                                  'FP_Gm12891_CTCF',
                                                                  'FP_Gm12891_GATA-1',
                                                                  'FP_Gm12892_CTCF',
-                                                                 'FP_Gm12892_CTCF',
                                                                  'FP_Gm12892_GATA-1',
-                                                                 'FP_Gm18507_CTCF',
                                                                  'FP_Gm18507_CTCF',
                                                                  'FP_Gm18507_GATA-1',
                                                                  'FP_Gm19238_CTCF',
-                                                                 'FP_Gm19238_CTCF',
                                                                  'FP_Gm19238_GATA-1',
-                                                                 'FP_Gm19239_CTCF',
                                                                  'FP_Gm19239_CTCF',
                                                                  'FP_Gm19239_GATA-1',
                                                                  'FP_H1hesc_CTCF',
-                                                                 'FP_H1hesc_CTCF',
                                                                  'FP_H1hesc_GATA-1',
-                                                                 'FP_H9es_CTCF',
                                                                  'FP_H9es_CTCF',
                                                                  'FP_H9es_GATA-1',
                                                                  'FP_Helas3_CTCF',
-                                                                 'FP_Helas3_CTCF',
                                                                  'FP_Helas3_GATA-1',
-                                                                 'FP_Hepg2_CTCF',
                                                                  'FP_Hepg2_CTCF',
                                                                  'FP_Hepg2_GATA-1',
                                                                  'FP_Huvec_CTCF',
-                                                                 'FP_Huvec_CTCF',
                                                                  'FP_Huvec_GATA-1',
-                                                                 'FP_K562_CTCF',
                                                                  'FP_K562_CTCF',
                                                                  'FP_K562_GATA-1',
                                                                  'FP_Nhek_CTCF',
-                                                                 'FP_Nhek_CTCF',
                                                                  'FP_Nhek_GATA-1',
-                                                                 'PWM_CTCF',
                                                                  'PWM_CTCF',
                                                                  'PWM_GATA-1',
                                                                  'TF_A549_CTCF_DEX_100nM',
@@ -509,11 +462,7 @@ $VAR1 = {
                                                                  'TF_GM12874_CTCF',
                                                                  'TF_GM12875_CTCF',
                                                                  'TF_GM12878_CTCF',
-                                                                 'TF_GM12878_CTCF',
-                                                                 'TF_GM12878_CTCF',
-                                                                 'TF_GM12878_CTCF',
                                                                  'TF_GM12878_EBF1',
-                                                                 'TF_GM12878_RAD21',
                                                                  'TF_GM12878_RAD21',
                                                                  'TF_GM12878_SMC3',
                                                                  'TF_GM12878_YY1',
@@ -521,8 +470,6 @@ $VAR1 = {
                                                                  'TF_GM12892_YY1',
                                                                  'TF_Gliobla_CTCF',
                                                                  'TF_H1-hESC_CTCF',
-                                                                 'TF_H1-hESC_CTCF',
-                                                                 'TF_H1-hESC_RAD21',
                                                                  'TF_H1-hESC_RAD21',
                                                                  'TF_HA-sp_CTCF',
                                                                  'TF_HBMEC_CTCF',
@@ -532,7 +479,6 @@ $VAR1 = {
                                                                  'TF_HEK293_CTCF',
                                                                  'TF_HL-60_CTCF',
                                                                  'TF_HMEC_CTCF',
-                                                                 'TF_HMEC_CTCF',
                                                                  'TF_HMF_CTCF',
                                                                  'TF_HPAF_CTCF',
                                                                  'TF_HPF_CTCF',
@@ -541,26 +487,16 @@ $VAR1 = {
                                                                  'TF_HSMM_CTCF',
                                                                  'TF_HSMMtube_CTCF',
                                                                  'TF_HUVEC_CTCF',
-                                                                 'TF_HUVEC_CTCF',
-                                                                 'TF_HUVEC_CTCF',
                                                                  'TF_HeLa-S3_AP2ALPHA',
                                                                  'TF_HeLa-S3_AP2GAMMA',
                                                                  'TF_HeLa-S3_CEBPB',
                                                                  'TF_HeLa-S3_CTCF',
-                                                                 'TF_HeLa-S3_CTCF',
-                                                                 'TF_HeLa-S3_CTCF',
                                                                  'TF_HeLa-S3_RAD21',
                                                                  'TF_HeLa-S3_SMC3',
                                                                  'TF_HepG2_CTCF',
-                                                                 'TF_HepG2_CTCF',
-                                                                 'TF_HepG2_CTCF',
                                                                  'TF_HepG2_RAD21',
-                                                                 'TF_HepG2_RAD21',
-                                                                 'TF_K562_CTCF',
-                                                                 'TF_K562_CTCF',
                                                                  'TF_K562_CTCF',
                                                                  'TF_K562_JUND',
-                                                                 'TF_K562_RAD21',
                                                                  'TF_K562_RAD21',
                                                                  'TF_K562_SMC3',
                                                                  'TF_MCF-7_CMYC_vehicle',
@@ -570,12 +506,10 @@ $VAR1 = {
                                                                  'TF_NH-A_CTCF',
                                                                  'TF_NHDF-Ad_CTCF',
                                                                  'TF_NHEK_CTCF',
-                                                                 'TF_NHEK_CTCF',
                                                                  'TF_NHLF_CTCF',
                                                                  'TF_Osteobl_CTCF',
                                                                  'TF_ProgFib_CTCF',
                                                                  'TF_SAEC_CTCF',
-                                                                 'TF_SK-N-SH-RA_CTCF',
                                                                  'TF_SK-N-SH-RA_CTCF',
                                                                  'TF_SK-N-SH-RA_RAD21',
                                                                  'TF_T-47D_CTCF_DMSO_0.02pct',
@@ -584,39 +518,6 @@ $VAR1 = {
                                                                  'eQTL_monocyte_PEX14'
                                                                ]
                                                 },
-          'chr6    138043309       138043310' => {
-                                                   'refs' => [
-                                                               'NCP000',
-                                                               'CTCF_ren.pwm',
-                                                               'NCP000',
-                                                               'NCP000',
-                                                               'NCP000',
-                                                               'NCP000'
-                                                             ],
-                                                   'score' => '1.4',
-                                                   'results' => [
-                                                                  'DNase_Gm12865',
-                                                                  'PWM_HNF4A',
-                                                                  'TF_HepG2_FOSL2',
-                                                                  'TF_HepG2_HNF4A',
-                                                                  'TF_HepG2_HNF4G',
-                                                                  'TF_HepG2_JUND'
-                                                                ]
-                                                 },
-          'chr10    61004       61005' => {
-                                            'refs' => [],
-                                            'score' => 5,
-                                            'results' => []
-                                          },
-          'chr10    64009      64010' => {
-                                           'refs' => [
-                                                       'CTCF_ren.pwm'
-                                                     ],
-                                           'score' => 4,
-                                           'results' => [
-                                                          'PWM_ELF5'
-                                                        ]
-                                         },
           'chr6    138022519       138022520' => {
                                                    'refs' => [
                                                                'NCP000',
@@ -746,7 +647,6 @@ $VAR1 = {
                                                               'PMID21106904',
                                                               'CTCF_ren.pwm',
                                                               'CTCF_ren.pwm',
-                                                              'NCP000',
                                                               'NCP000',
                                                               'NCP000',
                                                               'NCP000',
@@ -946,7 +846,6 @@ $VAR1 = {
                                                                  'TF_HepG2_JUND',
                                                                  'TF_HepG2_P300',
                                                                  'TF_HepG2_POL2',
-                                                                 'TF_HepG2_POL2',
                                                                  'TF_HepG2_POL2_forskolin',
                                                                  'TF_HepG2_SP1',
                                                                  'TF_K562_PU1',
@@ -960,5 +859,24 @@ $VAR1 = {
                                                                  'TF_T-47D_P300_DMSO_0.02pct',
                                                                  'eQTL_liver_TSPAN1'
                                                                ]
-                                                }
+                                                },
+          'chr6    138043309       138043310' => {
+                                                   'refs' => [
+                                                               'NCP000',
+                                                               'CTCF_ren.pwm',
+                                                               'NCP000',
+                                                               'NCP000',
+                                                               'NCP000',
+                                                               'NCP000'
+                                                             ],
+                                                   'score' => '1.4',
+                                                   'results' => [
+                                                                  'DNase_Gm12865',
+                                                                  'PWM_HNF4A',
+                                                                  'TF_HepG2_FOSL2',
+                                                                  'TF_HepG2_HNF4A',
+                                                                  'TF_HepG2_HNF4G',
+                                                                  'TF_HepG2_JUND'
+                                                                ]
+                                                 }
         };

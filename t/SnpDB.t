@@ -99,29 +99,41 @@ my $commonTest = {
 my $snpResult = { rs55998931 => [
           [
             'DNase_Be2c',
-            'NCP000'
+            'NCP000',
+            '10420',
+            '10570'
           ],
           [
             'DNase_Hvmf',
-            'NCP000'
+            'NCP000',
+            '10440',
+            '10590'
           ],
           [
             'DNase_Jurkat',
-            'NCP000'
+            'NCP000',
+            '10440',
+            '10590'
           ],
           [
             'DNase_Nb4',
-            'NCP000'
+            'NCP000',
+            '10440',
+            '10590'
           ],
           [
             'TF_H1-hESC_TAF7',
-            'NCP000'
+            'NCP000',
+            '10332',
+            '10536'
           ],
           [
             'TF_HepG2_ZBTB33',
-            'NCP000'
+            'NCP000',
+            '10382',
+            '10578'
           ]
-        ]
+   ]
 };
 
 my $snpdb = SnpDB->new({ type=>'single', 

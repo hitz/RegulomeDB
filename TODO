@@ -1,0 +1,23 @@
+== Look and Feel ==
+* check white space and centering
+* fix browse button dimensions
+
+== Content ==
+* help (on search page) pages / tabbed or accordion baxes
+* autosort results table by score DONE
+* add links to ensemble
+* add links to NCBI, other references
+* update data
+
+== Other application ==
+* snp/chr:/coord: -> snp page
+* refactor into controllers
+* download results
+* snpid -> multi coordinates disambiguation page?
+* implement not found pages
+* redirect index -> search unless index page is created
+
+== Large file input ==
+* profile
+* work out polling scheme/tmp file cache system/fork
+* work out email results

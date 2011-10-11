@@ -133,9 +133,49 @@ sub startup {
 			my $rsid = $self->param('id');
 			my $coord = $self->snpdb->getSNPbyRsid($rsid);
 			$self->to('not found') unless $coord;
-			$self->stash({rsid => $rsid,
+			
+			# following needs to move to controller
+		    my $res = $self->rdb->process($coord);
+
+			my @dataTable = ();
+			my @dtColumns = ({ sTitle => 'Datatype', sClass => 'center'},
+							 { sTitle => 'TF', sClass => 'center'},
+							 { sTitle => 'Location', sClass => 'center'},
+							 { sTitle => 'Souce', sClass => 'center'}, 
+							 { sTitle => 'Additional Info (cell type, condition)', sClass => 'center'});
+
+
+			my $score = $self->rdb->score($res);
+			for my $record (@$res) {
+				my ($item, $ref, $min, $max) = @$record;
+				my ($group, $category, $class, @cond) = ('not_found','','', ()); # reset
+				($group, $category, $class, @cond) = split('_',$item);
+				my $loc = $coord->[0]."$min"."..".$max;
+				if ($class) {
+					if($group eq 'MANUAL') {
+						push @dataTable, [$group, "", $loc, $ref, join(" ",($class,$category,@cond))];
+						
+					} else {
+						push @dataTable, [$group, $class, $loc, $ref, join(", ",($category,@cond))];						
+					}
+				} elsif ($group eq 'PWM') {
+					push @dataTable, [$group, "", $loc, $ref, ""];
+				} else {
+					push @dataTable, [$group, "", $loc, $ref, $category];					
+				}
+				
+			}
+		     	        		    
+			$self->stash({snpid => $rsid,
+						  score => $score,
 						  chr  => $coord->[0],
-						  pos  => $coord->[1]
+						  pos  => $coord->[1],
+						  snpDataTable => Mojo::JSON->new->encode({aaData => \@dataTable,
+																  aoColumns => \@dtColumns,
+																  bJQueryUI => 'true',
+																  bFilter   => 0,
+																  aaSortingFixed => [[0,'asc']],
+						  })
 			});
 		}
 	);
@@ -158,9 +198,9 @@ sub startup {
 
 			$data =~ s/(.+\n)([^\n]*)$/$1/;    # trim trailing
 			my $remnant = $2;                       # we will need this later
-			my $input = [ split( "\n", $data ) ];
+			my $input = [ split( "\n", $data ), $remnant ];# just process it for now.
 			$self->stash( coords  => $input );
-			$self->stash( remnant => $remnant );
+			$self->stash( remnant => '' );
 
 	        my $ensembleLink = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewTop?r=';
 	        # must append X:50030991;export=png
@@ -179,27 +219,25 @@ sub startup {
 					$self->app->log->debug(
 							  "Looking up $snp->[0], $snp->[1] [Detected format $format]");
 				    my $res = $self->rdb->process($snp);
-#						snpid   => $self->snpdb->getRsid($snp),
-#						score   => $self->rdb->score($res),
-#						results => [ map $_->[0], @$res ],
-#						refs    => [ map $_->[1], @$res ],
-				    
 				    my $coordStr = $snp->[0].':'.$snp->[1];
-				    my $ensembleStr= $coordStr.';export=png';
+				    my $ensembleStr= $coordStr;
 				    $ensembleStr =~ s/^chr//;
 				    my $snpID = $self->snpdb->getRsid($snp) || "Unknown SNP";
 					push @dataTable, [
 						$coordStr, 
 						$self->link_to($snpID,"/snp/$snpID"), 
 						$self->rdb->score($res),
-						$self->image($ensembleLink.$ensembleStr, 'class' => 'ens_browser'),
+						$self->image($ensembleLink.$ensembleStr.';export=png', 'class' => 'ens_browser'),
+						
 					];
 				}
 			}
 			$self->stash(snpDataTable => Mojo::JSON->new->encode({aaData => \@dataTable,
 																  aoColumns => \@dtColumns,
 																  bJQueryUI => 'true',
+																  aaSorting => [[2,'asc'],[0,'asc']],
 																  bFilter   => 0,
+																  bDeferRender => 1,
 																  }) );
 			$self->stash( nsnps => $n );
 

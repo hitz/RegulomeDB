@@ -34,7 +34,7 @@ sub _init {
 		$dbh->commit;
 		for my $chr (@CHRS) {
 			my $stch = "chr" . $chr;
-			$sth->{$stch} = $dbh->prepare_cached("SELECT DISTINCT objname,objref FROM data, data_" . $stch . "_index WHERE data.id=data_" . $stch . "_index.id AND minX <= ? AND maxX >= ?");
+			$sth->{$stch} = $dbh->prepare_cached("SELECT DISTINCT objname,objref,minX,maxX FROM data, data_" . $stch . "_index WHERE data.id=data_" . $stch . "_index.id AND minX <= ? AND maxX >= ?");
 		}
 	} elsif ($self->type eq 'multi') {
 		$dbh = {}; # hash by chromosomes;
@@ -45,7 +45,7 @@ sub _init {
 
 			$dbh->{$stch}->do($cache_statement);
 			$dbh->{$stch}->commit;
-			$sth->{$stch} = $dbh->{$stch}->prepare("SELECT DISTINCT objname,objref FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?");
+			$sth->{$stch} = $dbh->{$stch}->prepare("SELECT DISTINCT objname,objref,minX,maxX FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?");
 		}
 		
 	} else {
@@ -55,7 +55,77 @@ sub _init {
 	$self->sth($sth);
 	
 }
+sub full_score () {
+	# this might be slower
+	# returns score, given the output of $self->process
+	my $self = shift;
+	my $results = shift; #Array Ref[ [scores,ref, min, max].]
+	
+	my $score  = {
+		score => 5, 
+	};
+	return $score unless @$results;
+	#scoring scheme
+	# 1 -> known to cause heteroallelic binidng
+	# 1.1 -> ChIP_seq + motif + footprints + DNase + eQTL
+	# 1.2 -> ChIP_seq + motif + footprint + DNase + eQTL
+	# 1.3 -> ChIP_seq + motif + footprint + DNase
+	# 1.4 -> ChIP_seq + motif + DNase
+	# 1.5 -> ChIP_seq + non-matched motif + DNase
+	# 2 -> ChIP_seq + DNase
+	# 3 -> ChIP_seq or DNase
+	# 4 -> other
 
+	for my $record (@$results) {
+		my ($item, $ref, $min, $max) = @$record;
+		my ($group, $category, $class, @cond) = ('not_found','','', ()); # reset
+		($group, $category, $class, @cond) = split('_',$item);
+		my $arr;
+		# not happy with this below
+		if ($class) { 
+		    $arr = $score->{$group}->{$class}->{$category} || [];
+			push @$arr, ($ref, $min, $max, @cond);
+			$score->{$group}->{$class}->{$category} = $arr if @$arr
+		} else {
+	        $arr = $score->{$group}->{$category} || [];			
+			push @$arr, ($ref, $min, $max, @cond);
+			$score->{$group}->{$category} = $arr if @$arr
+		}
+		
+	}
+	
+	my $pwmmatched = 0;
+	my $fpmatched = 0;
+	for my $key (keys %{$score->{TF}}) {
+		if(exists $score->{PWM}->{$key}) {
+			$pwmmatched = 1;
+		}
+		if(exists $score->{FP}->{$key}) {
+			$fpmatched = 1;
+		}
+	}
+	
+	$score->{score} = 4;
+	if(keys %{ $score->{TF} }|| keys % {$score->{DNase}}) {
+		$score->{score} = 3;
+	} 
+
+	if(keys %{ $score->{TF} } && keys %{ $score->{DNase} }) {
+		$score->{score} = 2;
+	} 
+
+	if(keys %{ $score->{TF} } && keys %{ $score->{DNase} } && keys %{ $score->{PWM} }) {
+		$score->{score} = ($pwmmatched ? 
+			(keys %{ $score->{FP}} ? 
+				(keys %{ $score->{eQTL}} ?  
+					($fpmatched ? 
+						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
+	} 
+
+	#print STDERR Dumper($score);
+	return $score;
+		
+}
 sub score() {
 	# returns score, given the output of $self->process
 	my $self = shift;

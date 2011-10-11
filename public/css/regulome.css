@@ -57,9 +57,9 @@ div.clearfloats { clear: both; }
   text-align: right;
 }
 
-#headerright>a:link,a:visited
+#headerright > a:link, #headerright > a:visited
 	{ color:#eff3ea; text-decoration:none; outline:none;}
-#headerright>a:hover,a:active	
+#headerright > a:hover, #headerright > a:active	
     { color:#eff3ea; text-decoration:underline; outline:none;}
 
 
@@ -80,6 +80,16 @@ div.clearfloats { clear: both; }
 }
 
 #snp_analysis
+{
+    width: 100%;
+}
+
+#snp_detail
+{
+    width: 100%;
+}
+
+#detail_table
 {
     width: 100%;
 }
@@ -126,4 +136,8 @@ span#stylefileinput-file_upload input.stylefileinput-button
 span#stylefileinput-file_upload strong
 {
     margin:0 10px
+}
+
+input.ui-button {
+    font-size: 14px;
 }
