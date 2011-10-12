@@ -209,7 +209,7 @@ sub startup {
 	        # below should go in some helper module or DB somewhere.
 	        my $BROWSE_PADDING = 10000;
 	        my $externalURL = {
-	        	ENSEMBL => ' http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
+	        	ENSEMBL => 'http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
 	        # must append X:50020991-50040991
 	        	dbSNP   => 'http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=',
 	        # must append DBSNP id
