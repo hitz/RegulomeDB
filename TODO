@@ -1,6 +1,6 @@
 == Look and Feel ==
 * check white space and centering
-* fix browse button dimensions
+* fix browse button dimensions DONE
 
 == Content ==
 * help (on search page) pages / tabbed or accordion baxes
@@ -8,6 +8,8 @@
 * add links to ensemble
 * add links to NCBI, other references
 * update data
+* About/Help links
+* "Home" link goes to relative /index
 
 == Other application ==
 * snp/chr:/coord: -> snp page

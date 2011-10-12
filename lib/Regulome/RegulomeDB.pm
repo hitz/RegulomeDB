@@ -1,4 +1,4 @@
-package RegulomeDB;
+package Regulome::RegulomeDB;
 use strict;
 use warnings;
 BEGIN {
@@ -9,7 +9,7 @@ use base 'Class::Accessor';
 use Data::Dumper;
 my @CHRS = (1..22,"X","Y"); # human chromosomes;
 
-RegulomeDB->mk_accessors(qw/dbh dbs sth type dbfile dbdir/);
+Regulome::RegulomeDB->mk_accessors(qw/dbh dbs sth type dbfile dbdir/);
 # maybe put in some generic base class...
 sub new {
 	

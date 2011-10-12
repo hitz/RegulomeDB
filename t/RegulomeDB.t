@@ -43,7 +43,7 @@ my $r = Test::Mojo->new('Regulome')->app();
 #$r->log->handle('STDERR');
 #$r->log->debug("TEST");
 my $rdb = $r->rdb;
-isa_ok($rdb,'RegulomeDB');
+isa_ok($rdb,'Regulome::RegulomeDB');
 my ($format, $chk) = $r->check_coord(\@pos1);
 is(ref($chk),'ARRAY',"check_coord returns ARRAY_REF");
 is(ref($chk->[0]),'ARRAY',"check_coord returns ARRAY_REF of ARRAY_REF");

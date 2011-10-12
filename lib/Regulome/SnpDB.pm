@@ -1,4 +1,4 @@
-package SnpDB;
+package Regulome::SnpDB;
 use strict;
 use warnings;
 BEGIN {
@@ -9,7 +9,7 @@ use base 'Class::Accessor';
 use Data::Dumper;
 my @CHRS = (1..22,"X","Y"); # human chromosomes;
 
-SnpDB->mk_accessors(qw/dbs sth type dbfile_all dbfile dbfile_common dbdir/);
+Regulome::SnpDB->mk_accessors(qw/dbs sth type dbfile_all dbfile dbfile_common dbdir/);
 # maybe put in some generic base class...
 sub new {
 	

@@ -9,14 +9,14 @@ sub startup {
 	my $self = shift;
 
 	#$self->log->level('error');
-	my $regDB = RegulomeDB->new(
+	my $regDB = Regulome::RegulomeDB->new(
 								 {
 								   type  => 'multi',
 								   dbdir => 'data/RegulomeDB'
 								 }
 	);
 
-	my $snDB = SnpDB->new(
+	my $snDB = Regulome::SnpDB->new(
 						   {
 							 type          => 'single',
 							 dbfile_all    => 'data/SnpDB/dbSNP132.db',
@@ -138,11 +138,11 @@ sub startup {
 		    my $res = $self->rdb->process($coord);
 
 			my @dataTable = ();
-			my @dtColumns = ({ sTitle => 'Datatype', sClass => 'center'},
-							 { sTitle => 'TF', sClass => 'center'},
-							 { sTitle => 'Location', sClass => 'center'},
-							 { sTitle => 'Souce', sClass => 'center'}, 
-							 { sTitle => 'Additional Info (cell type, condition)', sClass => 'center'});
+			my @dtColumns = ({ sTitle => 'Datatype', sClass => 'aligncenter'},
+							 { sTitle => 'TF', sClass => 'aligncenter'},
+							 { sTitle => 'Location', sClass => 'aligncenter'},
+							 { sTitle => 'Souce', sClass => 'aligncenter'}, 
+							 { sTitle => 'Additional Info (cell type, condition)', sClass => 'aligncenter'});
 
 
 			my $score = $self->rdb->score($res);
@@ -180,6 +180,10 @@ sub startup {
 		}
 	);
 
+	$r->get( 
+	    '/running' => sub { shift->render({template => 'search'})
+	    });
+	    
 	$r->post(
 		'/running' => sub {
 
@@ -202,13 +206,24 @@ sub startup {
 			$self->stash( coords  => $input );
 			$self->stash( remnant => '' );
 
-	        my $ensembleLink = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewTop?r=';
+	        # below should go in some helper module or DB somewhere.
+	        my $BROWSE_PADDING = 10000;
+	        my $externalURL = {
+	        	ENSEMBL => ' http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
+	        # must append X:50020991-50040991
+	        	dbSNP   => 'http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=',
+	        # must append DBSNP id
+	        	UCSC    => 'http://genome.ucsc.edu/cgi-bin/hgTracks?org=Human&db=hg19&position=chr',
+	        # must append X:50020991-50040991
+	        };
+	        my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewTop?r=';
 	        # must append X:50030991;export=png
+	        
 			my @dataTable = ();
-			my @dtColumns = ({ sTitle => 'Coordinate', sClass => 'center'},
-							 { sTitle => 'dbSNP ID', sClass => 'center'},
-							 { sTitle => 'Score', sClass => 'center'}, 
-							 { sTitle => 'Nearby Genes', sClass => 'center'});
+			my @dtColumns = ({ sTitle => 'Coordinate (0-based)', sClass => 'aligncenter', sWidth => '14em'},
+							 { sTitle => 'dbSNP ID', sClass => 'aligncenter'},
+							 { sTitle => 'Regulome DB Score (click to see data)', sClass => 'aligncenter', sWidth => '12em'}, 
+							 { sTitle => 'Other Resources', sClass => 'aligncenter', sWidth => '17em'});
 			my $n;
 			for my $c (@$input) {
 				next if ( $c =~ /^#/ );
@@ -220,15 +235,24 @@ sub startup {
 							  "Looking up $snp->[0], $snp->[1] [Detected format $format]");
 				    my $res = $self->rdb->process($snp);
 				    my $coordStr = $snp->[0].':'.$snp->[1];
-				    my $ensembleStr= $coordStr;
-				    $ensembleStr =~ s/^chr//;
-				    my $snpID = $self->snpdb->getRsid($snp) || "Unknown SNP";
+				    my $coordRange = $snp->[0].':'.($snp->[1]-$BROWSE_PADDING).'-'.($snp->[1]+$BROWSE_PADDING);
+				    $coordRange =~ s/^chr//;
+				    my $snpID = $self->snpdb->getRsid($snp) || "n/a";
+				    my $score = $self->rdb->score($res);
+				    my @otherResources = ();
+				    
+				    for my $res (keys %$externalURL) {
+				    	my $val = $coordRange; # default
+				        $val = $snpID if $res eq 'dbSNP';
+				        next if (!$val || $val eq 'n/a'); # god so hacky
+				    	push @otherResources, $self->link_to($res,$externalURL->{$res}.$val);
+				    }
+				    
 					push @dataTable, [
 						$coordStr, 
-						$self->link_to($snpID,"/snp/$snpID"), 
-						$self->rdb->score($res),
-						$self->image($ensembleLink.$ensembleStr.';export=png', 'class' => 'ens_browser'),
-						
+						($snpID eq 'n/a' ? $snpID : $self->link_to($snpID,$externalURL->{dbSNP}.$snpID)), 
+						($score == 5 ? "No data" : $self->link_to($score,"/snp/$snpID", 'tip' => 'Click on score to see supporting data')),
+						join(' | ', @otherResources)						
 					];
 				}
 			}

@@ -1,14 +1,14 @@
 % layout 'default';
 % title 'Running ReguomeDB search...';
-<div id='input'>
+<div id='input' class='ui-state-highlight ui-corner-all'>
    <p>The search has evaluated <strong><%= scalar(@$coords) %></strong> input line(s) and found <strong><%= $nsnps %></strong> SNP(s).</p>
    <% if ($remnant) { %>
    <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
    <% } %> 
 </div>
 <div id='output'>
-  <h1>Summary of SNP analysis</h1>
-  <div id='summary_graphic><p class='note'>Graphic coming soon!</p></div>
+  <h1 class='aligncenter'>Summary of SNP analysis</h1>
+  <!-- div id='summary_graphic><p class='note'>Graphic coming soon!</p></div -->
   <div id='summary_table'>
      <table id='snp_analysis' class='display' cellspacing='0' cellpadding='0' border='0'></table>
   </div>
@@ -22,4 +22,6 @@
 	$(function() {
 		$('#snp_analysis').dataTable(<%= b($snpDataTable) %>);
 		});
+		$( 'a[tip]' ).tooltip();
+		
 </script>

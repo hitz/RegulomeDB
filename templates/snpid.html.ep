@@ -18,6 +18,7 @@
 %= javascript "/js/jquery.dataTables.min.js"
 <script>
 	$(function() {
+	    $( 'a[tip]' ).tooltip();
 		$('#snp_detail').dataTable(<%= b($snpDataTable) %>);
 		});
 </script>  

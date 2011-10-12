@@ -34,6 +34,12 @@ body>div {
 div.clearfloats { clear: both; }
 
 .alignright {float: right; }
+.aligncenter {text-align: center; }
+
+div#input {
+    margin: 10px auto;
+    text-align: center;
+}
 
 #header
 {
@@ -49,6 +55,11 @@ div.clearfloats { clear: both; }
   float: left;
 }
 
+#banner > img 
+{
+  margin: 0 130px;
+}
+
 #headerright
 {
   float: right;
@@ -58,10 +69,34 @@ div.clearfloats { clear: both; }
 }
 
 #headerright > a:link, #headerright > a:visited
-	{ color:#eff3ea; text-decoration:none; outline:none;}
+{ 
+    color: #eff3ea; 
+    text-decoration: none; 
+    outline: none;
+    padding: 6px;
+    position: relative;
+    top: 14px;
+}
+}
 #headerright > a:hover, #headerright > a:active	
-    { color:#eff3ea; text-decoration:underline; outline:none;}
+{ 
+    color:#eff3ea;
+    text-decoration:underline;
+    outline:none;
+    padding: 6px;
+    position: relative;
+    top: 14px;
+}
 
+.tooltip {
+	display:none;
+	background:transparent url(/images/tooltip/black_arrow.png);
+	font-size:12px;
+	height:70px;
+	width:160px;
+	padding:25px;
+	color:#eff3ea;	
+}
 
 #manual_input
 {
@@ -84,9 +119,19 @@ div.clearfloats { clear: both; }
     width: 100%;
 }
 
+div.dataTables_length
+{
+    padding: 4px 15px;
+}
 #snp_detail
 {
     width: 100%;
+}
+
+#summary_table
+{
+    margin: 0px auto;
+    width: 800px;
 }
 
 #detail_table
@@ -102,42 +147,51 @@ img.ens_browser { width: 250px; }
 ** For styled file input              ****
 ******************************************/
 
-span#stylefileinput-file_upload
-{
-    position:relative;
-}
 
-span#stylefileinput-file_upload span
-{
-    position:absolute;
-    display:block;
-    top:-2px;
-    overflow:hidden;
-    z-index:1;
-    width:75px;
-    height:24px;
-    opacity:0;
-    filter:alpha(opacity=0)
-}
-
-span#stylefileinput-file_upload span input
-{
-    position:absolute;
-    left:-140px;
-    cursor:pointer
-}
-
-span#stylefileinput-file_upload input.stylefileinput-button
-{
-    position:relative;
-    z-index:0
-}
-
-span#stylefileinput-file_upload strong
-{
-    margin:0 10px
-}
-
-input.ui-button {
+span.selected-button {
     font-size: 14px;
+    padding: 0.4em 1em;
+}
+
+input.ui-button, span.button{
+    font-size: 14px;
+}
+
+.file-wrapper {
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+}
+
+.file-wrapper input {
+    cursor: pointer;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    filter: alpha(opacity=1);
+    -moz-opacity: 0.01;
+    opacity: 0.01;
+    z-index: 1;
+    font-size: 100px;
+}
+
+.file-wrapper .buttonOther {
+  background: #375830;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 5px;
+  padding: 4px 18px;
+}
+
+span.file-holder { 
+   color: #375830;
+   padding: 5px;
 }

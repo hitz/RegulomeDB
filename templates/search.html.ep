@@ -1,43 +1,80 @@
-% layout 'default';
+% layout 'home';
 % title 'Search ReguomeDB';
 <div id='banner'>
-    <%=image '/images/logo_v2.jpg', alt => 'Regulome Logo' %>
+    <%=image '/images/logo_v2.jpg', alt => 'Regulome Logo', width => '740px' %>
 </div>
 <div id='manual_input'>
-	<p class='note'>Enter dbSNP ID(s) and/or list of coordinates (Example)</p>
+	<p class='note'>Enter <a id='dbsnp_example' href='#dbsnp_example' class='input_example' />dbSNP IDs</a>, 
+	<a id='zerob_example' href='#zerob_example' class='input_example' />0-based coordinates</a>, 
+	<a id='oneb_example'  href='#oneb_example' class='input_example' />1-based coordinates</a>, 
+	<a id='bed_example'   href='#bed_example' class='input_example' />BED</a> files, 
+	<a id='vcf_example'   href='#vcf_example' class='input_example' />VCF</a> files, 
+	<a id='gff_example'   href='#gff_example' class-'input_example' />GFF3</a> files, or mixed lists</p>
        % my @attrs = (method => 'POST', enctype => 'multipart/form-data');
        %= form_for running => @attrs => begin
            %= text_area 'data', rows => '20', id =>'input_text' => begin
-rs13343114
-11 5248490	5248491
-4:33493..36333
-chr6    138043309 138043310
-7 88888 99999
- x:55041617-55041641
- chr1	41981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G
- chrX	user	      TF_binding_site	48644374	48644376	.		+	0	PMID=1656391
- chrY	59033300	rs62604356	C	T	1927.89	HIGH	GT_MATCH=0.50;AL_MATCH=0.50;PLAT=CG,IL;VAL=N/A;SM=IL_BLOOD,IL_SALIVA,CG_BLOOD,CG_SALIVAGT:A1:A2	1/1:T:T
-           % end
+            % end
           %= submit_button 'Submit'
        % end    
 </div>
 <div id='upload'>
 	  <p class='note'>Or upload a file (only first ~2,000 lines will be processed)</p>
        %= form_for running => @attrs => begin
+       <span class='file-wrapper'>
            %= file_field 'file_data', id => 'file_upload'
-          %= submit_button 'Upload', class=> 'alignright'
+       <span class='button'>Browse...</span>
+       </span>
+       %= submit_button 'Upload', class=>'alignright'
        % end
 </div>
 <script>
-	$(function() {
-	    $('#file_upload').styleFileInput({
-		    addClearLink : true,
-		    textTagName : 'strong',
-		    textAttributes : {
- 	      		text : 'No file selected.'
-    	 	}
-    	 });
-		$( "input:submit" ).button();
-    });
+var Regulome = Regulome|| {};
+
+Regulome.fileInputs = function() {
+  var $this = $(this),
+      $val = $this.val(),
+      valArray = $val.split('\\'),
+      newVal = valArray[valArray.length-1],
+      $button = $this.siblings('.button'),
+      $fakeFile = $this.siblings('.file-holder');
+  if(newVal !== '') {
+    $button.text('File Selected:');
+    if($fakeFile.length === 0) {
+      $button.after('<span class="file-holder">' + newVal + '</span>');
+      $button.addClass( "selected-button" );
+    } else {
+      $fakeFile.text(newVal);
+    }
+  }
+};
+
+Regulome.examples = {
+	dbsnp_example : '# dbSNPid example - this is a comment and will be ignored\nrs33914668\n',
+	zerob_example : '# zero-based example - this is a comment and will be ignored\n11 5248490	5248491\nchr7 88888 99999\n',
+	oneb_example  : '# one-based example - this is a comment and will be ignored\nchr4:33493..36333\nX:55041617-55041618\n',
+	bed_example   : '# BED example - this line is a comment and will be ignored\nchr11	5226168	5226240	CTCF_insulator_binding_site|TF_binding_site;PMID11997516\n',
+	vcf_example   : '# VCF example - this line is a comment and will be ignored\nchr1	4	1981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G\n',
+	gff_example   : '# GFF example - this line is a comment and will be ignored\nchrX		user	      TF_binding_site	48644374	48644376	.		+	0	PMID=1656391\n'
+};
+$(function() {
+	    $( "[tip]" ).tooltip();
+		$( "input:submit, span.button" ).button();
+		$('.file-wrapper input[type=file]').bind('change focus click', Regulome.fileInputs);
+		$('.file-wrapper input[type=file]').bind( "mouseenter", function() {
+		        $button = $(this).siblings('.button');
+			    $button.addClass( "ui-state-hover" );
+			})
+			.bind( "mouseleave", function() {
+		        $button = $(this).siblings('.button');
+				$button.removeClass( "ui-state-hover" );
+			});
+		$('.input_example').each(function(){
+			$(this).bind('click', function(){
+				$('#input_text').val(Regulome.examples[this.id]);
+				});
+			});
+		
+		
+});
 </script>
 
