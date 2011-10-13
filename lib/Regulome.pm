@@ -122,11 +122,12 @@ sub startup {
 	# Normal route to controller
 	$r->route('/welcome')->to('example#welcome');
 
-	$r->any(
-		'/search' => sub {
-		}
-	);
+	$r->any( '/search' => sub {} );
+	$r->any( '/about' => sub {} );
+	$r->any( '/help' => sub {} );
 
+	$r->any( '/' => sub { shift->render({template => 'search'}) } );
+	$r->any( '/index' => sub { shift->render({template => 'search'}) } );
 	$r->any(
 		'/snp/:id/' => sub {
 			my $self = shift;
@@ -226,8 +227,7 @@ sub startup {
 							 { sTitle => 'Other Resources', sClass => 'aligncenter', sWidth => '17em'});
 			my $n;
 			for my $c (@$input) {
-				next if ( $c =~ /^#/ );
-				next unless $c =~ /\d+/;    # got to have some numbers!
+				next if ( !$c || $c =~ /^#/ || $c !~ /\d+/ ); # got to have some numbers!
 				my ( $format, $snps ) = $self->check_coord($c);
 				$n += scalar( @$snps );
 				for my $snp (@$snps) {
