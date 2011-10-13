@@ -1,11 +1,26 @@
 % layout 'default';
 % title 'Running ReguomeDB search...';
 <div id='input' class='ui-state-highlight ui-corner-all'>
-   <p>The search has evaluated <strong><%= scalar(@$coords) %></strong> input line(s) and found <strong><%= $nsnps %></strong> SNP(s).</p>
+   <p>The search has evaluated <strong><%= $ninp %></strong> input line(s) and found <strong><%= $nsnps %></strong> SNP(s).</p>
    <% if ($remnant) { %>
    <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
    <% } %> 
 </div>
+<% if (scalar @$error) { %>
+   <div id='error' class='ui-state-error ui-corner-all'>
+      <p>
+      <span class="ui-icon ui-icon-alert"></span>
+      <strong>Alert:</strong> <%= scalar @$error %> input error(s) were found. 
+      <a id='expand_error' href='#'/> Details...</a>
+     </p>
+   </div>
+   <div id='error_detail'>
+   <% for my $err (@$error) { %>
+   	  <p class='note'><span class="ui-icon ui-icon-alert"></span><%= $err->{msg} %></p>
+   	  <pre><%= $err->{inp} %></pre>
+   <% } %>
+   </div>
+<% } %>
 <div id='output'>
   <h1 class='aligncenter'>Summary of SNP analysis</h1>
   <!-- div id='summary_graphic><p class='note'>Graphic coming soon!</p></div -->
@@ -13,15 +28,25 @@
      <table id='snp_analysis' class='display' cellspacing='0' cellpadding='0' border='0'></table>
   </div>
 </div>
-<div id='timer'>
-% my ($elapsed, $rps) = profile 'page';
-%= "Elapsed: $elapsed s $rps /s" 
-</div>
 %= javascript "/js/jquery.dataTables.min.js"
 <script>
 	$(function() {
 		$('#snp_analysis').dataTable(<%= b($snpDataTable) %>);
+		//$( 'a[tip]' ).tooltip(); tooltips no worky
+		$( '#error_detail' ).dialog({
+							 title: 'Errors:',
+							 autoOpen: false,
+							 modal: true,
+							 buttons: {
+								Ok: function() {
+									$( this ).dialog( "close" );
+							 	}
+							 },
+							 maxHeight: 400
 		});
-		$( 'a[tip]' ).tooltip();
-		
+		$( '#expand_error').click(function() {
+			$( "#error_detail" ).dialog( "open" );
+			return false;
+		});
+	});
 </script>

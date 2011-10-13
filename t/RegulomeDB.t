@@ -107,3 +107,5 @@ for my $bed (keys %$sampleFullBED) {
 	is($rdb->full_score($scan)->{score}, $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score_full $snp->[0] $snp->[1]");
 	#print Dumper $scan;
 }
+
+#TODO - add tests for all error states!

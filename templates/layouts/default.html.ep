@@ -20,6 +20,10 @@
 	 </div>
   </div>  
   <%= content %>
+  <div id='timer'>
+   % my ($elapsed, $rps) = profile 'page';
+   %= "Elapsed: $elapsed s $rps /s" 
+  </div>
   <div id='footer'>
    <p>RegulomeDB (TM) Copyright © 2011 The Board of Trustees of Leland Stanford Junior University. 
 Permission to use the information contained in this database was given by the researchers/institutes who contributed or published the information. 

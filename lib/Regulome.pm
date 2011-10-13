@@ -51,16 +51,15 @@ sub startup {
 				# BED chromsome(space)min(space)max
 				$chr = $2;
 				$min = $4;
-				$max = $6-1; #EXCLUSIVE
-				my $base = 0;
-				$format = 'BED - 0 Based';
-
+				$max = $6; 
 				# ch:nnnn..mmmm - or ch:nnnn-mmmm # 1 based input, subtract
 				if ( $3 =~ /[:-_]/ || $5 =~ /\S/ ) {
 					$format = 'Generic - 1 Based';
-					$base   = 1;
-					$min -= $base;
-					$max -= $base;
+					$min--;
+					$max--; 
+				} else {
+					$format = 'BED - 0 Based';
+					$max--; #EXCLUSIVE			
 				}
 			} else {
 				my @f = split( '\s+', $input );
@@ -84,26 +83,26 @@ sub startup {
 						$max    = $1 - 1 if $f[4] =~ /(^\d+$)/;
 						$format = 'GFF - 1 Based';
 					} else {
-						$self->app->log->debug("I thought this was VCF or GFF but I couldn't parse it: $input" );
+						return('ERROR', [["I thought this was VCF or GFF but I couldn't parse it:", $input]] );
 					}
 				} else {
-					$self->app->log->debug("format: $input not recognized");
+					return("ERROR", [["Input not recognized", $input]]);
 				}
 			}
-			$self->app->log->debug("format: $format invalid chromosome id: ($chr) [$input]")
-			  unless $chr =~ /(chr|^)(\d+|[xy])/i;
+			return("ERROR", [["format: $format invalid chromosome id: ($chr)",$input]]) unless $chr =~ /(chr|^)(\d+|[xy])/i;
 			$chr = "chr$chr" unless $chr =~ /^chr/;
 			$chr =~ s/([xy])/\u$1/;
-			$self->app->log->debug("format: $format invalid min coordinate $min [$input]")
-			  	unless $min =~ /^(\d+)$/;
+			return("ERROR", [["format: $format invalid min coordinate $min", $input]]) 
+				unless $min =~ /^(\d+)$/;
 
 			if ( $min > $max ) {
-				$self->app->log->debug("Min cannot be greater than max! [$input]");
+				return ("ERROR", [["Min ($min) cannot be greater than max ($max) in range!",$input]]);
 			} elsif ( $max > $min ) {
 				
 				$self->app->log->debug("WARNING: 2-bp range [$chr, $min, $max] detected, did you mean to specify only a single bp?")
-					 if $max == $min+1;
-				return ( $format, $self->snpdb->getSNPbyRange( [$chr, $min, $max] ) );
+				   if($max == $min+1);
+				return ( $format, $self->snpdb->getSNPbyRange( [$chr, $min, $max+1] ) );
+				# 1 is added back because the SNPS are stored as 1-base intervals.
 			}
 			return ( $format, [ [$chr, $min] ] );
 
@@ -204,7 +203,7 @@ sub startup {
 			$data =~ s/(.+\n)([^\n]*)$/$1/;    # trim trailing
 			my $remnant = $2;                       # we will need this later
 			my $input = [ split( "\n", $data ), $remnant ];# just process it for now.
-			$self->stash( coords  => $input );
+			#$self->stash( coords  => $input );
 			$self->stash( remnant => '' );
 
 	        # below should go in some helper module or DB somewhere.
@@ -225,11 +224,19 @@ sub startup {
 							 { sTitle => 'dbSNP ID', sClass => 'aligncenter'},
 							 { sTitle => 'Regulome DB Score (click to see data)', sClass => 'aligncenter', sWidth => '12em'}, 
 							 { sTitle => 'Other Resources', sClass => 'aligncenter', sWidth => '17em'});
-			my $n;
+			my ($n, $nsnps) = (0,0);
+			my @errors = ();
 			for my $c (@$input) {
 				next if ( !$c || $c =~ /^#/ || $c !~ /\d+/ ); # got to have some numbers!
+				$n++;
 				my ( $format, $snps ) = $self->check_coord($c);
-				$n += scalar( @$snps );
+				if ( $format eq 'ERROR') {
+					push @errors, { msg => $snps->[0]->[0],
+									inp => $snps->[0]->[1],
+									};
+					next;
+				}
+				$nsnps += scalar( @$snps );
 				for my $snp (@$snps) {
 					$self->app->log->debug(
 							  "Looking up $snp->[0], $snp->[1] [Detected format $format]");
@@ -250,7 +257,7 @@ sub startup {
 				    
 					push @dataTable, [
 						$coordStr, 
-						($snpID eq 'n/a' ? $snpID : $self->link_to($snpID,$externalURL->{dbSNP}.$snpID)), 
+						$snpID,
 						($score == 5 ? "No data" : $self->link_to($score,"/snp/$snpID", 'tip' => 'Click on score to see supporting data')),
 						join(' | ', @otherResources)						
 					];
@@ -263,7 +270,11 @@ sub startup {
 																  bFilter   => 0,
 																  bDeferRender => 1,
 																  }) );
-			$self->stash( nsnps => $n );
+			$self->stash( { 
+				ninp  => $n,
+				nsnps => $nsnps,
+				error => \@errors,
+			});
 
 		}
 	);

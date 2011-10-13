@@ -20,6 +20,13 @@ body
   font-size: 100%; 
 }  
 
+h1 {
+    margin: 8px;
+}
+
+tr, td { border: 1px solid #CBC7BD; padding: 10px}
+tr.odd { background-color: #eff3eb; }
+
 body>div {
    width: 1000px;
    margin: 0px auto;
@@ -149,7 +156,7 @@ div.dataTables_length
 #summary_table
 {
     margin: 0px auto;
-    width: 800px;
+    width: 770px;
 }
 
 #detail_table
@@ -174,8 +181,22 @@ div.dataTables_length
     padding: 12px;
 }
 
-tr, td { border: 1px solid #CBC7BD; padding: 10px}
-tr.odd { background-color: #eff3eb; }
+#input {
+    padding: 16px 0.7em;
+}
+
+#error {
+    padding: 16px 0.7em;
+}
+#error span.ui-icon {
+    float: left; 
+    margin-right: 0.3em;
+}
+#error a {
+    color: #375830;
+// not sure why this need to override ui-state-error
+}
+
 
 img.ens_browser { width: 250px; }
 /*****************************************

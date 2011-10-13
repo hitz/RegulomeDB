@@ -9,7 +9,7 @@ use_ok ('Regulome');
 
 use_ok("Regulome::SnpDB");
 
-my $sampleRange = {
+my $sampleRange = {  # 1 based coordinates
 	# note: fake data
 'chr1:100001100..100001500'	=> [
           [
@@ -28,7 +28,53 @@ my $sampleRange = {
             'chr1',
             100001482
           ]
-        ]
+        ],
+'4:36190..36270' => [ # edge effect tests
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+          [
+            'chr4',
+            36264
+          ],
+	],
+'4:36190..36265' =>  [
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+          [
+            'chr4',
+            36264
+          ],
+	],	
+'4:36190..36264' => [
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+	],	
+'4:36202..36204' => [
+		[
+			'chr4',
+			36203
+		]
+	],	
+'4:36202..36203' => [
+	],	
 };
 
 my $sampleGFFrange = {
@@ -62,7 +108,54 @@ my $sampleGFFrange = {
             'chr6',
             138023093
           ],
-]
+],
+'chr4	user 	feature	36190	36270	.		+	0	PMID=1656391' => [ # edge effect tests
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+          [
+            'chr4',
+            36264
+          ],
+	],
+'chr4	user	range	36190	36265	.		+	0	PMID=1656391' =>  [
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+          [
+            'chr4',
+            36264
+          ],
+	],	
+'chr4	input	site	36190	36264	.		+	0	PMID=1656391' => [
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+	],	
+'chr4	user	snp	36202	36204	.		+	0	PMID=1656391' => [
+		[
+			'chr4',
+			36203
+		]
+	],	
+'chr4	user	nada	36202	36203	.		+	0	PMID=1656391' => [
+	],	
+
 };
 
 my $sampleBEDrange = {
@@ -87,7 +180,54 @@ my $sampleBEDrange = {
             'chr10',
             68812
           ]
-]
+],
+'chr4	36189	36270' => [ # edge effect tests
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+          [
+            'chr4',
+            36264
+          ],
+	],
+'chr4	36189	36265	blad' =>  [
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+          [
+            'chr4',
+            36264
+          ],
+	],	
+'chr4	36189	36264' => [
+          [
+            'chr4',
+            36203
+          ],
+          [
+            'chr4',
+            36238
+          ],
+	],	
+'chr4	36201	36204' => [
+		[
+			'chr4',
+			36203
+		]
+	],	
+'chr4	36201	36203' => [
+	],	
+
 };
 
 my $allTest = {rs55998931 => ['chr1','10491']};
@@ -163,23 +303,21 @@ while (my ($snpid, $c) = each (%$allTest)) {
 	is_deeply($scan, $snpResult->{$snpid},"check SNP result");
 }
 
-
-
 # check_coord with a range checks SnpDB::getSNPbyRange()
 for my $rng (keys %$sampleRange) {
 	($format, $chk) = $r->check_coord($rng);
 	is($format, 'Generic - 1 Based', "check format (generic range)");
-	is_deeply($chk, $sampleRange->{$rng}, "Check Generic range -> SNP");
+	is_deeply($chk, $sampleRange->{$rng}, "Check Generic range -> SNP ($rng)");
 }
 
 for my $gff (keys %$sampleGFFrange) {
 	($format, $chk) = $r->check_coord($gff);
 	is($format, 'GFF - 1 Based', "check format (gff range)");
-	is_deeply($chk, $sampleGFFrange->{$gff}, "Check GFF range -> SNP");	
+	is_deeply($chk, $sampleGFFrange->{$gff}, "Check GFF range -> SNP ($gff)");	
 }
 
 for my $bed (keys %$sampleBEDrange) {
 	($format, $chk) = $r->check_coord($bed);
 	is($format, 'BED - 0 Based', "check format (BED range)");
-	is_deeply($chk, $sampleBEDrange->{$bed}, "Check BED range -> SNP");	
+	is_deeply($chk, $sampleBEDrange->{$bed}, "Check BED range -> SNP ($bed)");	
 }
