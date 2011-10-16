@@ -61,8 +61,10 @@ for my $c (keys %$sampleBED) {
 	# note: coordinates of process thrown out, checked in SnpDB.t
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$c}->{results},"Check BED results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$c}->{refs},"Check BED refs $snp->[0] $snp->[1]");
-	is(my $sc = $rdb->score($scan), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
-	is($rdb->full_score($scan)->{score}, $sampleBED->{$c}->{score}, "Check BED score_full $snp->[0] $snp->[1]");
+	is($rdb->score($scan), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
+	my $fsc = $rdb->full_score($scan,$snp->[0]);
+	is($fsc->{score}, $sampleBED->{$c}->{score}, "Check BED score_full $snp->[0] $snp->[1]");
+	#print Dumper $fsc;
 #	$out->{$c} = {
 #		refs => [ map $_->[1], @$scan ],
 #		results => [ map $_->[0], @$scan ],
@@ -80,7 +82,7 @@ for my $vcf (keys %$sampleVCF) {
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{results},"Check VCF results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleVCF->{$vcf}}->{refs},"Check VCF refs $snp->[0] $snp->[1]");
 	is($rdb->score($scan), $sampleBED->{$sampleVCF->{$vcf}}->{score}, "Check VCF score $snp->[0] $snp->[1]");
-	is($rdb->full_score($scan)->{score}, $sampleBED->{$sampleVCF->{$vcf}}->{score}, "Check VCF score_full $snp->[0] $snp->[1]");
+	is($rdb->full_score($scan,$snp->[0])->{score}, $sampleBED->{$sampleVCF->{$vcf}}->{score}, "Check VCF score_full $snp->[0] $snp->[1]");
 }
 
 
@@ -93,6 +95,7 @@ for my $gff (keys %$sampleGFF) {
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleGFF->{$gff}}->{results},"Check GFF results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleGFF->{$gff}}->{refs},"Check GFF refs $snp->[0] $snp->[1]");
 	is($rdb->score($scan), $sampleBED->{$sampleGFF->{$gff}}->{score}, "Check GFF score $snp->[0] $snp->[1]");
+	is($rdb->full_score($scan,$snp->[0])->{score}, $sampleBED->{$sampleGFF->{$gff}}->{score}, "Check GFF score_full $snp->[0] $snp->[1]");
 }
 
 for my $bed (keys %$sampleFullBED) {
@@ -104,8 +107,9 @@ for my $bed (keys %$sampleFullBED) {
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{results},"Check full BED results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$sampleFullBED->{$bed}}->{refs},"Check full BED refs $snp->[0] $snp->[1]");
 	is($rdb->score($scan), $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score $snp->[0] $snp->[1]");
-	is($rdb->full_score($scan)->{score}, $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score_full $snp->[0] $snp->[1]");
-	#print Dumper $scan;
+	is($rdb->full_score($scan,$snp->[0])->{score}, $sampleBED->{$sampleFullBED->{$bed}}->{score}, "Check full BED score_full $snp->[0] $snp->[1]");
 }
 
 #TODO - add tests for all error states!
+#TODO - need tests for results of full_score as well as all datatypes (FP, MANUAL, VAL, etc.)
+# most: rs505141

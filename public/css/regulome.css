@@ -197,7 +197,18 @@ div.dataTables_length
 // not sure why this need to override ui-state-error
 }
 
+div.container {
+    width: 770px;
+}
 
+div.evidence_table h2 {
+    padding:  7px;
+    margin: 12px 0 0 auto;
+}
+
+.ev_dt_table {
+    width: 100%;
+}
 img.ens_browser { width: 250px; }
 /*****************************************
 ** For styled file input              ****

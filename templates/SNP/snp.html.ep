@@ -1,0 +1,29 @@
+% layout 'default';
+% title 'Regulome SNP';
+<div id='banner'>
+<h1>Data supporting <%= $chr %>:<%= $pos %> (<%= $snpid %>) </h1>
+<h2>Score: <%= $score->{score} %></h2>
+</div>
+<div id='genomic_region'>
+  <% my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewTop?r='; %>
+  <!-- # must append X:50030991;export=png -->
+  <% $chr =~ s/chr//; %>
+  <%=image $ensembleImgURL.$chr.':'.$pos.';export=png', alt => 'Ensemble Browser', width => '740px' %>
+</div>
+<div class='container'>
+<% for my $sect (@$sections) { %>
+   <% next unless keys %$sect; %>
+    <div class='evidence_table'>
+      <h3 class='ui-widget-header ui-corner-top'><%= $sect->{title} %></h3>
+      <table id='<%= $sect->{table_id} %>' class='display ev_dt_table' cellspacing='0' cellpadding='0' border='0'></table>
+   </div>
+<% } %>   
+</div>
+%= javascript "/js/jquery.dataTables.min.js"
+<script>
+	$(function() {
+		<% for my $sect (@$sections) { next unless keys %$sect; %>
+			$('#<%= $sect->{table_id} %>').dataTable(<%= b($sect->{data_table}) %>);
+		<% } %>
+	});
+</script>  

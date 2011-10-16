@@ -1,25 +1,33 @@
 == Look and Feel ==
-* check white space and centering
+* check white space and centering DONE
 * fix browse button dimensions DONE
 
 == Content ==
-* help (on search page) pages / tabbed or accordion baxes
+* help (on search page) pages / tabbed or accordion baxes DONE
 * autosort results table by score DONE
-* add links to ensemble
-* add links to NCBI, other references
+* add links to ensemble DONE
+* add links to NCBI, other references DONE
 * update data
-* About/Help links
-* "Home" link goes to relative /index
+* About/Help links DONE
+* "Home" link goes to relative /index DONE
 
 == Other application ==
-* snp/chr:/coord: -> snp page
-* refactor into controllers
+* snp/chr:/coord: -> snp page  DONE
+* refactor into controllers - SNP done, RDB not 
 * download results
 * snpid -> multi coordinates disambiguation page?
 * implement not found pages
-* redirect index -> search unless index page is created
+* redirect index -> search unless index page is created  DONE
 
 == Large file input ==
 * profile
 * work out polling scheme/tmp file cache system/fork
 * work out email results
+
+== Unit tests ===
+
+#TODO - add tests for all error states!
+#TODO - need tests for results of full_score as well as all datatypes (FP, MANUAL, VAL, etc.)
+# most: rs505141
+# TODO unit tests for /snp/:id and /snp/:chr/:pos and static about, help, index pages.
+#TODO Unit tests for data in an example or two.

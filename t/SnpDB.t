@@ -321,3 +321,5 @@ for my $bed (keys %$sampleBEDrange) {
 	is($format, 'BED - 0 Based', "check format (BED range)");
 	is_deeply($chk, $sampleBEDrange->{$bed}, "Check BED range -> SNP ($bed)");	
 }
+
+#TODO Unit tests for data in an example or two.

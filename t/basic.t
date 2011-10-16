@@ -55,3 +55,5 @@ $run_file->status_is(200)->content_like(qr/Elapsed/);
 $t1 = Benchmark->new;
 $td = timediff($t1, $t0);
 print "100K file load:",timestr($td),"\n";
+
+# TODO unit tests for /snp/:id and /snp/:chr/:pos and static about, help, index pages.

@@ -9,17 +9,86 @@ use base 'Class::Accessor';
 use Data::Dumper;
 my @CHRS = (1..22,"X","Y"); # human chromosomes;
 
-Regulome::RegulomeDB->mk_accessors(qw/dbh dbs sth type dbfile dbdir/);
+Regulome::RegulomeDB->mk_accessors(qw/dbh dbs sth type dbfile dbdir data_mapping/);
 # maybe put in some generic base class...
 sub new {
 	
 	my $class = shift;
 	my $self = $class->SUPER::new(@_);
 	
-    $self->_init();
+    $self->_init_db();
+    
+    my $mapping = {
+     	TF  => {
+     		regex => '(TF)_(.+)_(.+)_{0,1}(.*)',
+     		columns => [ { 'Method' => 'ChIP-Seq' },
+     				     { 'Location' => '' },
+     				     { 'Bound Protein' => 2 }, 
+     				     { 'Cell Type' => 1 },
+     				     { 'Additional Info' => [3,'rest'] },
+     				     { 'Reference' => '' },
+     				    ],		     
+     	},
+    	PWM => {
+    		regex => '(PWM)_(.+)',
+      		columns => [ { 'Method' => 'PWM'},
+     				     { 'Location' => '' },
+     				     { 'Motif' => 1 }, 
+     				     { 'Cell Type' => ''},
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	FP  => {
+    		regex => '(FP)_(.+)_(.+)',
+      		columns => [ { 'Method' => 'Footprinting'},
+     				     { 'Location' => '' },
+     				     { 'Motif' => 2 }, 
+     				     { 'Cell Type' => 1},
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	VAL => {
+    		regex => '(VAL)_(.+)_(.+)_{0,1}(.*)',
+      		columns => [ { 'Method' => 'Validated SNP'},
+     				     { 'Location' => '' },
+     				     { 'Affected Gene' => 2 }, 
+     				     { 'Cell Type' => 1 },
+     				     { 'Additional Information' => [3,'rest'] },
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	eQTL =>  {
+    		regex => '(eQTL)_(.+)_(.+)',
+      		columns => [ { 'Method' => 'eQTL'},
+     				     { 'Location' => '' },
+     				     { 'Affected Gene' => 2 }, 
+     				     { 'Cell Type' => 1 },
+     				     { 'Additional Information' => '' },
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+     	DNase => {
+    		regex => '(DNase)_(.+)_{0,1}(.*)',
+      		columns => [ { 'Method' => 'DNase hypersensitivity'},
+     				     { 'Location' => '' },
+     				     { 'Cell Type' => 1 },
+     				     { 'Additional Information' => [2,'rest'] },
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	MANUAL => {
+    		regex => '(MANUAL)_(.*)',
+    		columns => [ { 'Method' => 'Manual'},
+    		     		 { 'Location' => '' },   		
+    					 { 'Experiment' => [1,'rest'] },
+    					 { 'Reference' => '' },
+    					]
+    	}
+    };
+    $self->data_mapping($mapping);
     return $self;
 }
-sub _init {
+sub _init_db {
 	
 	my $self = shift;
 	my $sth = {};
@@ -60,6 +129,7 @@ sub full_score () {
 	# returns score, given the output of $self->process
 	my $self = shift;
 	my $results = shift; #Array Ref[ [scores,ref, min, max].]
+	my $chr = shift;
 	
 	my $score  = {
 		score => 5, 
@@ -76,45 +146,66 @@ sub full_score () {
 	# 3 -> ChIP_seq or DNase
 	# 4 -> other
 
+	my $factors = {'Bound Protein' => 1, 'Motif' => 2};
+    
 	for my $record (@$results) {
 		my ($item, $ref, $min, $max) = @$record;
-		my ($group, $category, $class, @cond) = ('not_found','','', ()); # reset
-		($group, $category, $class, @cond) = split('_',$item);
-		my $arr;
-		# not happy with this below
-		if ($class) { 
-		    $arr = $score->{$group}->{$class}->{$category} || [];
-			push @$arr, ($ref, $min, $max, @cond);
-			$score->{$group}->{$class}->{$category} = $arr if @$arr
-		} else {
-	        $arr = $score->{$group}->{$category} || [];			
-			push @$arr, ($ref, $min, $max, @cond);
-			$score->{$group}->{$category} = $arr if @$arr
+		for my $type (keys %{ $self->data_mapping }) {
+			# needs to be an array of hits, but a hash of factors
+			my $regex = $self->data_mapping->{$type}->{regex};
+			my $sc = $score->{$type} || { hits => [], factors => {} };
+			if ($item =~ /$regex/) {
+				my $hit = {};
+				
+				# BEGIN THE UGLY PARSE-O-MATIC
+				my @f = split('_', $item);
+				for my $col (@{ $self->data_mapping->{$type}->{columns} }) {
+					my ($colName, $map) = %$col;
+					
+					if ($colName eq 'Location') {
+						$hit->{$colName} = "$chr:$min..$max";
+					} elsif ($colName eq 'Reference') {
+						$hit->{$colName} = $ref;
+						# further processing later
+					} elsif (!$map)  {
+						$hit->{$colName} = '';
+					} elsif (ref($map) eq 'ARRAY') {
+						$hit->{$colName} = join(" ",@f[$map->[0] .. $#f]);
+					} elsif ($map =~ /\d+/) {
+						$sc->{factors}->{$f[$map]}++ if exists $factors->{$colName};
+						$hit->{$colName} = $f[$map];
+					} else {
+						$hit->{$colName} = $map;
+					}
+						
+				}
+				push @{ $sc->{hits} }, $hit if keys %$hit;
+				$score->{$type} = $sc if @{ $sc->{hits} };				
+			}
 		}
-		
 	}
 	
 	my $pwmmatched = 0;
 	my $fpmatched = 0;
-	for my $key (keys %{$score->{TF}}) {
-		if(exists $score->{PWM}->{$key}) {
+	for my $key (keys %{$score->{TF}->{factors}}) {
+		if(exists $score->{PWM} && exists $score->{PWM}->{factors}->{$key}) {
 			$pwmmatched = 1;
 		}
-		if(exists $score->{FP}->{$key}) {
+		if(exists $score->{FP} && exists $score->{FP}->{factors}->{$key}) {
 			$fpmatched = 1;
 		}
 	}
 	
 	$score->{score} = 4;
-	if(keys %{ $score->{TF} }|| keys % {$score->{DNase}}) {
+	if(keys %{ $score->{TF}->{factors} }|| keys %{ $score->{DNase} }) {
 		$score->{score} = 3;
 	} 
 
-	if(keys %{ $score->{TF} } && keys %{ $score->{DNase} }) {
+	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} }) {
 		$score->{score} = 2;
 	} 
 
-	if(keys %{ $score->{TF} } && keys %{ $score->{DNase} } && keys %{ $score->{PWM} }) {
+	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} } && keys %{ $score->{PWM} }) {
 		$score->{score} = ($pwmmatched ? 
 			(keys %{ $score->{FP}} ? 
 				(keys %{ $score->{eQTL}} ?  
@@ -122,7 +213,6 @@ sub full_score () {
 						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
 	} 
 
-	#print STDERR Dumper($score);
 	return $score;
 		
 }

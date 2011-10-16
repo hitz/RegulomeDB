@@ -127,58 +127,10 @@ sub startup {
 
 	$r->any( '/' => sub { shift->render({template => 'search'}) } );
 	$r->any( '/index' => sub { shift->render({template => 'search'}) } );
-	$r->any(
-		'/snp/:id/' => sub {
-			my $self = shift;
-			my $rsid = $self->param('id');
-			my $coord = $self->snpdb->getSNPbyRsid($rsid);
-			$self->to('not found') unless $coord;
-			
-			# following needs to move to controller
-		    my $res = $self->rdb->process($coord);
+	
+	$r->any('/snp/:id/')->to(controller => 'SNP', action => 'id');
+	$r->any('/snp/:chr/:nt')->to(controller => 'SNP', action => 'coord');
 
-			my @dataTable = ();
-			my @dtColumns = ({ sTitle => 'Datatype', sClass => 'aligncenter'},
-							 { sTitle => 'TF', sClass => 'aligncenter'},
-							 { sTitle => 'Location', sClass => 'aligncenter'},
-							 { sTitle => 'Souce', sClass => 'aligncenter'}, 
-							 { sTitle => 'Additional Info (cell type, condition)', sClass => 'aligncenter'});
-
-
-			my $score = $self->rdb->score($res);
-			for my $record (@$res) {
-				my ($item, $ref, $min, $max) = @$record;
-				my ($group, $category, $class, @cond) = ('not_found','','', ()); # reset
-				($group, $category, $class, @cond) = split('_',$item);
-				my $loc = $coord->[0]."$min"."..".$max;
-				if ($class) {
-					if($group eq 'MANUAL') {
-						push @dataTable, [$group, "", $loc, $ref, join(" ",($class,$category,@cond))];
-						
-					} else {
-						push @dataTable, [$group, $class, $loc, $ref, join(", ",($category,@cond))];						
-					}
-				} elsif ($group eq 'PWM') {
-					push @dataTable, [$group, "", $loc, $ref, ""];
-				} else {
-					push @dataTable, [$group, "", $loc, $ref, $category];					
-				}
-				
-			}
-		     	        		    
-			$self->stash({snpid => $rsid,
-						  score => $score,
-						  chr  => $coord->[0],
-						  pos  => $coord->[1],
-						  snpDataTable => Mojo::JSON->new->encode({aaData => \@dataTable,
-																  aoColumns => \@dtColumns,
-																  bJQueryUI => 'true',
-																  bFilter   => 0,
-																  aaSortingFixed => [[0,'asc']],
-						  })
-			});
-		}
-	);
 
 	$r->get( 
 	    '/running' => sub { shift->render({template => 'search'})
@@ -216,8 +168,6 @@ sub startup {
 	        	UCSC    => 'http://genome.ucsc.edu/cgi-bin/hgTracks?org=Human&db=hg19&position=chr',
 	        # must append X:50020991-50040991
 	        };
-	        my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewTop?r=';
-	        # must append X:50030991;export=png
 	        
 			my @dataTable = ();
 			my @dtColumns = ({ sTitle => 'Coordinate (0-based)', sClass => 'aligncenter', sWidth => '14em'},
