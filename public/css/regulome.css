@@ -73,9 +73,19 @@ div#input {
   float: left;
 }
 
-#banner > img 
+#banner > img
 {
   margin: 0 130px;
+}
+
+#genomic_region > img
+{
+  margin: 0 145px;
+}
+
+#banner h1, #banner h2
+{
+    text-align: center;
 }
 
 #headerright
@@ -135,8 +145,8 @@ div#input {
 #help_tabs 
 {
   margin: 30px auto;
-  width: 600px;
-  font-size: 10px;
+  width: 700px;
+  font-size: 13px;
   
 }
 #snp_analysis
@@ -198,10 +208,15 @@ div.dataTables_length
 }
 
 div.container {
-    width: 770px;
+    width: 900px;
 }
 
-div.evidence_table h2 {
+.evidence_table {
+    padding: 20px;
+    width: 900px;
+}
+
+div.evidence_table h3 {
     padding:  7px;
     margin: 12px 0 0 auto;
 }
