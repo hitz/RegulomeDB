@@ -76,13 +76,13 @@ Regulome.fileInputs = function() {
 Regulome.examples = {
 	'#dbsnp_example' : '# dbSNPid example - this is a comment and will be ignored\nrs33914668\n',
 	'#zerob_example' : '# zero-based example - this is a comment and will be ignored\n11 5248490	5248491\n',
-	'#oneb_example'  : '# one-based example - this is a comment and will be ignored\nX:55041617-55041618\n',
-	'#bed_example'   : '# BED example - this line is a comment and will be ignored\nchr11	5226168	5226240	CTCF_insulator_binding_site|TF_binding_site;PMID11997516\n',
+	'#oneb_example'  : '# one-based example - this is a comment and will be ignored\nX:55041618-55041618\n',
+	'#bed_example'   : '# BED example - this line is a comment and will be ignored\nchr11	5246958	5246959	three_prime_cis_splice_site;PMID2920213\n',
 	'#zerob_range' : '# zero-based Range example - this is a comment and will be ignored\nchr7 88888 99999\n',
 	'#oneb_range'  : '# one-based Range example - this is a comment and will be ignored\nchr4:33493..36333\n',
-	'#bed_range'   : '# BED Range example - this line is a comment and will be ignored\nchr11	5246958	5246959	three_prime_cis_splice_site;PMID2920213\n',
-	'#vcf_example'   : '# VCF example - this line is a comment and will be ignored\nchr1	4	1981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G\n',
-	'#gff_example'   : '# GFF example - this line is a comment and will be ignored\nchrX		user	      SNP	55041617	55041618	.		+	0	PMID=1656391\n',
+	'#bed_range'   : '# BED Range example - this line is a comment and will be ignored\nchr11	5226168	5226240	CTCF_insulator_binding_site|TF_binding_site;PMID11997516\n',
+	'#vcf_example'   : '# VCF example - this line is a comment and will be ignored\n4	1981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G\n',
+	'#gff_example'   : '# GFF example - this line is a comment and will be ignored\nchrX		user	      SNP	55041618	55041618	.		+	0	PMID=1656391\n',
 	'#gff_range'   : '# GFF Range example - this line is a comment and will be ignored\nchrX		user	      TF_binding_site	48644374	48644376	.		+	0	PMID=1656391\n'
 };
 $(function() {
