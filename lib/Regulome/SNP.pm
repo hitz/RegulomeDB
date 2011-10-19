@@ -146,7 +146,7 @@ sub snp_table {
 		 },    
 		 { title => 'Single nucleotides',
 		   table_id    => 'snt',
-		   methods => { VAL =>, eQTL => 1},
+		   methods => { VAL => 1, eQTL => 1},
 		   data_table => [],
 		 },    
 		 { title => 'Chromatin conformation',

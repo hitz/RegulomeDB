@@ -10,6 +10,7 @@
 * update data
 * About/Help links DONE
 * "Home" link goes to relative /index DONE
+* email address
 
 == Other application ==
 * snp/chr:/coord: -> snp page  DONE
@@ -31,3 +32,4 @@
 # most: rs505141
 # TODO unit tests for /snp/:id and /snp/:chr/:pos and static about, help, index pages.
 #TODO Unit tests for data in an example or two.
+# snps that are on >1 chromosome (X/Y)
