@@ -8,6 +8,7 @@ use lib "./lib";
 use_ok ('Regulome');
 
 use_ok("Regulome::RegulomeDB");
+use_ok("Regulome::RDB");
 my $sampleDataFile = 't/data/sampleBED.pm';
 ## note this file contains matches to RegDB version 1.0 10/5/11 and might fail if data is updated.
 my $sampleBED = do $sampleDataFile || die "Could not open $sampleDataFile";
@@ -44,16 +45,18 @@ my $r = Test::Mojo->new('Regulome')->app();
 #$r->log->debug("TEST");
 my $rdb = $r->rdb;
 isa_ok($rdb,'Regulome::RegulomeDB');
-my ($format, $chk) = $r->check_coord(\@pos1);
+my $cntrl = Regulome::RDB->new();
+isa_ok($cntrl, 'Regulome::RDB');
+my ($format, $chk) = $cntrl->check_coord(\@pos1);
 is(ref($chk),'ARRAY',"check_coord returns ARRAY_REF");
 is(ref($chk->[0]),'ARRAY',"check_coord returns ARRAY_REF of ARRAY_REF");
-($format, $chk) = $r->check_coord(\@pos2);
+($format, $chk) = $cntrl->check_coord(\@pos2);
 
 
 #open (OUT,">tmp.pm");
 #my $out = {};
 for my $c (keys %$sampleBED) {
-	($format, $chk) = $r->check_coord($c);
+	($format, $chk) = $cntrl->check_coord($c);
 	is(scalar(@$chk), 1, "BED returns 1 SNP");
 	my $snp = $chk->[0];
 	is($format, 'BED - 0 Based',"Check BED format");
@@ -74,7 +77,7 @@ for my $c (keys %$sampleBED) {
 #print OUT Dumper $out;
 
 for my $vcf (keys %$sampleVCF) {
-	($format, $chk) = $r->check_coord($vcf);
+	($format, $chk) = $cntrl->check_coord($vcf);
 	is($format, 'VCF - 1 Based', "Check VCF format");
 	is(scalar(@$chk), 1, "VCF returns 1 SNP");
 	my $snp = $chk->[0];
@@ -87,7 +90,7 @@ for my $vcf (keys %$sampleVCF) {
 
 
 for my $gff (keys %$sampleGFF) {
-	($format, $chk) = $r->check_coord($gff);
+	($format, $chk) = $cntrl->check_coord($gff);
 	is($format, 'GFF - 1 Based',"check GFF format");
 	is(scalar(@$chk), 1, "GFF returns 1 SNP");
 	my $snp = $chk->[0];
@@ -99,7 +102,7 @@ for my $gff (keys %$sampleGFF) {
 }
 
 for my $bed (keys %$sampleFullBED) {
-	($format, $chk) = $r->check_coord($bed);
+	($format, $chk) = $cntrl->check_coord($bed);
 	is($format, 'BED - 0 Based', "check full BED format");
 	is(scalar(@$chk), 1, "BED returns 1 SNP");
 	my $snp = $chk->[0];
@@ -111,5 +114,6 @@ for my $bed (keys %$sampleFullBED) {
 }
 
 #TODO - add tests for all error states!
+#TODO - split out tests for controller (check_coord)
 #TODO - need tests for results of full_score as well as all datatypes (FP, MANUAL, VAL, etc.)
 # most: rs505141

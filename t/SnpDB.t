@@ -8,6 +8,7 @@ use lib "./lib";
 use_ok ('Regulome');
 
 use_ok("Regulome::SnpDB");
+use_ok("Regulome::RDB"); # for check_coord
 
 my $sampleRange = {  # 1 based coordinates
 	# note: fake data
@@ -293,11 +294,13 @@ while (my ($snpid, $c) = each (%$commonTest)) {
 my ($format, $chk) = ('',[]);
 
 my $r = Test::Mojo->new('Regulome')->app();
+my $cntrl = Regulome::RDB->new(app => $r);
+isa_ok($cntrl, 'Regulome::RDB');
 while (my ($snpid, $c) = each (%$allTest)) {
 	is($snpdb->getRsid($c), $snpid,  "check all getRsid");
 	my $snp = $snpdb->getSNPbyRsid($snpid);
 	is_deeply($snp, $c, "check all getSNPbyRsid");
-	($format, $chk) = $r->check_coord($snpid);
+	($format, $chk) = $cntrl->check_coord($snpid);
 	is(scalar(@$chk),1,"Only 1 coord returned for SNP");
 	my $scan = $r->rdb->process($chk->[0]);
 	is_deeply($scan, $snpResult->{$snpid},"check SNP result");
@@ -305,19 +308,19 @@ while (my ($snpid, $c) = each (%$allTest)) {
 
 # check_coord with a range checks SnpDB::getSNPbyRange()
 for my $rng (keys %$sampleRange) {
-	($format, $chk) = $r->check_coord($rng);
+	($format, $chk) = $cntrl->check_coord($rng);
 	is($format, 'Generic - 1 Based', "check format (generic range)");
 	is_deeply($chk, $sampleRange->{$rng}, "Check Generic range -> SNP ($rng)");
 }
 
 for my $gff (keys %$sampleGFFrange) {
-	($format, $chk) = $r->check_coord($gff);
+	($format, $chk) = $cntrl->check_coord($gff);
 	is($format, 'GFF - 1 Based', "check format (gff range)");
 	is_deeply($chk, $sampleGFFrange->{$gff}, "Check GFF range -> SNP ($gff)");	
 }
 
 for my $bed (keys %$sampleBEDrange) {
-	($format, $chk) = $r->check_coord($bed);
+	($format, $chk) = $cntrl->check_coord($bed);
 	is($format, 'BED - 0 Based', "check format (BED range)");
 	is_deeply($chk, $sampleBEDrange->{$bed}, "Check BED range -> SNP ($bed)");	
 }
