@@ -25,7 +25,8 @@
    %= "Elapsed: $elapsed s $rps /s" 
   </div>
   <div id='footer'>
-   <p>RegulomeDB (TM) Copyright © 2011 The Board of Trustees of Leland Stanford Junior University. 
+   <p>RegulomeDB (TM) Copyright &#169;2011 The Board of Trustees of 
+Leland Stanford Junior University. 
 Permission to use the information contained in this database was given by the researchers/institutes who contributed or published the information. 
 Users of the database are solely responsible for compliance with any copyright restrictions, including those applying to the author abstracts. 
 Documents from this server are provided "AS-IS" without any warranty, expressed or implied. 
