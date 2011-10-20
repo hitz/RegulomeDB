@@ -9,8 +9,9 @@ img {
 *	Hyperlinks									*
 ************************************************/
 
-a:link,a:visited	{ color:#375830; text-decoration:none; outline:none;}
-a:hover,a:active	{ color:#375830; text-decoration:underline; outline:none;}
+a:link, a:visited  { color:#053aab; text-decoration:none; outline:none;}
+a:active	{ color:#053aab; text-decoration:underline; outline:none;}
+a:hover  	{ color:#980d0d; text-decoration:underline; outline:none;}
 
 body 
 { 
@@ -192,12 +193,17 @@ div.dataTables_length
 }
 
 #input {
-    padding: 16px 0.7em;
+    padding: 9px 0;
 }
 
 #error {
-    padding: 16px 0.7em;
+    padding: 9px 0;
 }
+
+#error > p {
+    padding: 0 0.7em;
+}
+
 #error span.ui-icon {
     float: left; 
     margin-right: 0.3em;

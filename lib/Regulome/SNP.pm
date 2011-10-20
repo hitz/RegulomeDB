@@ -15,11 +15,12 @@ sub coord {
 	my $self = shift;
 
 	my $chr = $self->param('chr');
+	$chr =~ tr/[xy]/[XY]/;
 	$chr = "chr$chr" unless $chr =~ /^chr/;
 	my $nt  = $self->param('nt');
-	my $rsid = $self->app->snpdb->getRsid([$chr, $nt]);
+	my $rsid = $self->app->snpdb->getRsid([$chr, $nt]) || 'n/a';
 	
-	$self->to('/not_found') unless $rsid;
+	#$self->to('/not_found') unless $rsid;
 	$self->snp_table([$chr, $nt], $rsid);
 }
 =pod

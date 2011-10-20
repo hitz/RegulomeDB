@@ -42,7 +42,8 @@
 									$( this ).dialog( "close" );
 							 	}
 							 },
-							 maxHeight: 400
+							 maxHeight: 400,
+							width: 800
 		});
 		$( '#expand_error').click(function() {
 			$( "#error_detail" ).dialog( "open" );

@@ -95,7 +95,7 @@ sub submit {
 				   $score == 5
 				   ? "No data"
 				   : $self->link_to(
-								$score, "/snp/$snpID",
+								$score, "/snp/$snp->[0]/$snp->[1]",
 								'tip' => 'Click on score to see supporting data'
 				   )
 				),

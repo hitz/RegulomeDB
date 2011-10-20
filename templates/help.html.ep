@@ -1,7 +1,7 @@
 % layout 'default';
 % title 'RegulomeDB Help';
 <div id="main_help">
-	<h3><a href="#">Submitting data</a></h3>
+	<h3><a href="#submit">Submitting data</a></h3>
 	<div>
 		<p>Data can be submitted in the following file formats:</p>
 		<ul>
@@ -14,7 +14,7 @@
 		</ul>
 		<p>Data can be input into the box or uploaded from a file on your desktop.</p>
 	</div>
-	<h3><a href="#">Viewing the summary of results</a></h3>
+	<h3><a href="#results">Viewing the summary of results</a></h3>
 	<div>
 		<p>A summary of the total number of rows analyzed and coordinates searched will be displayed.  The table contains the following columns of data:</p>
 		<ul>
@@ -55,7 +55,7 @@
 			<li>Other Resources: links to external resources that provide additional information for the genomic region or dbSNP are provided.</li>
 		</ul>
 	</div>
-	<h3><a href="#">Data supporting a SNP</a></h3>
+	<h3><a href="#snpdata">Data supporting a SNP</a></h3>
 	<div>
 		<p>This page lists all the DNA features and regulatory regions that have been identified to contain the input coordinate.</p>
 		<ul>
@@ -70,26 +70,26 @@
 	</div>
 
 
-	<h3><a href="#">What data is currently available at RegulomeDB?</a></h3>
+	<h3><a href="#datatypes">What data is currently available at RegulomeDB?</a></h3>
 	<div>
 		<p>RegulomeDB currently query the following data types</p>
 
 	</div>
 
-	<h3><a href="#">What version of dbSNP is RegulomeDB querying?</a></h3>
+	<h3><a href="#dbsnp_version">What version of dbSNP is RegulomeDB querying?</a></h3>
 	<div>
 		<p>RegulomeDB is currently querying build 132 of dbSNP.  See NCBI for additional information about <a href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_summary.cgi?view+summary=view+summary&build_id=132">dbSNP132</a>.</p>
 
 	</div>
 
-	<h3><a href="#">What version of the human genome sequence are the data mapped to at RegulomeDB?</a></h3>
+	<h3><a href="#genome_version">What version of the human genome sequence are the data mapped to at RegulomeDB?</a></h3>
 	<div>
 		<p>All data at RegulomeDB is currently mapped to hg19.  Additional information about the human reference genome can be found at the <a href="http://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/">Genome Reference Consortium</a></p>
 
 	</div>
 
 
-	<h3><a href="#">Why is there no data for my chromosomal region?</a></h3>
+	<h3><a href="#nodata">Why is there no data for my chromosomal region?</a></h3>
 	<div>
 		<p>Entering a chromosomal region will identify all common SNPs (with MAF > 1%) in that region.  Theses SNPs are used to query the RegulomeDB.  If there are no common SNPs in the uploaded genomic regions, there will be no data available.  However, the chromosomal region can be uploaded as split single nucleotide values in order to query each nucleotide individually.</p>
 
@@ -102,7 +102,11 @@
 </div>
 <script>
 	$(function() {
-		$( "#main_help" ).accordion();
+		$( "#main_help" ).accordion({
+			autoHeight: false,
+			navigation: true,
+	       }
+		);
 	});
 </script>
 
