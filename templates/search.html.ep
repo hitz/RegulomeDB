@@ -1,19 +1,16 @@
 % layout 'home';
 % title 'Search ReguomeDB';
 <div id='banner'>
-    <%=image '/images/logo_v2.jpg', alt => 'Regulome Logo', width => '740px' %>
+    <%=image '/images/logo_v2.jpg', alt => 'Regulome Logo', width => '600px' %>
 </div>
 <div id='manual_input'>
 	<p class='note'>Enter <a href='#dbsnp_example' class='input_example' />dbSNP IDs</a>, 
-	<a href='#zerob_example' class='input_example' >0-based coordinates</a>
-	 (or <a href='#zerob_range' class='input_example' >range</a>), 
-	<a href='#oneb_example' class='input_example' >1-based coordinates</a>, 
-     (or <a href='#oneb_range' class='input_example' >range</a>),
+	<a href='#zerob_example' class='input_example' >0-based coordinates</a>, 
+	<a href='#oneb_example' class='input_example' >1-based coordinates</a>,
     <a id='bed_example' href='#bed_example' class='input_example' >BED</a> files, 
-     (or <a href='#bed_range' class='input_example' >range</a>),
 	<a id='vcf_example' href='#vcf_example' class='input_example' >VCF</a> files, 
-	<a href='#gff_example' class='input_example' >GFF3</a> files,
-     (or <a href='#gff_range' class='input_example' >range</a>), or mixed lists</p>
+	<a href='#gff_example' class='input_example' >GFF3</a> files.
+
        % my @attrs = (method => 'POST', enctype => 'multipart/form-data');
        %= form_for running => @attrs => begin
            %= text_area 'data', rows => '20', id =>'input_text' => begin
@@ -31,11 +28,16 @@
        %= submit_button 'Upload', class=>'alignright'
        % end
 </div>
+
+<div>
+<p class='note'>Use RegulomeDB to annotate nucleotides in non-coding regions with DNA features and regulatory elements by...</p>
+</div>
+
 <div id='help_tabs'>
 	<ul>
-		<li><a href="#dbsnpid_help">If I have dbSNP IDs....</a></li>
-		<li><a href="#coords_help">If I have SNPs without dbSNP IDs....</a></li>
-		<li><a href="#range_help">If I have a chromosomal region....</a></li>
+		<li><a href="#dbsnpid_help">Entering dbSNP IDs....</a></li>
+		<li><a href="#coords_help">Entering single nucleotides....</a></li>
+		<li><a href="#range_help">Entering a chromosomal region....</a></li>
 	</ul>
 	<div id="dbsnpid_help">Enter dbSNP ID(s) (<a class='input_example' href='#dbsnp_example' >example</a>) or 
 	upload a list of dbSNP IDs to identify DNA features and regulatory elements that contain 
@@ -51,7 +53,13 @@
 	BED (<a class='input_example' href='#bed_range' >view sample format</a>), or GFF3 (<a class='input_example' href='#gff_range' >view sample format</a>).  
 	All dbSNP IDs with an allele frequency >1% that are found in this region will be used to identify DNA features and regulatory elements that contain the coordinate of the SNP(s).
 	</div>
+
+
 </div>
+
+
+
+
 <script>
 var Regulome = Regulome|| {};
 
@@ -74,16 +82,16 @@ Regulome.fileInputs = function() {
 };
 
 Regulome.examples = {
-	'#dbsnp_example' : '# dbSNPid example - this is a comment and will be ignored\nrs33914668\n',
-	'#zerob_example' : '# zero-based example - this is a comment and will be ignored\n11 5248490	5248491\n',
-	'#oneb_example'  : '# one-based example - this is a comment and will be ignored\nX:55041618-55041618\n',
-	'#bed_example'   : '# BED example - this line is a comment and will be ignored\nchr11	5246958	5246959	three_prime_cis_splice_site;PMID2920213\n',
-	'#zerob_range' : '# zero-based Range example - this is a comment and will be ignored\nchr7 88888 99999\n',
-	'#oneb_range'  : '# one-based Range example - this is a comment and will be ignored\nchr4:33493..36333\n',
+	'#dbsnp_example' : '# dbSNP ID example - this is a comment and will be ignored\nrs33914668\nrs35004220\nrs78077282\nrs7881236\n',
+	'#zerob_example' : '# zero-based example - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11	5248049	5248050\n14	100705101	100705102\nX	146993387	146993388\nX	55041617	55041618\n# Coordinate ranges can be submitted\n3	128210000	128212040\n11	5246900	5247000\n19	12995238	12998702\n',
+	'#oneb_example'  : '# one-based example - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11:5248050-5248050\n14:100705102-100705102\nX:146993388-146993388\nX:55041618-55041618\n# Coordinate ranges can be submitted\n3:128210001-128212040\n11:5246901-5247000\n19:12995239-12998702\n',
+	'#bed_example'   : '# BED example - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11	5248049	5248050	SNP	.	+	.	.	.	.	.	.\n14	100705101	100705102	SNP	.	-	.	.	.	.	.	.\nX	146993387	146993388	SNP	.	-	.	.	.	.	.	.\nX	55041617	55041618	SNP	.	+	.	.	.	.	.	.\n# Coordinate ranges can be submitted\n3	128210000	128212040	range	.	+	.	.	.	.	.	.\n11	5246900	5247000	range	.	-	.	.	.	.	.	.\n19	12995238	12998702	range	.	-	.	.	.	.	.	.\n',
+	'#zerob_range' : '# zero-based coordinate range example - this is a comment and will be ignored\n3	128210000	128212040\n11	5246900	5247000\n19	12995238	12998702\n',
+	'#oneb_range'  : '# one-based coordinate range example - this is a comment and will be ignored\n3:128210001-128212040\n11:5246901-5247000\n19:12995239-12998702\n',
 	'#bed_range'   : '# BED Range example - this line is a comment and will be ignored\nchr11	5226168	5226240	CTCF_insulator_binding_site|TF_binding_site;PMID11997516\n',
 	'#vcf_example'   : '# VCF example - this line is a comment and will be ignored\n4	1981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G\n',
-	'#gff_example'   : '# GFF example - this line is a comment and will be ignored\nchrX		user	      SNP	55041618	55041618	.		+	0	PMID=1656391\n',
-	'#gff_range'   : '# GFF Range example - this line is a comment and will be ignored\nchrX		user	      TF_binding_site	48644374	48644376	.		+	0	PMID=1656391\n'
+	'#gff_example'   : '# GFF example - this line is a comment and will be ignored\n# Single nucleotides can be submitted\nchr11	experiment	SNP	5248050	5248050	.	+	0	cellType=HeLa\nchr14	experiment	SNP	100705102	100705102	.	-	0	cellType=HeLA\nchrX	experiment	SNP	146993388	146993388	.	-	0	cellType=HeLA\nchrX	experiment	SNP	55041618	55041618	.	+	0	cellType=HeLa\n# Coordinate ranges can be submitted\nchr3	experiment	promoter	128210001	128212040	.	+	0	cellType=HeLa\nchr11	experiment	promoter	5246901	5247000	.	-	0	cellType=HeLa\nchr19	experiment	promoter	12995239	12998702	.	-	0	cellType=HeLA\n',
+	'#gff_range'   : '# GFF Range example - this line is a comment and will be ignored\nchr3	experiment	promoter	128210001	128212040	.	+	0	cellType=HeLa\nchr11	experiment	promoter	5246901	5247000	.	-	0	cellType=HeLa\nchr19	experiment	promoter	12995239	12998702	.	-	0	cellType=HeLA\n'
 };
 $(function() {
 	    $( "[tip]" ).tooltip();
