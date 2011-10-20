@@ -8,33 +8,50 @@
 			<li>dbSNP ids</li>
 			<li>0-based coordinates (as chr#[tab]min_coord[tab] max_coord or in a BED or VCF file format)</li>
 			<li>1-based coordinates (as chr#:min_coord..max_coord or in a GFF3 file format)</li>
-			<li>BED format (http://genome.ucsc.edu/FAQ/FAQformat.html)</li>
-			<li>VCF format (http://www.1000genomes.org/node/101)</li>
-			<li>GFF3 format (http://www.sequenceontology.org/gff3.shtml)</li>
+			<li>BED format (<a href="http://genome.ucsc.edu/FAQ/FAQformat.html">View file format specifications</a>)</li>
+			<li>VCF format (<a href="http://www.1000genomes.org/node/101">View file format specifications</a>)</li>
+			<li>GFF3 format (<a href="http://www.sequenceontology.org/gff3.shtml">View file format specifications</a>)</li>
 		</ul>
 		<p>Data can be input into the box or uploaded from a file on your desktop.</p>
 	</div>
 	<h3><a href="#">Viewing the summary of results</a></h3>
 	<div>
-		<p>A summary of the total number of rows analyzed and coordinates searched will be displayed.</p>
-		<p>he table contains the following columns of data:</p>
+		<p>A summary of the total number of rows analyzed and coordinates searched will be displayed.  The table contains the following columns of data:</p>
 		<ul>
 			<li>dbSNP ids</li>
 			<li>dbSNP ID:  If available, the dbSNP id for that coordinate is displayed.</li>
 			<li>1-based coordinates (as chr#:min_coord..max_coord or in a GFF3 file format)</li>
 			<li>RegulomeDB Score: This is a computed score based on the integration of multiple datasets.  
-			The scoring scheme refers to the following available datatypes for a single coordinate, in addition to literature-curated data.
-				<ul>
-					<li>1.1 -> ChIP_seq + motif + footprints + DNase + eQTL
-					<li>1.2 -> ChIP_seq + motif + footprint + DNase + eQTL
-					<li>1.3 -> ChIP_seq + motif + footprint + DNase
-					<li>1.4 -> ChIP_seq + motif + DNase
-					<li>1.5 -> ChIP_seq + non-matched motif + DNase
-					<li>2 -> ChIP_seq + DNase
-					<li>3 -> ChIP_seq or DNase
-					<li>4 -> other
-			    </ul>
-			</li>
+			The scoring scheme refers to the following available datatypes for a single coordinate.</li>
+				<table>
+					<tr>
+						<th>Score</th><th>Supporting data</th>
+					</tr>
+					<tr>
+						<td>1.1</td><td>ChIP_seq + motif + footprints + DNase + eQTL</td>
+					</tr>
+					<tr>
+						<td>1.2</td><td>ChIP_seq + motif + footprint + DNase + eQTL</td>
+					</tr>
+					<tr>
+						<td>1.3</td><td>ChIP_seq + motif + footprint + DNase</td>
+					</tr>
+					<tr>
+						<td>1.4</td><td>ChIP_seq + motif + DNase</td>
+					</tr>
+					<tr>	
+						<td>1.5</td><td>ChIP_seq + non-matched motif + DNase</td>
+					</tr>
+					<tr>
+						<td>2</td><td>ChIP_seq + DNase</td>
+					</tr>
+					<tr>
+						<td>3</td><td>ChIP_seq or DNase</td>
+					</tr>
+					<tr>
+						<td>4</td><td>other</td>
+					</tr>
+				</table>
 			<li>Other Resources: links to external resources that provide additional information for the genomic region or dbSNP are provided.</li>
 		</ul>
 	</div>
@@ -51,6 +68,37 @@
 		</ul>
 		<p>Data can be input into the box or uploaded from a file on your desktop.</p>
 	</div>
+
+
+	<h3><a href="#">What data is currently available at RegulomeDB?</a></h3>
+	<div>
+		<p>RegulomeDB currently query the following data types</p>
+
+	</div>
+
+	<h3><a href="#">What version of dbSNP is RegulomeDB querying?</a></h3>
+	<div>
+		<p>RegulomeDB is currently querying build 132 of dbSNP.  See NCBI for additional information about <a href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_summary.cgi?view+summary=view+summary&build_id=132">dbSNP132</a>.</p>
+
+	</div>
+
+	<h3><a href="#">What version of the human genome sequence are the data mapped to at RegulomeDB?</a></h3>
+	<div>
+		<p>All data at RegulomeDB is currently mapped to hg19.  Additional information about the human reference genome can be found at the <a href="http://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/">Genome Reference Consortium</a></p>
+
+	</div>
+
+
+	<h3><a href="#">Why is there no data for my chromosomal region?</a></h3>
+	<div>
+		<p>Entering a chromosomal region will identify all common SNPs (with MAF > 1%) in that region.  Theses SNPs are used to query the RegulomeDB.  If there are no common SNPs in the uploaded genomic regions, there will be no data available.  However, the chromosomal region can be uploaded as split single nucleotide values in order to query each nucleotide individually.</p>
+
+		<p>Alternatively, the region you entered could be in a protein-coding region of the genome.  Currently, RegulomeDB only integrates and curates high-throughput data from non-coding and intergenic regions of the human genome.</p>
+
+	</div>
+
+
+
 </div>
 <script>
 	$(function() {
