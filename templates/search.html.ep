@@ -30,7 +30,7 @@
 </div>
 
 <div>
-<p class='note'>Use RegulomeDB to annotate nucleotides in non-coding regions with DNA features and regulatory elements by...</p>
+<p class='note'>Use RegulomeDB to identify DNA features and regulatory elements in non-coding regions of the human genome by...</p>
 </div>
 
 <div id='help_tabs'>
@@ -42,10 +42,10 @@
 	<div id="dbsnpid_help">Enter dbSNP ID(s) (<a class='input_example' href='#dbsnp_example' >example</a>) or 
 	upload a list of dbSNP IDs to identify DNA features and regulatory elements that contain 
 	the coordinate of the SNP(s).</div>
-	<div id="coords_help">Enter coordinates in 0-based (<a class='input_example' href='#zerob_example' >example</a>), 
-	1-based (<a class='input_example' href='#oneb_example' >example</a>),  
-	BED (<a class='input_example' href='#bed_example' >example</a>), VCF (<a class='input_example' href='#vcf_example' >example</a>), 
-	or GFF3 (<a class='input_example' href='#gff_example' >example</a>).  
+	<div id="coords_help">Enter coordinates in 0-based (<a class='input_example' href='#zerob_single' >example</a>), 
+	1-based (<a class='input_example' href='#oneb_single' >example</a>),  
+	BED (<a class='input_example' href='#bed_single' >example</a>), VCF (<a class='input_example' href='#vcf_example' >example</a>), 
+	or GFF3 (<a class='input_example' href='#gff_single' >example</a>).  
 	These coordinates will be converted to a dbSNP IDs (if available) in addition to 
 	identifying DNA features and regulatory elements that contain the input coordinate(s).</div>
 	<div id="range_help">Enter coordinates in 0-based (<a class='input_example' href='#zerob_range' >view sample list</a>), 
@@ -86,12 +86,16 @@ Regulome.examples = {
 	'#zerob_example' : '# zero-based example - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11	5248049	5248050\n14	100705101	100705102\nX	146993387	146993388\nX	55041617	55041618\n# Coordinate ranges can be submitted\n3	128210000	128212040\n11	5246900	5247000\n19	12995238	12998702\n',
 	'#oneb_example'  : '# one-based example - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11:5248050-5248050\n14:100705102-100705102\nX:146993388-146993388\nX:55041618-55041618\n# Coordinate ranges can be submitted\n3:128210001-128212040\n11:5246901-5247000\n19:12995239-12998702\n',
 	'#bed_example'   : '# BED example - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11	5248049	5248050	SNP	.	+	.	.	.	.	.	.\n14	100705101	100705102	SNP	.	-	.	.	.	.	.	.\nX	146993387	146993388	SNP	.	-	.	.	.	.	.	.\nX	55041617	55041618	SNP	.	+	.	.	.	.	.	.\n# Coordinate ranges can be submitted\n3	128210000	128212040	range	.	+	.	.	.	.	.	.\n11	5246900	5247000	range	.	-	.	.	.	.	.	.\n19	12995238	12998702	range	.	-	.	.	.	.	.	.\n',
-	'#zerob_range' : '# zero-based coordinate range example - this is a comment and will be ignored\n3	128210000	128212040\n11	5246900	5247000\n19	12995238	12998702\n',
-	'#oneb_range'  : '# one-based coordinate range example - this is a comment and will be ignored\n3:128210001-128212040\n11:5246901-5247000\n19:12995239-12998702\n',
-	'#bed_range'   : '# BED Range example - this line is a comment and will be ignored\nchr11	5226168	5226240	CTCF_insulator_binding_site|TF_binding_site;PMID11997516\n',
 	'#vcf_example'   : '# VCF example - this line is a comment and will be ignored\n4	1981	rs806721	A	G	98	LOW	GT_MATCH=1.00;AL_MATCH=1.00;PLAT=CG;VAL=N/A;SM=CG_BLOOD,CG_SALIVA	GT:A1:A2	1/1:G:G\n',
 	'#gff_example'   : '# GFF example - this line is a comment and will be ignored\n# Single nucleotides can be submitted\nchr11	experiment	SNP	5248050	5248050	.	+	0	cellType=HeLa\nchr14	experiment	SNP	100705102	100705102	.	-	0	cellType=HeLA\nchrX	experiment	SNP	146993388	146993388	.	-	0	cellType=HeLA\nchrX	experiment	SNP	55041618	55041618	.	+	0	cellType=HeLa\n# Coordinate ranges can be submitted\nchr3	experiment	promoter	128210001	128212040	.	+	0	cellType=HeLa\nchr11	experiment	promoter	5246901	5247000	.	-	0	cellType=HeLa\nchr19	experiment	promoter	12995239	12998702	.	-	0	cellType=HeLA\n',
-	'#gff_range'   : '# GFF Range example - this line is a comment and will be ignored\nchr3	experiment	promoter	128210001	128212040	.	+	0	cellType=HeLa\nchr11	experiment	promoter	5246901	5247000	.	-	0	cellType=HeLa\nchr19	experiment	promoter	12995239	12998702	.	-	0	cellType=HeLA\n'
+	'#zerob_single': '# zero-based single nucleotide example - this is a comment and will be ignored\n#Single nucleotides can be submitted\n11	5248049	5248050\n14	100705101	100705102\nX	146993387	146993388\nX	55041617	55041618\n',
+	'#oneb_single' : '# one-based single nucleotide example - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11:5248050-5248050\n14:100705102-100705102\nX:146993388-146993388\nX:55041618-55041618\n',
+	'#bed_single'  : '# BED example for single nucleotides - this is a comment and will be ignored\n# Single nucleotides can be submitted\n11	5248049	5248050	SNP	.	+	.	.	.	.	.	.\n14	100705101	100705102	SNP	.	-	.	.	.	.	.	.\nX	146993387	146993388	SNP	.	-	.	.	.	.	.	.\nX	55041617	55041618	SNP	.	+	.	.	.	.	.	.\n',
+	'#gff_single'  : '# GFF example for single nucleotides - this line is a comment and will be ignored\n# Single nucleotides can be submitted\nchr11	experiment	SNP	5248050	5248050	.	+	0	cellType=HeLa\nchr14	experiment	SNP	100705102	100705102	.	-	0	cellType=HeLA\nchrX	experiment	SNP	146993388	146993388	.	-	0	cellType=HeLA\nchrX	experiment	SNP	55041618	55041618	.	+	0	cellType=HeLa\n',
+	'#zerob_range' : '# zero-based coordinate range example - this is a comment and will be ignored\n3	128210000	128212040\n11	5246900	5247000\n19	12995238	12998702\n',
+	'#oneb_range'  : '# one-based coordinate range example - this is a comment and will be ignored\n3:128210001-128212040\n11:5246901-5247000\n19:12995239-12998702\n',
+	'#bed_range'   : '# BED example for coordinate ranges - this line is a comment and will be ignored\nchr11	5226168	5226240	CTCF_insulator_binding_site|TF_binding_site;PMID11997516\n',
+	'#gff_range'   : '# GFF example for coordinate ranges - this line is a comment and will be ignored\nchr3	experiment	promoter	128210001	128212040	.	+	0	cellType=HeLa\nchr11	experiment	promoter	5246901	5247000	.	-	0	cellType=HeLa\nchr19	experiment	promoter	12995239	12998702	.	-	0	cellType=HeLA\n'
 };
 $(function() {
 	    $( "[tip]" ).tooltip();
