@@ -11,7 +11,7 @@
   <div id="header">
      <div id="logo">
        <%=link_to '/index' => begin %>
-       <%=image '/images/logo_transparent_v2.gif', alt => 'Regulome Logo', height=> 50 %>
+       <%=image '/images/logo_transparent_v2.gif', alt => 'Regulome Logo', height=> 40 %>
        <% end %>
      </div>
      <div id="headerright">

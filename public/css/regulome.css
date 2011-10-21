@@ -25,7 +25,7 @@ h1 {
     margin: 8px;
 }
 
-tr, td { border: 1px solid #CBC7BD; padding: 10px}
+tr, td { border: 1px solid #CBC7BD; padding: 7px; font-size:15px; }
 tr.odd { background-color: #eff3eb; }
 
 body>div {
@@ -37,6 +37,7 @@ body>div {
     text-align: left;
     font-style: italic; 
     margin: 3px 0px;
+    font-size: 16px
 }
 
 div.clearfloats { clear: both; }
@@ -72,11 +73,13 @@ div#input {
 #logo
 {
   float: left;
+  padding-left: 4px;
+  padding-top: 4px;
 }
 
 #banner > img
 {
-  margin: 0 130px;
+  margin: 20px  240px;
 }
 
 #genomic_region > img
@@ -132,6 +135,31 @@ div#input {
   width: 600px;
 }
 
+.input_example:link 
+{
+	color: #375830;
+	text-decoration: none;
+}
+
+.input_example:visited 
+{
+	color: #375830;
+	text-decoration: none;
+}
+
+.input_example:active
+{
+	color: #375830;
+	text-decoration: underline;
+}
+
+.input_example:hover
+{
+	color: #980d0d;
+	text-decoration: underline;
+}
+
+
 #input_text
 {
   margin: 5px 0px;
@@ -143,11 +171,18 @@ div#input {
   width: 600px;
 }
 
+#help_section
+{
+  width: 600px;
+  margin: 20px auto;
+}
+
+
 #help_tabs 
 {
-  margin: 30px auto;
-  width: 700px;
-  font-size: 13px;
+  margin: 20px auto;
+  width: 600px;
+  font-size: 14px;
   
 }
 #snp_analysis
@@ -179,6 +214,39 @@ div.dataTables_length
 {
     width: 800px;
     margin: 22px auto;
+}
+
+#main_help_text
+{
+  font-size:14px;
+  padding-left: 42px;
+  padding-bottom: 15px;	
+}
+
+#main_help_text p {
+  padding-bottom:6px;
+}
+
+#main_help_list {
+  padding-left: 1em;
+  padding-bottom: 15px;
+}
+
+#main_help table {
+  border-spacing: 0;
+  padding: 4px;
+}
+
+#main_help tr th {
+  background-color: #bfbfbf;
+  padding: 4px 16px;
+}
+
+#main_help td {
+  font-size: 13px;
+  padding-left: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 #about_content
@@ -218,13 +286,14 @@ div.container {
 }
 
 .evidence_table {
-    padding: 20px;
+    padding: 8px;
     width: 900px;
 }
 
 div.evidence_table h3 {
-    padding:  7px;
+    padding:  5px;
     margin: 12px 0 0 auto;
+    font-size: 17px;
 }
 
 .ev_dt_table {
