@@ -6,6 +6,7 @@ Usage: $0 <single|multi> <Query file> <Database Directory>
 die($usage) if (@ARGV != 3);
 
 use DBI;
+use Benchmark qw(:all :hireswallclock);
 
 my $TYPE = shift(@ARGV);
 die if($TYPE != "single" && $TYPE != "multi"); #testing file structure
@@ -39,7 +40,7 @@ if($TYPE eq "single") {
 		$dbs{$stch}->do("PRAGMA cache_size = 1000000");
 		$dbs{$stch}->commit;
 		
-		$sth{$stch} = $dbs{$stch}->prepare("SELECT DISTINCT objname FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?");
+		$sth{$stch} = $dbs{$stch}->prepare("SELECT DISTINCT objname,objref,minX,maxX FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?");
 	}
 }
 
@@ -62,7 +63,7 @@ while($line = <INF>) {
 		$temp[1] = $temp[2] - 1;
 	}
 
-	$sth{$temp[0]}->execute($temp[1], $temp[1]);
+	$sth{$temp[0]}->execute($temp[1], $temp[1]);	
 	my $results = $sth{$temp[0]}->fetchall_arrayref();
 
 	my @output = ();

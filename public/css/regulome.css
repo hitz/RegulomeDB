@@ -142,13 +142,17 @@ div#input {
   width: 600px;
 }
 
-#help_tabs 
+.help_tabs
 {
   margin: 30px auto;
-  width: 700px;
+  width: 220px;
   font-size: 13px;
   
 }
+.tab_container * {
+ display: inline;
+}
+
 #snp_analysis
 {
     width: 100%;

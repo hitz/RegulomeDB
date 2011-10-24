@@ -4,12 +4,12 @@
 
 echo Beginning Benchmark
 
-for I in {1..100}
+for I in {10..100}
 do
 	let "J = I * I"
 	echo -n Testing $J entries... 
 	let "J += 2"
-	head -n $J ../RegulomeDB/data/snp-TEST20110209-final.vcf > temp.out
-	/usr/bin/time -f %E perl ../RegulomeDB/RegDB_query.pl multi temp.out ../RDB | perl ../RegulomeDB/apply_score.pl > /dev/null
+	head -n $J ./data/test.bed > temp.out
+	/usr/bin/time perl ../data/RegulomeDB/script/RegDB_query.pl multi temp.out ../data/RegulomeDB | perl ../data/RegulomeDB/script/apply_score.pl > /dev/null
 done
 

@@ -7,7 +7,7 @@ sub submit {
 	my $data;
 	if ( $data = $self->param('data') ) {
 		$self->app->log->debug('Processing manual data...');
-	} elsif ( $data = $self->req->upload('file_data')->asset->get_chunk() ) {
+	} elsif ( $data = $self->req->upload('file_data')->asset->slurp() ) {
 
 		# this needs to be changed for "real" 3M SNP files
 		$self->app->log->debug("Processing data from file...");

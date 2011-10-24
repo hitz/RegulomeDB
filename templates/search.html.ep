@@ -31,26 +31,36 @@
        %= submit_button 'Upload', class=>'alignright'
        % end
 </div>
-<div id='help_tabs'>
-	<ul>
+<div class='tab_container'>
+<div class='help_tabs ui-corner-all ui-widget'>
+	<ul class='ui-widget ui-corner-all ui-widget-header'>
 		<li><a href="#dbsnpid_help">If I have dbSNP IDs....</a></li>
-		<li><a href="#coords_help">If I have SNPs without dbSNP IDs....</a></li>
-		<li><a href="#range_help">If I have a chromosomal region....</a></li>
 	</ul>
 	<div id="dbsnpid_help">Enter dbSNP ID(s) (<a class='input_example' href='#dbsnp_example' >example</a>) or 
 	upload a list of dbSNP IDs to identify DNA features and regulatory elements that contain 
 	the coordinate of the SNP(s).</div>
+</div>
+<div class='help_tabs'>
+	<ul>
+		<li><a href="#coords_help">If I have SNPs without dbSNP IDs....</a></li>
+	</ul>
 	<div id="coords_help">Enter coordinates in 0-based (<a class='input_example' href='#zerob_example' >example</a>), 
 	1-based (<a class='input_example' href='#oneb_example' >example</a>),  
 	BED (<a class='input_example' href='#bed_example' >example</a>), VCF (<a class='input_example' href='#vcf_example' >example</a>), 
 	or GFF3 (<a class='input_example' href='#gff_example' >example</a>).  
 	These coordinates will be converted to a dbSNP IDs (if available) in addition to 
 	identifying DNA features and regulatory elements that contain the input coordinate(s).</div>
+</div>
+<div id='help_tabs'>
+	<ul>
+		<li><a href="#range_help">If I have a chromosomal region....</a></li>
+	</ul>
 	<div id="range_help">Enter coordinates in 0-based (<a class='input_example' href='#zerob_range' >view sample list</a>), 
 	1-based (<a class='input_example' href='#oneb_range' >example</a>),  
 	BED (<a class='input_example' href='#bed_range' >view sample format</a>), or GFF3 (<a class='input_example' href='#gff_range' >view sample format</a>).  
 	All dbSNP IDs with an allele frequency >1% that are found in this region will be used to identify DNA features and regulatory elements that contain the coordinate of the SNP(s).
 	</div>
+</div>
 </div>
 <script>
 var Regulome = Regulome|| {};

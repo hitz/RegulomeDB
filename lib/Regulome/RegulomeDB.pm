@@ -114,7 +114,7 @@ sub _init_db {
 
 			$dbh->{$stch}->do($cache_statement);
 			$dbh->{$stch}->commit;
-			$sth->{$stch} = $dbh->{$stch}->prepare("SELECT DISTINCT objname,objref,minX,maxX FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?");
+			$sth->{$stch} = $dbh->{$stch}->prepare_cached("SELECT DISTINCT objname,objref,minX,maxX FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?");
 		}
 		
 	} else {
@@ -291,16 +291,39 @@ sub score() {
 	return $score;
 	
 }
+
 sub process(){
 	my $self = shift;
 	my $coords = shift; # [chr, position]
 	my $sth = $self->sth->{$coords->[0]} || die "could not find chromosome: $coords->[0]";
-	$sth->execute($coords->[1],$coords->[1]);
-	my $results = $sth->fetchall_arrayref();
-	
+	$sth->execute($coords->[1],$coords->[1]); 
+	my $results = $sth->fetchall_arrayref();		
+		
 	return $results;
 }
 
+use Benchmark qw(:all :hireswallclock);
+sub process_profile(){
+	my $self = shift;
+	my $coords = shift; # [chr, position]
+	my $sth = $self->sth->{$coords->[0]} || die "could not find chromosome: $coords->[0]";	
+	
+	print STDERR "5000 queries calls took: ",timeit(5000, sub {
+	  $sth->execute($coords->[1],$coords->[1]); 
+	})->timestr,"\n";
+	
+	print STDERR "5000 fetches took: ", timeit(5000, sub {
+		  my $results = $sth->fetchall_arrayref();		
+	})->timestr,"\n";
+
+	return [];
+}
+
+sub nullop() {
+	my $self = shift;
+	my $res = shift;
+	
+}
 sub DESTROY { 
 	my $self = shift;
 	if($self->type eq "single") {
