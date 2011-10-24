@@ -1,10 +1,13 @@
 package Regulome::RDB;
 use Mojo::Base 'Mojolicious::Controller';
+use Benchmark;
 
 sub submit {
 
 	my $self = shift;
 	my $data;
+
+	my $t0 = Benchmark->new();
 	if ( $data = $self->param('data') ) {
 		$self->app->log->debug('Processing manual data...');
 	} elsif ( $data = $self->req->upload('file_data')->asset->slurp() ) {
@@ -13,6 +16,8 @@ sub submit {
 		$self->app->log->debug("Processing data from file...");
 	}
 
+	my $t1 = Benchmark->new();
+	print STDERR "Time to upload: ",timestr(timediff($t1,$t0)),"\n";
 	$data =~ s/(.+\n)([^\n]*)$/$1/;    # trim trailing
 	my $remnant = $2;                                 # we will need this later
 	my $input = [ split( "\n", $data ), $remnant ];   # just process it for now.
@@ -103,6 +108,9 @@ sub submit {
 			  ];
 		}
 	}
+
+	my $t2 = Benchmark->new();
+	print STDERR "Time to process ", scalar @$input," lines and ",scalar @dataTable," results: ",timestr(timediff($t2,$t1)),"\n";
 	$self->stash(
 				  snpDataTable =>
 					Mojo::JSON->new->encode(
@@ -123,10 +131,12 @@ sub submit {
 					error => \@errors,
 				  }
 	);
+
+	my $t3 = Benchmark->new();
+	print STDERR "Time to set up rendering ",timestr(timediff($t3,$t2)),"\n";
 	$self->render(template => 'RDB/running');
 
 }
-
 sub check_coord {
 
 	my $self  = shift;

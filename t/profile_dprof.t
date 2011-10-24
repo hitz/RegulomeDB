@@ -170,71 +170,35 @@ chrX	48659125	48659203	GATA-1_TF_binding_site;PMID15265794|LDB1_TF_binding_site;
 my $testBedFile = 't/data/RegulomeDB-test.bed'; # exact content as above.
 
 my $testFile = "t/data/Regulome-DB-20.vcf";
-ok("-e $testFile", "does file exist");
 my $testFile2 = "t/data/Regulome-DB-160.vcf";
-ok("-e $testFile2", "does 2nd test file exist");
 my $testBig = "t/data/Regulome-DB-10K.vcf";
-ok("-e $testBig", "does big file exist");
 my $testBig2 = "t/data/Regulome-DB-last10K.vcf";
-ok("-e $testBig2", "does 2nd big file exist");
 my $testBigger = "t/data/Regulome-DB-100K.vcf";
-ok("-e $testBigger", "does bigger file exist");
 my $testGenome = "t/data/snp-TEST20110209-final.vcf";
-ok("-e $testGenome", "does genome file exist");
+
 
 my $t = Test::Mojo->new('Regulome');
 
-open(FH, $testBig);
-my $t0 = Benchmark->new;
-my $testLocal = join("\n", (<FH>));
-my $t1 = Benchmark->new;
-my $td = timediff($t1, $t0);
-print "Load 10K lines from fs directly: ",timestr($td),"\n";
-close(FH);
-open(FH, $testBig2);
-my $testLocal2 = join("\n", (<FH>));
-close(FH);
+my $run_file = $t->post_form_ok('/running' => {file_data => { file => $testFile} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+print STDERR "one\n";
 
-my $regDB = Regulome::RegulomeDB->new(
-								 {
-								   type  => 'multi',
-								   dbdir => 'data/RegulomeDB'
-								 }
-	);
+$run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+print STDERR "two\n";
 
-my $sampleX = ['chrX',146993387];
-my $sampleB = ['chr1',249239815];
-my $sample = ['chr1',10583];
-$regDB->process_profile($sample);
-$regDB->process_profile($sampleB);
-$regDB->process_profile($sampleX);
+$run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig2} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+print STDERR "three\n";
+
+=pod
 
 my $count = 5000; # do $count snps for each file
 my $r = Test::Mojo->new('Regulome')->app();
 use_ok('Regulome::RDB');
 my $ctl = Regulome::RDB->new(app => $r);
 
-$t0 = Benchmark->new;
-my $run_file = $t->post_form_ok('/running' => {file_data => { file => $testFile} });
-$run_file->status_is(200)->content_like(qr/Elapsed/);
-$t1 = Benchmark->new;
-$td = timediff($t1, $t0);
-print "Small file load:",timestr($td),"\n";
-
-$t0 = Benchmark->new;
-$run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig} });
-$run_file->status_is(200)->content_like(qr/Elapsed/);
-$t1 = Benchmark->new;
-$td = timediff($t1, $t0);
-print "10K file load:",timestr($td),"\n";
-
-$t0 = Benchmark->new;
-$run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig2} });
-$run_file->status_is(200)->content_like(qr/Elapsed/);
-$t1 = Benchmark->new;
-$td = timediff($t1, $t0);
-print "10K file load (reverse):",timestr($td),"\n";
-
+my ($t0,$t0_5,$t1, $td);
 for my $chr (1..22,'X','Y') {
 	open(FH, "t/data/chr$chr.test.vcf") || die "could not open t/data/chr$chr.test.vcf";
 	my $n = 0;
@@ -260,6 +224,7 @@ for my $chr (1..22,'X','Y') {
 	print "$count random SNPS ($nres results) from chr$chr.vcf took: ",timestr($td),"\n";
 	close(FH);
 }
+=pod
 
 $t0 = Benchmark->new;
 for my $line (split("\n"), $testLocal) {
@@ -319,3 +284,4 @@ $time = timeit(10000, sub { $regDB->nullop($res)} );
 print "10000 method with arg took: ",timestr($time),"\n";
 
 
+=cut
