@@ -24,3 +24,5 @@ data/RegulomeDB/*.db
 data/SnpDB/*.db
 nytprof.out
 tmon.out
+foo
+nytprof*

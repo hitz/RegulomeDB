@@ -179,15 +179,17 @@ my $testGenome = "t/data/snp-TEST20110209-final.vcf";
 
 my $t = Test::Mojo->new('Regulome');
 
-my $run_file = $t->post_form_ok('/running' => {file_data => { file => $testFile} });
+my $run_file;
+=pod
+$run_file = $t->post_form_ok('/running' => {file_data => { file => $testFile} });
 $run_file->status_is(200)->content_like(qr/Elapsed/);
 print STDERR "one\n";
 
 $run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig} });
 $run_file->status_is(200)->content_like(qr/Elapsed/);
 print STDERR "two\n";
-
-$run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig2} });
+=cut
+$run_file = $t->post_form_ok('/running' => {file_data => { file => $testBigger} });
 $run_file->status_is(200)->content_like(qr/Elapsed/);
 print STDERR "three\n";
 

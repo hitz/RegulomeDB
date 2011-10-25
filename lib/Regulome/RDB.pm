@@ -137,6 +137,91 @@ sub submit {
 	$self->render(template => 'RDB/running');
 
 }
+sub minimum_submit {
+
+	my $self = shift;
+	my $data;
+
+	my $t0 = Benchmark->new();
+	if ( $data = $self->param('data') ) {
+		$self->app->log->debug('Processing manual data...');
+	} elsif ( $data = $self->req->upload('file_data')->asset->slurp() ) {
+
+		# this needs to be changed for "real" 3M SNP files
+		$self->app->log->debug("Processing data from file...");
+	}
+
+	my $t1 = Benchmark->new();
+	print STDERR "Time to upload: ",timestr(timediff($t1,$t0)),"\n";
+	$data =~ s/(.+\n)([^\n]*)$/$1/;    # trim trailing
+	my $remnant = $2;                                 # we will need this later
+	my $input = [ split( "\n", $data ), $remnant ];   # just process it for now.
+	     #$self->stash( coords  => $input );
+	$self->stash( remnant => '' );
+
+	# below should go in some helper module or DB somewhere.
+
+	my @dataTable = ();
+	my @dtColumns = (
+					  {
+						 sTitle => 'Coordinate (0-based)',
+						 sClass => 'aligncenter',
+						 sWidth => '14em'
+					  },
+					  { sTitle => 'dbSNP ID', sClass => 'aligncenter' },
+					  {
+						 sTitle => 'Regulome DB Score (click to see data)',
+						 sClass => 'aligncenter',
+						 sWidth => '12em'
+					  },
+					  {
+						 sTitle => 'Other Resources',
+						 sClass => 'aligncenter',
+						 sWidth => '17em'
+					  }
+	);
+	my ( $n, $nsnps ) = ( 0, 0 );
+	my @errors = ();
+	for my $c (@$input) {
+		next
+		  if ( !$c || $c =~ /^#/ || $c !~ /\d+/ );   # got to have some numbers!
+		$n++;
+		my ( $format, $snps ) = $self->check_coord($c);
+
+		$nsnps += scalar(@$snps);
+		for my $snp (@$snps) {
+			my $res      = $self->rdb->process($snp);
+			my $coordStr = $snp->[0] . ':' . $snp->[1];
+			my $snpID          = $self->snpdb->getRsid($snp) || "n/a";
+			my $score          = $self->rdb->score($res);
+			push @dataTable,
+			  [
+				$coordStr,
+				$snpID,
+				$score
+			  ];
+		}
+	}
+
+	my $t2 = Benchmark->new();
+	print STDERR "Time to process ", scalar @$input," lines and ",scalar @dataTable," results: ",timestr(timediff($t2,$t1)),"\n";
+	$self->stash(
+				  snpDataTable => \@dataTable
+	);
+	$self->stash(
+				  {
+					ninp  => $n,
+					nsnps => $nsnps,
+					error => \@errors,
+				  }
+	);
+
+	my $t3 = Benchmark->new();
+	print STDERR "Time to set up rendering ",timestr(timediff($t3,$t2)),"\n";
+	$self->render(template => 'RDB/running');
+
+}
+
 sub check_coord {
 
 	my $self  = shift;
