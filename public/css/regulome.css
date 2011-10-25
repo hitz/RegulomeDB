@@ -202,7 +202,7 @@ div.dataTables_length
 #summary_table
 {
     margin: 0px auto;
-    width: 770px;
+    width: 740px;
 }
 
 #detail_table
@@ -244,7 +244,7 @@ div.dataTables_length
 
 #main_help td {
   font-size: 13px;
-  padding-left: 12px;
+  padding-left: 8px;
   padding-top: 4px;
   padding-bottom: 4px;
 }
