@@ -54,7 +54,7 @@ sub startup {
 	    '/running' => sub { shift->render({template => 'search'})
 	    });
 	    
-	$r->post('/running')->to(controller => 'RDB', action => 'submit');
+	$r->post('/running')->to(controller => 'RDB', action => 'minimum_submit');
 }
 
 1;

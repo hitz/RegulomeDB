@@ -189,6 +189,9 @@ $run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig} });
 $run_file->status_is(200)->content_like(qr/Elapsed/);
 print STDERR "two\n";
 =cut
+
+$ENV{MOJO_CHUNK_SIZE} = 2621440;
+$ENV{MOJO_MAX_MESSAGE_SIZE} = 5000000000; # 5 GB upload limit
 $run_file = $t->post_form_ok('/running' => {file_data => { file => $testBigger} });
 $run_file->status_is(200)->content_like(qr/Elapsed/);
 print STDERR "three\n";

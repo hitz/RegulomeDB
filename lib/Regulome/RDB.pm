@@ -143,83 +143,130 @@ sub minimum_submit {
 	my $data;
 
 	my $t0 = Benchmark->new();
+	my ($t1,$t2);
+	my $remnant = '';
+
+	my $dataTable = [];
+	my $errors = [];
+	my $n = 0;
+
 	if ( $data = $self->param('data') ) {
 		$self->app->log->debug('Processing manual data...');
-	} elsif ( $data = $self->req->upload('file_data')->asset->slurp() ) {
+		my $input = [ split( "\n", $data ) ];
+		$n = scalar @$input;
+		my ($res, $err) = $self->process_chunk($input);
+		push @$dataTable, @$res;
+		push @$errors, @$err if @$err;
+		$t1 = Benchmark->new();
+		print STDERR "Time to process manual data ",timestr(timediff($t1,$t0)),"\n";
+		
+	} elsif ( $data = $self->req->upload('file_data')->asset->get_chunk() ) {
 
 		# this needs to be changed for "real" 3M SNP files
-		$self->app->log->debug("Processing data from file...");
+	        my $chunks=0;
+		my $loc = 0;
+		do {
+
+		    $t1 = Benchmark->new();
+		    $self->app->log->debug("Processing data (Chunk: ",$n+1," from file...");
+		    my $input = [ split( "\n", $data ) ];
+		    $input->[0] = $remnant.$input->[0];
+		    print STDERR "New first line: ",$input->[0],"\n" if $remnant;
+		    $remnant = pop @$input;
+		    $n += scalar @$input;
+		    my ($res, $err)  = $self->process_chunk($input);
+		    push @$dataTable, @$res;
+		    push @$errors, @$err if @$err;
+		    $t2 = Benchmark->new();
+		    $loc = $chunks*$ENV{MOJO_CHUNK_SIZE};
+		    print STDERR $ENV{MOJO_CHUNK_SIZE}, " Time to process file data (chunk: $chunks / $loc) ",timestr(timediff($t2,$t1)),"\n";
+		    $chunks++;
+
+
+		} while ( $data = $self->req->upload('file_data')->asset->get_chunk($loc) );
+		
+		if ($remnant) {
+		    my ($last, $last_err) = $self->process_chunk([$remnant]);
+		    push @$dataTable, @$last;
+		    push @$errors, @$last_err if @$last_err;
+		}
+
+
 	}
 
-	my $t1 = Benchmark->new();
-	print STDERR "Time to upload: ",timestr(timediff($t1,$t0)),"\n";
-	$data =~ s/(.+\n)([^\n]*)$/$1/;    # trim trailing
-	my $remnant = $2;                                 # we will need this later
-	my $input = [ split( "\n", $data ), $remnant ];   # just process it for now.
-	     #$self->stash( coords  => $input );
-	$self->stash( remnant => '' );
-
-	# below should go in some helper module or DB somewhere.
-
-	my @dataTable = ();
 	my @dtColumns = (
+					  {
+						 sTitle => 'chromosome',
+						 sClass => 'aligncenter',
+						 sWidth => '2em'
+					  },
 					  {
 						 sTitle => 'Coordinate (0-based)',
 						 sClass => 'aligncenter',
-						 sWidth => '14em'
+						 sWidth => '12em'
 					  },
-					  { sTitle => 'dbSNP ID', sClass => 'aligncenter' },
 					  {
 						 sTitle => 'Regulome DB Score (click to see data)',
 						 sClass => 'aligncenter',
 						 sWidth => '12em'
 					  },
-					  {
-						 sTitle => 'Other Resources',
-						 sClass => 'aligncenter',
-						 sWidth => '17em'
-					  }
 	);
-	my ( $n, $nsnps ) = ( 0, 0 );
+
+	$self->stash( remnant => $remnant );
+	$self->stash( { error => $errors,
+                        ninp  => $n,
+			nsnps => scalar(@$dataTable),
+                        snpDataTable =>
+				  Mojo::JSON->new->encode(
+								 {
+								   aaData    => $dataTable,
+								   aoColumns => \@dtColumns,
+								   bJQueryUI => 'true',
+								   aaSorting => [ [ 2, 'asc' ], [ 0, 'asc' ] ],
+								   bFilter   => 0,
+								   bDeferRender => 1,
+								 }
+					)
+				  } );
+
+
+	$self->render(template => 'RDB/running')
+}
+
+sub process_chunk {
+
+        my $self = shift;
+	my $chunk = shift;
+
+	my @result = ();
 	my @errors = ();
-	for my $c (@$input) {
+
+	for my $c (@$chunk) {
 		next
 		  if ( !$c || $c =~ /^#/ || $c !~ /\d+/ );   # got to have some numbers!
-		$n++;
 		my ( $format, $snps ) = $self->check_coord($c);
+		if ( $format eq 'ERROR' ) {
+			push @errors,
+			  {
+				msg => $snps->[0]->[0],
+				inp => $snps->[0]->[1],
+			  };
+			next;
+		}
 
-		$nsnps += scalar(@$snps);
 		for my $snp (@$snps) {
 			my $res      = $self->rdb->process($snp);
-			my $coordStr = $snp->[0] . ':' . $snp->[1];
-			my $snpID          = $self->snpdb->getRsid($snp) || "n/a";
 			my $score          = $self->rdb->score($res);
-			push @dataTable,
+			push @result,
 			  [
-				$coordStr,
-				$snpID,
+				$snp->[0], #chromosome
+			        $snp->[1], #position
 				$score
 			  ];
 		}
 	}
-
-	my $t2 = Benchmark->new();
-	print STDERR "Time to process ", scalar @$input," lines and ",scalar @dataTable," results: ",timestr(timediff($t2,$t1)),"\n";
-	$self->stash(
-				  snpDataTable => \@dataTable
-	);
-	$self->stash(
-				  {
-					ninp  => $n,
-					nsnps => $nsnps,
-					error => \@errors,
-				  }
-	);
-
-	my $t3 = Benchmark->new();
-	print STDERR "Time to set up rendering ",timestr(timediff($t3,$t2)),"\n";
-	$self->render(template => 'RDB/running');
-
+	return \@result, \@errors;
+	  
 }
 
 sub check_coord {
