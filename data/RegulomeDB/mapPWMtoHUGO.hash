@@ -1,0 +1,1931 @@
+$VAR1 = {
+          'VDR' => {
+                     'VDR' => 1
+                   },
+          '' => {
+                  '' => 1
+                },
+          'EBF' => {
+                     'EBF1' => 1
+                   },
+          'CLOCK' => {
+                       'CLOCK' => 1
+                     },
+          'AFP1' => {
+                      'AFP' => 1
+                    },
+          'INPUT' => {
+                       'Approved' => 1
+                     },
+          'ZNF333' => {
+                        'ZNF333' => 1
+                      },
+          'GLI' => {
+                     'GLI1' => 1
+                   },
+          'PAX-4' => {
+                       'PAX4' => 1
+                     },
+          'ELF-1' => {
+                       'EFNA2' => 1
+                     },
+          'E47' => {
+                     'TCF3' => 1
+                   },
+          'CP2' => {
+                     'TFCP2' => 1
+                   },
+          'RORA_1' => {
+                        'RORA' => 1
+                      },
+          'C/EBPDELTA' => {
+                            'CEBPD' => 1
+                          },
+          'SPIB' => {
+                      'SPIB' => 1
+                    },
+          'RORALPHA2' => {
+                           'RORA' => 1
+                         },
+          'DMRT1' => {
+                       'DMRT1' => 1
+                     },
+          'MTERF' => {
+                       'MTERF' => 1
+                     },
+          'VBP' => {
+                     'VBP1' => 1
+                   },
+          'P300' => {
+                      'EP300' => 1
+                    },
+          'C-ETS-1P54' => {
+                            'ETS1' => 1
+                          },
+          'TAL-1BETA' => {
+                           'TAL1' => 1
+                         },
+          'LYF-1' => {
+                       'IKZF1' => 1
+                     },
+          'C/EBP' => {
+                       'CEBPZ' => 1,
+                       'CEBPD' => 1,
+                       'CEBPA' => 1,
+                       'CEBPE' => 1,
+                       'CEBPB' => 1,
+                       'CEBPG' => 1
+                     },
+          'TCFCP2L1' => {
+                          'TFCP2L1' => 1
+                        },
+          'DBP' => {
+                     'DBP' => 1,
+                     'HSD17B4' => 1,
+                     'GC' => 1
+                   },
+          'SIX-6' => {
+                       'SIX6' => 1
+                     },
+          'ZEC' => {
+                     'ZNF628' => 1
+                   },
+          'OCT-X' => {
+                       'POU6F2' => 1,
+                       'POU4F2' => 1,
+                       'POU2F3' => 1,
+                       'POU1F1' => 1,
+                       'POU4F3' => 1,
+                       'POU5F1B' => 1,
+                       'POU4F1' => 1,
+                       'POU6F1' => 1,
+                       'POU5F2' => 1,
+                       'POU3F1' => 1,
+                       'POU3F4' => 1,
+                       'POU3F3' => 1,
+                       'POU3F2' => 1,
+                       'POU2F2' => 1,
+                       'POU2F1' => 1,
+                       'POU5F1' => 1
+                     },
+          'CAC-BINDINGPROTEIN' => {
+                                    'CAC-Motif' => 1
+                                  },
+          'HMX3(NKX5-1)' => {
+                              'HMX3' => 1
+                            },
+          'HFH3(FOXI1)' => {
+                             'FOXI1' => 1
+                           },
+          'PAX-8' => {
+                       'PAX8' => 1
+                     },
+          'RORALPHA1' => {
+                           'RORA' => 1
+                         },
+          'ERRALPHA' => {
+                          'ESRRA' => 1
+                        },
+          'IRF-7' => {
+                       'IRF7' => 1
+                     },
+          'C-ETS-1' => {
+                         'ETS1' => 1
+                       },
+          'HNF3' => {
+                      'FOXA2' => 1,
+                      'FOXA1' => 1
+                    },
+          'NKX2-5' => {
+                        'NKX2-5' => 1
+                      },
+          'HNF1A' => {
+                       'HNF1A' => 1
+                     },
+          'CACD' => {
+                      'CACD' => 1
+                    },
+          'CDX-2' => {
+                       'CDX2' => 1
+                     },
+          'SOX' => {
+                     'SOX13' => 1,
+                     'SOX2' => 1,
+                     'SOX4' => 1,
+                     'SOX1' => 1,
+                     'SOX14' => 1,
+                     'SOX3' => 1,
+                     'SOX9' => 1,
+                     'SOX12' => 1,
+                     'SOX15' => 1,
+                     'SOX18' => 1,
+                     'SOX5' => 1,
+                     'SOX21' => 1,
+                     'SOX6' => 1,
+                     'SOX17' => 1,
+                     'SOX30' => 1,
+                     'SOX11' => 1,
+                     'SOX8' => 1,
+                     'SOX10' => 1,
+                     'SOX7' => 1
+                   },
+          'RBP-JKAPPA' => {
+                            'RBPJ' => 1
+                          },
+          'HSF' => {
+                     'IL6' => 1
+                   },
+          'BEN' => {
+                     'GTF2IRD1' => 1
+                   },
+          'ZEB1' => {
+                      'ZEB1' => 1
+                    },
+          'HOXC13' => {
+                        'HOXC13' => 1
+                      },
+          'STAT' => {
+                      'SOAT1' => 1
+                    },
+          'HLTF' => {
+                      'HLTF' => 1
+                    },
+          'RFX1(EF-C)' => {
+                            'RFX1' => 1
+                          },
+          'NF-Y' => {
+                      'NFYA' => 1,
+                      'NFYB' => 1,
+                      'NFYC' => 1
+                    },
+          'FOXQ1' => {
+                       'FOXQ1' => 1
+                     },
+          'HIF-2ALPHA' => {
+                            'EPAS1' => 1
+                          },
+          'USF2' => {
+                      'USF2' => 1
+                    },
+          'P50' => {
+                     'NFKB1' => 1,
+                     'ARHGEF7' => 1,
+                     'CD40' => 1
+                   },
+          'RXRALPHA' => {
+                          'RXRA' => 1
+                        },
+          'LXR-BETA' => {
+                          'NR1H2' => 1
+                        },
+          'IRF1' => {
+                      'IRF1' => 1
+                    },
+          'C-MAF' => {
+                       'MAF' => 1
+                     },
+          'TTF1(NKX2-1)' => {
+                              'NKX2-1' => 1,
+                              'TTF1' => 1
+                            },
+          'ISGF-3' => {
+                        'STAT1' => 1
+                      },
+          'STAT5A(HOMODIMER)' => {
+                                   'STAT5A' => 1
+                                 },
+          'NKX5-2' => {
+                        'HMX2' => 1
+                      },
+          'PPARA' => {
+                       'PPARA' => 1
+                     },
+          'MAX' => {
+                     'MAX' => 1
+                   },
+          'SOX4' => {
+                      'SOX4' => 1
+                    },
+          'NGFI-C' => {
+                        'EGR4' => 1
+                      },
+          'N-MYC' => {
+                       'MYCN' => 1
+                     },
+          'C/EBPGAMMA' => {
+                            'CEBPG' => 1
+                          },
+          'NR4A2' => {
+                       'NR4A2' => 1
+                     },
+          'GATA3' => {
+                       'GATA3' => 1
+                     },
+          'PBX' => {
+                     'PBX1' => 1
+                   },
+          'PAX4' => {
+                      'PAX4' => 1
+                    },
+          'CRX' => {
+                     'CRX' => 1
+                   },
+          'HOXA13' => {
+                        'HOXA13' => 1
+                      },
+          'TEAD1' => {
+                       'TEAD1' => 1
+                     },
+          'NANOG' => {
+                       'NANOG' => 1
+                     },
+          'NR2F1' => {
+                       'NR2F1' => 1
+                     },
+          'STAT5B(HOMODIMER)' => {
+                                   'STAT5B' => 1
+                                 },
+          'TGIF' => {
+                      'TGIF1' => 1,
+                      'IL10' => 1
+                    },
+          'ZNF219' => {
+                        'ZNF219' => 1
+                      },
+          'INSM1' => {
+                       'INSM1' => 1
+                     },
+          'HELIOSA' => {
+                         'IKZF2' => 1
+                       },
+          'HDX' => {
+                     'HDX' => 1
+                   },
+          'EWSR1-FLI1' => {
+                            'EWSR1' => 1
+                          },
+          'BRCA1' => {
+                       'BRCA1' => 1
+                     },
+          'E2F-1' => {
+                       'E2F1' => 1
+                     },
+          'ELK1' => {
+                      'ELK1' => 1,
+                      'KCNH4' => 1
+                    },
+          'HP1SITEFACTOR' => {
+                               'CBX5' => 1
+                             },
+          'MEIS1A' => {
+                        'MEIS1' => 1
+                      },
+          'MECP2' => {
+                       'MECP2' => 1
+                     },
+          'RXRA' => {
+                      'RXRA' => 1
+                    },
+          'RB' => {
+                    'RB1' => 1
+                  },
+          'RREB-1' => {
+                        'RREB1' => 1
+                      },
+          'RORA_2' => {
+                        'RORA' => 1
+                      },
+          'DEC' => {
+                     'DEC1' => 1
+                   },
+          'C-ETS-2' => {
+                         'ETS2' => 1
+                       },
+          'ZIC2' => {
+                      'ZIC2' => 1
+                    },
+          'GATA-1' => {
+                        'GATA1' => 1
+                      },
+          'FXR' => {
+                     'NR1H4' => 1
+                   },
+          'CDX' => {
+                     'CDX1' => 1,
+                     'CDX4' => 1,
+                     'CDX2' => 1
+                   },
+          'HIC1' => {
+                      'HIC1' => 1
+                    },
+          'NFAT1' => {
+                       'NFATC2' => 1
+                     },
+          'FEV' => {
+                     'FEV' => 1
+                   },
+          'MIZF' => {
+                      'HINFP' => 1
+                    },
+          'FOXO4' => {
+                       'FOXO4' => 1
+                     },
+          'HES1' => {
+                      'C21orf33' => 1,
+                      'HES1' => 1
+                    },
+          'NERF1A' => {
+                        'ELF2' => 1
+                      },
+          'SOX5' => {
+                      'SOX5' => 1
+                    },
+          'ISL1' => {
+                      'ISL1' => 1
+                    },
+          'TFE' => {
+                     'TFE3' => 1
+                   },
+          'HIF-1' => {
+                       'SETD2' => 1
+                     },
+          'C-MYB' => {
+                       'MYB' => 1
+                     },
+          'SMAD3' => {
+                       'SMAD3' => 1
+                     },
+          'ATF3' => {
+                      'ATF3' => 1
+                    },
+          'TBX5' => {
+                      'TBX5' => 1
+                    },
+          'E2A' => {
+                     'TCF3' => 1
+                   },
+          'TEL-2' => {
+                       'ETV7' => 1
+                     },
+          'PAX6' => {
+                      'PAX6' => 1
+                    },
+          'FOXP3' => {
+                       'FOXP3' => 1
+                     },
+          'SPI1' => {
+                      'SPI1' => 1
+                    },
+          'T' => {
+                   'T' => 1
+                 },
+          'HFH4(FOXJ1)' => {
+                             'FOXJ1' => 1
+                           },
+          'POU1F1' => {
+                        'POU1F1' => 1
+                      },
+          'COMP1' => {
+                       'COMP1' => 1
+                     },
+          'TAL-1ALPHA' => {
+                            'TAL1' => 1
+                          },
+          'HNF4' => {
+                      'HNF4A' => 1
+                    },
+          'ITF-2' => {
+                       'TCF4' => 1
+                     },
+          'CORE-BINDINGFACTOR' => {
+                                    'RUNX1' => 1,
+                                    'CBFB' => 1
+                                  },
+          'DMRT7' => {
+                       'DMRTB1' => 1
+                     },
+          'RREB1' => {
+                       'RREB1' => 1
+                     },
+          'E2F-4' => {
+                       'E2F4' => 1
+                     },
+          'PLZF' => {
+                      'ZBTB16' => 1
+                    },
+          'SP1' => {
+                     'SP1' => 1
+                   },
+          'ALX-4' => {
+                       'ALX4' => 1
+                     },
+          'RFX' => {
+                     'RFX1' => 1
+                   },
+          'LHX3' => {
+                      'LHX3' => 1
+                    },
+          'IRF-1' => {
+                       'IRF1' => 1
+                     },
+          'HEN1' => {
+                      'HENMT1' => 1,
+                      'NHLH1' => 1
+                    },
+          'FOXM1' => {
+                       'FOXM1' => 1
+                     },
+          'PARP' => {
+                      'PARP1' => 1
+                    },
+          'STATX' => {
+                       'STAT5B' => 1,
+                       'STAT1' => 1,
+                       'STAT4' => 1,
+                       'STAT2' => 1,
+                       'STAT6' => 1,
+                       'STAT3' => 1,
+                       'STAT5A' => 1
+                     },
+          'NKX3-1' => {
+                        'NKX3-1' => 1
+                      },
+          'NRF-2/GABP' => {
+                            'GABPA' => 1
+                          },
+          'SREBP' => {
+                       'SREBF1' => 1
+                     },
+          'NR2E3' => {
+                       'NR2E3' => 1
+                     },
+          'FOXA1' => {
+                       'FOXA1' => 1
+                     },
+          'AIRE' => {
+                      'AIRE' => 1
+                    },
+          'ESE1' => {
+                      'ELF3' => 1
+                    },
+          'COUP-TF' => {
+                         'NR2F1' => 1
+                       },
+          'TEF-1' => {
+                       'TEAD1' => 1
+                     },
+          'CREB1' => {
+                       'CREB1' => 1
+                     },
+          'PDX1' => {
+                      'PDHX' => 1,
+                      'PDX1' => 1
+                    },
+          'NEUROD' => {
+                        'NEUROD1' => 1
+                      },
+          'HAND1' => {
+                       'HAND1' => 1
+                     },
+          'TCF11' => {
+                       'NFE2L1' => 1
+                     },
+          'FOXA2' => {
+                       'FOXA2' => 1
+                     },
+          'ARNT' => {
+                      'ARNT' => 1
+                    },
+          'HNF3ALPHA' => {
+                           'FOXA1' => 1
+                         },
+          'HNF6' => {
+                      'ONECUT1' => 1
+                    },
+          'DDIT3' => {
+                       'DDIT3' => 1
+                     },
+          'PROP-1' => {
+                        'PROP1' => 1
+                      },
+          'AP-2REP' => {
+                         'KLF12' => 1
+                       },
+          'COUPTF' => {
+                        'NR2F1' => 1
+                      },
+          'FOXC1' => {
+                       'FOXC1' => 1
+                     },
+          'DMRT3' => {
+                       'DMRT3' => 1
+                     },
+          'PLAG1' => {
+                       'PLAG1' => 1
+                     },
+          'FOS' => {
+                     'FOS' => 1
+                   },
+          'HNF4DIRECTREPEAT1' => {
+                                   'HNF4A' => 1
+                                 },
+          'AP-1' => {
+                      'JUND' => 1,
+                      'JUN' => 1,
+                      'FOSB' => 1,
+                      'FOS' => 1
+                    },
+          'REST' => {
+                      'REST' => 1
+                    },
+          'MEIS1B' => {
+                        'MEIS1' => 1
+                      },
+          'BRACHYURY' => {
+                           'T' => 1
+                         },
+          'VAX-2' => {
+                       'VAX2' => 1
+                     },
+          'LHX6.1' => {
+                        'LHX6' => 1
+                      },
+          'EVI1' => {
+                      'MECOM' => 1
+                    },
+          'OCT-1' => {
+                       'POU2F1' => 1
+                     },
+          'ETF' => {
+                     'TEAD2' => 1
+                   },
+          'IRF-2' => {
+                       'IRF2' => 1
+                     },
+          'ARID3A' => {
+                        'ARID3A' => 1
+                      },
+          'NKX6-1' => {
+                        'NKX6-1' => 1
+                      },
+          'SPZ1' => {
+                      'SPZ1' => 1
+                    },
+          'HFH8(FOXF1A)' => {
+                              'FOXF1' => 1
+                            },
+          'LBP-1' => {
+                       'UBP1' => 1
+                     },
+          'GTF2IRD1-ISOFORM2' => {
+                                   'GTF2IRD1' => 1
+                                 },
+          'ATF2' => {
+                      'GDNF' => 1,
+                      'ATF2' => 1
+                    },
+          'C-ETS-1(P54)' => {
+                              'ETS1' => 1
+                            },
+          'SZF1-1' => {
+                        'ZNF589' => 1
+                      },
+          'GATA' => {
+                      'QRSL1' => 1
+                    },
+          'COUP' => {
+                      'NR2F1' => 1
+                    },
+          'MEF2A' => {
+                       'MEF2A' => 1
+                     },
+          'EN1' => {
+                     'EN1' => 1
+                   },
+          'GFI-1' => {
+                       'GFI1' => 1
+                     },
+          'NF-KAPPAB(P50)' => {
+                                'NFKB1' => 1
+                              },
+          'FOXD3' => {
+                       'FOXD3' => 1
+                     },
+          'TTF-1(NKX2-1)' => {
+                               'NKX2-1' => 1,
+                               'TTF1' => 1
+                             },
+          'C/EBPBETA' => {
+                           'CEBPB' => 1
+                         },
+          'CHOP' => {
+                      'DDIT3' => 1
+                    },
+          'FOXI1' => {
+                       'FOXI1' => 1
+                     },
+          'FRA1' => {
+                      'FOSL1' => 1
+                    },
+          'E2F' => {
+                     'E2F5' => 1,
+                     'E2F7' => 1,
+                     'E2F4' => 1,
+                     'E2F1' => 1,
+                     'E2F3' => 1,
+                     'E2F2' => 1,
+                     'E2F8' => 1,
+                     'E2F6' => 1
+                   },
+          'FREAC-3' => {
+                         'FOXC1' => 1
+                       },
+          'HSF2' => {
+                      'HSF2' => 1
+                    },
+          'CKROX' => {
+                       'ZBTB7B' => 1
+                     },
+          'FOXFACTORS' => {
+                            'FOXF1' => 1,
+                            'FOXA2' => 1,
+                            'FOXO6' => 1,
+                            'FOXC2' => 1,
+                            'FOXI2' => 1,
+                            'FOXI3' => 1,
+                            'FOXC1' => 1,
+                            'FOXQ1' => 1,
+                            'FOXN3' => 1,
+                            'FOXJ1' => 1,
+                            'FOXK1' => 1,
+                            'FOXD3' => 1,
+                            'FOXD4L5' => 1,
+                            'FOXD4L4' => 1,
+                            'FOXE1' => 1,
+                            'FOXI1' => 1,
+                            'FOXB2' => 1,
+                            'FOXP4' => 1,
+                            'FOXN1' => 1,
+                            'FOXJ3' => 1,
+                            'FOXD4L6' => 1,
+                            'FOXJ2' => 1,
+                            'FOXN2' => 1,
+                            'FOXL2' => 1,
+                            'FOXD2' => 1,
+                            'FOXP1' => 1,
+                            'FOXO1' => 1,
+                            'FOXD4L1' => 1,
+                            'FOXF2' => 1,
+                            'FOXN4' => 1,
+                            'FOXB1' => 1,
+                            'FOXE3' => 1,
+                            'FOXM1' => 1,
+                            'FOXH1' => 1,
+                            'FOXK2' => 1,
+                            'FOXO4' => 1,
+                            'FOXG1' => 1,
+                            'FOXD4L2' => 1,
+                            'FOXD4L3' => 1,
+                            'FOXA3' => 1,
+                            'FOXO3' => 1,
+                            'FOXD1' => 1,
+                            'FOXR1' => 1,
+                            'FOXA1' => 1,
+                            'FOXL1' => 1,
+                            'FOXS1' => 1,
+                            'FOXP2' => 1,
+                            'FOXP3' => 1,
+                            'FOXR2' => 1,
+                            'FOXD4' => 1
+                          },
+          '(SATB1)2' => {
+                          'SATB2' => 1,
+                          'SATB1' => 1
+                        },
+          'TAL1' => {
+                      'TAL1' => 1
+                    },
+          'STAT4' => {
+                       'STAT4' => 1
+                     },
+          'SREBP-1' => {
+                         'SREBF1' => 1
+                       },
+          'IRF3' => {
+                      'IRF3' => 1
+                    },
+          'HOXB3' => {
+                       'HOXB3' => 1
+                     },
+          'E2F1' => {
+                      'E2F1' => 1
+                    },
+          'CP2/LBP-1C/LSF' => {
+                                'TFCP2' => 1
+                              },
+          'BMAL' => {
+                      'ARNTL2' => 1
+                    },
+          'NRSE' => {
+                      'REST' => 1
+                    },
+          'NF-MUE1' => {
+                         'YY1' => 1
+                       },
+          'HIF1' => {
+                      'HIF1A' => 1
+                    },
+          'ETS2' => {
+                      'ETS2' => 1
+                    },
+          'ROAZ' => {
+                      'ZNF423' => 1
+                    },
+          'NFE2L1' => {
+                        'NFE2L1' => 1
+                      },
+          'RORALPHA' => {
+                          'RORA' => 1
+                        },
+          'TCF1' => {
+                      'HNF1A' => 1
+                    },
+          'ATF1' => {
+                      'GDNF' => 1,
+                      'ATF1' => 1
+                    },
+          'IK-3' => {
+                      'TBK1' => 1
+                    },
+          'HNF4ALPHA1' => {
+                            'HNF4A' => 1
+                          },
+          'E4BP4' => {
+                       'NFIL3' => 1
+                     },
+          'CACCC-BINDINGFACTOR' => {
+                                     'CACCC-Motif' => 1
+                                   },
+          'PAX-5' => {
+                       'PAX5' => 1
+                     },
+          'ETS1' => {
+                      'ETS1' => 1
+                    },
+          'POU6F1' => {
+                        'POU6F1' => 1
+                      },
+          'MYCN' => {
+                      'MYCN' => 1
+                    },
+          'TBX18' => {
+                       'TBX18' => 1
+                     },
+          'ZBRK1' => {
+                       'ZNF350' => 1
+                     },
+          'NRSF' => {
+                      'REST' => 1
+                    },
+          'EN-1' => {
+                      'EN1' => 1
+                    },
+          'PAX-3' => {
+                       'PAX3' => 1
+                     },
+          'NKX6-2' => {
+                        'NKX6-2' => 1
+                      },
+          'PPARG' => {
+                       'PPARG' => 1
+                     },
+          'NFIL3' => {
+                       'NFIL3' => 1
+                     },
+          'AREB6' => {
+                       'ZEB1' => 1
+                     },
+          'DMRT2' => {
+                       'DMRT2' => 1
+                     },
+          'CHX10' => {
+                       'VSX2' => 1
+                     },
+          'GATA-4' => {
+                        'GATA4' => 1
+                      },
+          'GFI' => {
+                     'GFI1' => 1
+                   },
+          'HNF4A' => {
+                       'HNF4A' => 1
+                     },
+          'ISL2' => {
+                      'ISL2' => 1
+                    },
+          'LXR' => {
+                     'NR1H2' => 1,
+                     'NR1H3' => 1
+                   },
+          'LH-2' => {
+                      'LHX2' => 1
+                    },
+          'NF-KAPPAB(P65)' => {
+                                'RELA' => 1
+                              },
+          'ZFP423' => {
+                        'ZNF423' => 1
+                      },
+          'RELA' => {
+                      'RELA' => 1
+                    },
+          'LHX5' => {
+                      'LHX5' => 1
+                    },
+          'CDC5' => {
+                      'CDC5L' => 1
+                    },
+          'HIF1A' => {
+                       'HIF1A' => 1
+                     },
+          'HOXA4' => {
+                       'HOXA4' => 1
+                     },
+          'GFI1B' => {
+                       'GFI1B' => 1
+                     },
+          'HLF' => {
+                     'EPAS1' => 1,
+                     'HLF' => 1
+                   },
+          'RUNX1' => {
+                       'RUNX1' => 1
+                     },
+          'IKAROS' => {
+                        'IKZF1' => 1
+                      },
+          'OTX' => {
+                     'OTX2' => 1,
+                     'OTX1' => 1
+                   },
+          'RXR(PXR:RXR)' => {
+                              'RXRG' => 1,
+                              'RXRA' => 1,
+                              'RXRB' => 1
+                            },
+          'BARX1' => {
+                       'BARX1' => 1
+                     },
+          'GSH2' => {
+                      'GSX2' => 1
+                    },
+          'MZF1' => {
+                      'MZF1' => 1
+                    },
+          'VSX1' => {
+                      'VSX1' => 1
+                    },
+          'STAT5A' => {
+                        'STAT5A' => 1
+                      },
+          'FREAC-4' => {
+                         'FOXD1' => 1
+                       },
+          'PPARGAMMA' => {
+                           'PPARG' => 1
+                         },
+          'EGR1' => {
+                      'EGR1' => 1
+                    },
+          'HSF1' => {
+                      'HSF1' => 1
+                    },
+          'NFATC2' => {
+                        'NFATC2' => 1
+                      },
+          'MTF-1' => {
+                       'MTF1' => 1
+                     },
+          'HOXA9' => {
+                       'HOXA9' => 1
+                     },
+          'NFYA' => {
+                      'NFYA' => 1
+                    },
+          'HOXA3' => {
+                       'HOXA3' => 1
+                     },
+          'DAX1' => {
+                      'NR0B1' => 1
+                    },
+          'BRN-2' => {
+                       'POU3F2' => 1
+                     },
+          'GFI1' => {
+                      'GFI1' => 1
+                    },
+          'CEBPA' => {
+                       'CEBPA' => 1
+                     },
+          'NKX2-4' => {
+                        'NKX2-4' => 1
+                      },
+          'TFAP2A' => {
+                        'TFAP2A' => 1
+                      },
+          'FOXJ2' => {
+                       'FOXJ2' => 1
+                     },
+          'GATA1' => {
+                       'GATA1' => 1
+                     },
+          'PBX1' => {
+                      'PBX1' => 1
+                    },
+          'USF1' => {
+                      'USF1' => 1
+                    },
+          'IRF2' => {
+                      'IRF2' => 1
+                    },
+          'AHR' => {
+                     'AHR' => 1
+                   },
+          'ICSBP' => {
+                       'IRF8' => 1
+                     },
+          'XBP-1' => {
+                       'XBP1' => 1
+                     },
+          'E4F1' => {
+                      'E4F1' => 1
+                    },
+          'NRF-2' => {
+                       'GABPA' => 1
+                     },
+          'CTF1' => {
+                      'CTF1' => 1
+                    },
+          'NFE2L2' => {
+                        'NFE2L2' => 1
+                      },
+          'MAFB' => {
+                      'MAFB' => 1
+                    },
+          'EVI-1' => {
+                       'MECOM' => 1
+                     },
+          'MTF1' => {
+                      'MFI2' => 1,
+                      'MTF1' => 1,
+                      'MYT1' => 1
+                    },
+          'MEF-2' => {
+                       'MYEF2' => 1
+                     },
+          'OLF-1' => {
+                       'OR5I1' => 1
+                     },
+          'NR3C1' => {
+                       'NR3C1' => 1
+                     },
+          'KLF4' => {
+                      'KLF4' => 1
+                    },
+          'KID3' => {
+                      'ZNF354C' => 1
+                    },
+          'ISX' => {
+                     'ISX' => 1
+                   },
+          'FXR/RXR-ALPHA' => {
+                               'NR1H4' => 1
+                             },
+          'PXR(PXR' => {
+                         'NR1I2' => 1
+                       },
+          'YY1' => {
+                     'YY1' => 1
+                   },
+          'NRF-1' => {
+                       'NRF1' => 1
+                     },
+          'PU.1' => {
+                      'SPI1' => 1
+                    },
+          'ZNF143' => {
+                        'ZNF143' => 1
+                      },
+          'ELK-1' => {
+                       'ELK1' => 1,
+                       'KCNH4' => 1
+                     },
+          'PR' => {
+                    'TMEM37' => 1,
+                    'PGR' => 1,
+                    'PRH2' => 1
+                  },
+          'ATF6' => {
+                      'ATF6' => 1
+                    },
+          'HOXD3' => {
+                       'HOXD3' => 1
+                     },
+          'SP3' => {
+                     'SP3' => 1
+                   },
+          'HTF' => {
+                     'TCF12' => 1,
+                     'ZNF92' => 1,
+                     'ZNF91' => 1,
+                     'ZNF85' => 1,
+                     'ZNF43' => 1,
+                     'ZNF93' => 1,
+                     'TRMT2A' => 1,
+                     'ZNF90' => 1
+                   },
+          'TCF3' => {
+                      'TCF7L1' => 1,
+                      'TCF3' => 1
+                    },
+          'LRF' => {
+                     'ZBTB7A' => 1
+                   },
+          'AML1' => {
+                      'RUNX1' => 1
+                    },
+          'RHOX11' => {
+                        'RHOXF1' => 1
+                      },
+          'WT1' => {
+                     'WT1' => 1
+                   },
+          'DP-1' => {
+                      'TFDP1' => 1
+                    },
+          'LEF1' => {
+                      'LEF1' => 1
+                    },
+          'NF-KAPPAB' => {
+                           'NFKB1' => 1
+                         },
+          'ARP-1(COUP-TF2)' => {
+                                 'NR2F2' => 1
+                               },
+          'ZABC1' => {
+                       'ZNF217' => 1
+                     },
+          'BACH1' => {
+                       'BRIP1' => 1,
+                       'BACH1' => 1
+                     },
+          'CAR' => {
+                     'CXADR' => 1,
+                     'SPG7' => 1,
+                     'NR1I3' => 1,
+                     'CXADRP1' => 1
+                   },
+          'MSX-1' => {
+                       'MSX1' => 1
+                     },
+          'HOXB5' => {
+                       'HOXB5' => 1
+                     },
+          'PITX2' => {
+                       'PITX2' => 1
+                     },
+          'SOX9' => {
+                      'SOX9' => 1
+                    },
+          'NKX2-9' => {
+                        'NKX2-8' => 1
+                      },
+          'UF1H3BETA' => {
+                           'UF1H3B' => 1
+                         },
+          'TGIF1' => {
+                       'TGIF1' => 1
+                     },
+          'TP53' => {
+                      'TP53' => 1
+                    },
+          'CDPCR1' => {
+                        'CR1' => 1,
+                        'CUX1' => 1
+                      },
+          'REL' => {
+                     'REL' => 1
+                   },
+          'MAFG' => {
+                      'MAFG' => 1
+                    },
+          'PU1' => {
+                     'SPI1' => 1
+                   },
+          'FOXL1' => {
+                       'FOXL1' => 1
+                     },
+          'GCM' => {
+                     'GCM2' => 1,
+                     'GCM1' => 1
+                   },
+          'HOXA5(HOX-1.3)' => {
+                                'HOXA5' => 1
+                              },
+          'RP58' => {
+                      'ZNF238' => 1
+                    },
+          'HB9' => {
+                     'MNX1' => 1
+                   },
+          'DEAF1' => {
+                       'DEAF1' => 1
+                     },
+          'ZIC1' => {
+                      'ZIC1' => 1
+                    },
+          'ZNF354C' => {
+                         'ZNF354C' => 1
+                       },
+          'OCT-4(POU5F1)' => {
+                               'POU5F1' => 1
+                             },
+          'MEIS1' => {
+                       'MEIS1' => 1
+                     },
+          'RELB' => {
+                      'RELB' => 1
+                    },
+          'OCT-6' => {
+                       'POU3F1' => 1
+                     },
+          'PXR' => {
+                     'NR1I2' => 1
+                   },
+          'HNF1B' => {
+                       'HNF1B' => 1
+                     },
+          'C-MYC' => {
+                       'MYC' => 1
+                     },
+          'MZF1_5-13' => {
+                           'MZF1' => 1
+                         },
+          'PAX' => {
+                     'PAX5' => 1,
+                     'PAX2' => 1,
+                     'PAX8' => 1,
+                     'PAX9' => 1,
+                     'PAX1' => 1,
+                     'PAX7' => 1,
+                     'PAX3' => 1,
+                     'PAX6' => 1,
+                     'PAX4' => 1
+                   },
+          'GABP' => {
+                      'GABPB1' => 1,
+                      'GABPB2' => 1,
+                      'GABPA' => 1
+                    },
+          'PAX-1' => {
+                       'PAX1' => 1
+                     },
+          'FXRINVERTEDREPEAT1' => {
+                                    'NR1H4' => 1
+                                  },
+          'DMRT5' => {
+                       'DMRTA2' => 1
+                     },
+          'NKX1-1' => {
+                        'NKX1-1' => 1
+                      },
+          'HNF3BETA' => {
+                          'FOXA2' => 1
+                        },
+          'COUPDIRECTREPEAT1' => {
+                                   'NR2F1' => 1
+                                 },
+          'KAISO' => {
+                       'ZBTB33' => 1
+                     },
+          'SIX-1' => {
+                       'SIX1' => 1
+                     },
+          'PPARDIRECTREPEAT1' => {
+                                   'PPARA' => 1
+                                 },
+          'RFX1' => {
+                      'RFX1' => 1
+                    },
+          'AP-2ALPHAA' => {
+                            'TFAP2A' => 1
+                          },
+          'TCF-4' => {
+                       'TCF7L2' => 1
+                     },
+          'ELF5' => {
+                      'ELF5' => 1
+                    },
+          'TAX/CREB' => {
+                          'CNTN2' => 1,
+                          'CREB1' => 1
+                        },
+          'SOX10' => {
+                       'SOX10' => 1
+                     },
+          'PEA3' => {
+                      'ETV4' => 1
+                    },
+          'HEB' => {
+                     'TCF12' => 1
+                   },
+          'LF-A1' => {
+                       'HNF1B' => 1
+                     },
+          'RXR' => {
+                     'RXRG' => 1,
+                     'RXRA' => 1,
+                     'RXRB' => 1
+                   },
+          'STRA13' => {
+                        'STRA13' => 1,
+                        'BHLHE40' => 1
+                      },
+          'GATA2' => {
+                       'GATA2' => 1
+                     },
+          'HOXC-8' => {
+                        'HOXC8' => 1
+                      },
+          'HNF-4' => {
+                       'HNF4A' => 1
+                     },
+          'AML1A' => {
+                       'RUNX1' => 1
+                     },
+          'TATA' => {
+                      'TBP' => 1
+                    },
+          'USF' => {
+                     'USF1' => 1
+                   },
+          'PTF1-BETA' => {
+                           'PTF1A' => 1
+                         },
+          'HOXC11' => {
+                        'HOXC11' => 1
+                      },
+          'MAF' => {
+                     'MAF' => 1
+                   },
+          'HNF3A' => {
+                       'FOXA1' => 1
+                     },
+          'NR1H2' => {
+                       'NR1H2' => 1
+                     },
+          'RAR' => {
+                     'RAB40B' => 1,
+                     'RARA' => 1
+                   },
+          'MYOGENIN/NF-1' => {
+                               'MYOG' => 1
+                             },
+          'STAT3' => {
+                       'STAT3' => 1
+                     },
+          'FOXP1' => {
+                       'FOXP1' => 1
+                     },
+          'GLI1' => {
+                      'GLI1' => 1
+                    },
+          'BARHL-1' => {
+                         'BARHL1' => 1
+                       },
+          'PBX-1' => {
+                       'PBX1' => 1
+                     },
+          'GATA-X' => {
+                        'GATA6' => 1,
+                        'GATA4' => 1,
+                        'GATA3' => 1,
+                        'GATA2' => 1,
+                        'GATA1' => 1,
+                        'GATA5' => 1
+                      },
+          'CHURCHILL' => {
+                           'CHURC1' => 1
+                         },
+          'HFH1(FOXQ1)' => {
+                             'FOXQ1' => 1
+                           },
+          'DP-2' => {
+                      'TFDP2' => 1
+                    },
+          'SREBP2' => {
+                        'SREBF2' => 1
+                      },
+          'E2F6' => {
+                      'E2F6' => 1
+                    },
+          'TLX1' => {
+                      'TLX1' => 1
+                    },
+          'GR' => {
+                    'NR3C1' => 1
+                  },
+          'ETS' => {
+                     'ETS2' => 1,
+                     'ETS1' => 1
+                   },
+          'STAF' => {
+                      'ZNF143' => 1
+                    },
+          'PITX3' => {
+                       'PITX3' => 1
+                     },
+          'POU5F1' => {
+                        'POU5F1' => 1
+                      },
+          'MOVO-B' => {
+                        'OVOL2' => 1,
+                        'OVOL3' => 1,
+                        'OVOL1' => 1
+                      },
+          'ZF5' => {
+                     'ZFP161' => 1
+                   },
+          'DMRT4' => {
+                       'DMRTA1' => 1
+                     },
+          'SAP-1A' => {
+                        'ELK4' => 1
+                      },
+          'RELA-P65' => {
+                          'RELA' => 1
+                        },
+          'HOXA5' => {
+                       'HOXA5' => 1
+                     },
+          'AP-2GAMMA' => {
+                           'TFAP2C' => 1
+                         },
+          'NFKB1' => {
+                       'NFKB1' => 1
+                     },
+          'RNF96' => {
+                       'TRIM28' => 1
+                     },
+          'SOX17' => {
+                       'SOX17' => 1
+                     },
+          'SREBP1' => {
+                        'SREBF1' => 1
+                      },
+          'ELF1' => {
+                      'ELOF1' => 1,
+                      'ELF1' => 1
+                    },
+          'NKX2-6' => {
+                        'NKX2-6' => 1
+                      },
+          'AP-3' => {
+                      'AP3S1' => 1,
+                      'AP3M1' => 1,
+                      'AP3D1' => 1,
+                      'AP3B2' => 1
+                    },
+          'GATA-2' => {
+                        'GATA2' => 1
+                      },
+          'NF-AT' => {
+                       'NFATC3' => 1,
+                       'NFATC4' => 1,
+                       'NFATC1' => 1,
+                       'NFAT5' => 1,
+                       'NFATC2' => 1
+                     },
+          'EBOX' => {
+                      'CLOCK' => 1,
+                      'MYOD1' => 1,
+                      'NEUROD1' => 1,
+                      'MYOG' => 1,
+                      'ARNTL2' => 1,
+                      'TCF3' => 1,
+                      'MYC' => 1
+                    },
+          'TRF1' => {
+                      'TERF1' => 1
+                    },
+          'MRF-2' => {
+                       'ARID5B' => 1
+                     },
+          'NF-E2' => {
+                       'NFE2' => 1
+                     },
+          'SMAD' => {
+                      'SMAD2' => 1,
+                      'SMAD1' => 1,
+                      'SMAD5' => 1,
+                      'SMAD7' => 1,
+                      'SMAD3' => 1,
+                      'SMAD6' => 1,
+                      'SMAD4' => 1,
+                      'SMAD9' => 1
+                    },
+          'C/EBPALPHA' => {
+                            'CEBPA' => 1
+                          },
+          'NHLH1' => {
+                       'NHLH1' => 1
+                     },
+          'PIT-1' => {
+                       'SLC20A1' => 1
+                     },
+          'TBX22' => {
+                       'TBX22' => 1
+                     },
+          'EBF1' => {
+                      'EBF1' => 1
+                    },
+          'NUR77' => {
+                       'NR4A1' => 1
+                     },
+          'ER' => {
+                    'EREG' => 1
+                  },
+          'NOBOX' => {
+                       'NOBOX' => 1
+                     },
+          'PAX-2' => {
+                       'PAX2' => 1
+                     },
+          'TFII-I' => {
+                        'GTF2I' => 1
+                      },
+          'ATF5' => {
+                      'ATF5' => 1
+                    },
+          'OCTAMER' => {
+                         'POU6F2' => 1,
+                         'POU4F2' => 1,
+                         'POU2F3' => 1,
+                         'POU1F1' => 1,
+                         'POU4F3' => 1,
+                         'POU5F1B' => 1,
+                         'POU4F1' => 1,
+                         'POU6F1' => 1,
+                         'POU5F2' => 1,
+                         'POU3F1' => 1,
+                         'POU3F4' => 1,
+                         'POU3F3' => 1,
+                         'POU3F2' => 1,
+                         'POU2F2' => 1,
+                         'POU2F1' => 1,
+                         'POU5F1' => 1
+                       },
+          'FOXD1' => {
+                       'FOXD1' => 1
+                     },
+          'LUN-1' => {
+                       'TOPORS' => 1
+                     },
+          'T3R' => {
+                     'THRA' => 1,
+                     'THRB' => 1
+                   },
+          'OSF2' => {
+                      'RUNX2' => 1
+                    },
+          'ESR1' => {
+                      'ESR1' => 1
+                    },
+          'PPAR' => {
+                      'PPARA' => 1
+                    },
+          'PEBP' => {
+                      'PEBP1' => 1
+                    },
+          'CNOT3' => {
+                       'CNOT3' => 1
+                     },
+          'OTP' => {
+                     'OTP' => 1
+                   },
+          'FLI1' => {
+                      'FLII' => 1,
+                      'FLI1' => 1
+                    },
+          'BLIMP1' => {
+                        'PRDM1' => 1
+                      },
+          'HNF4ALPHA' => {
+                           'HNF4A' => 1
+                         },
+          'MIF-1' => {
+                       'HERPUD1' => 1
+                     },
+          'MYF' => {
+                     'MYF5' => 1,
+                     'MYF6' => 1
+                   },
+          'PPARALPHA' => {
+                           'PPARA' => 1
+                         },
+          'GATA-6' => {
+                        'GATA6' => 1
+                      },
+          'RXR)' => {
+                      'RXRG' => 1,
+                      'RXRA' => 1,
+                      'RXRB' => 1
+                    },
+          'SEF-1' => {
+                       'RUNX1' => 1,
+                       'RUNX2' => 1,
+                       'CBFB' => 1,
+                       'RUNX3' => 1
+                     },
+          'FOXF2' => {
+                       'FOXF2' => 1
+                     },
+          'PAX-6' => {
+                       'PAX6' => 1
+                     },
+          'TFIIA' => {
+                       'GTF2A1' => 1,
+                       'GTF2A2' => 1
+                     },
+          'ESRRB' => {
+                       'ESRRB' => 1
+                     },
+          'NCX' => {
+                     'TLX2' => 1
+                   },
+          'OG-2' => {
+                      'NOBOX' => 1
+                    },
+          'IK-2' => {
+                      'TBK1' => 1
+                    },
+          'FOXO3' => {
+                       'FOXO3' => 1
+                     },
+          'CDPCR3' => {
+                        'ITGAM' => 1,
+                        'CUX1' => 1
+                      },
+          'WHN' => {
+                     'FOXN1' => 1
+                   },
+          'NKX2-2' => {
+                        'NKX2-2' => 1
+                      },
+          'BCL6' => {
+                      'BCL6' => 1
+                    },
+          'SMAD4' => {
+                       'SMAD4' => 1
+                     },
+          'RAR_DR5' => {
+                         'RARA' => 1
+                       },
+          'TBP' => {
+                     'TBP' => 1
+                   },
+          'GATA-3' => {
+                        'GATA3' => 1
+                      },
+          'AP-2' => {
+                      'TFAP2A' => 1
+                    },
+          'STAT6' => {
+                       'STAT6' => 1
+                     },
+          'MYOD' => {
+                      'MYOD1' => 1
+                    },
+          'IRX-3' => {
+                       'IRX6' => 1
+                     },
+          'FREAC-2' => {
+                         'FOXF2' => 1
+                       },
+          'ZIC3' => {
+                      'ZIC3' => 1
+                    },
+          'NKX3-2' => {
+                        'NKX3-2' => 1
+                      },
+          'TCFE2A' => {
+                        'TCF3' => 1
+                      },
+          'PAX2' => {
+                      'PAX2' => 1
+                    },
+          'CREB' => {
+                      'CREB1' => 1
+                    },
+          'NFIC' => {
+                      'NFIC' => 1
+                    },
+          'IK-1' => {
+                      'TBK1' => 1
+                    },
+          'MYC' => {
+                     'MYC' => 1
+                   },
+          'CDPCR3+HD' => {
+                           'HTT' => 1,
+                           'ITGAM' => 1,
+                           'CUX1' => 1
+                         },
+          'E12' => {
+                     'ELSPBP1' => 1
+                   },
+          'C-REL' => {
+                       'REL' => 1
+                     },
+          'LRH1' => {
+                      'NR5A2' => 1
+                    },
+          'EGR-2' => {
+                       'EGR2' => 1
+                     },
+          'BACH2' => {
+                       'BACH2' => 1
+                     },
+          'HNF1' => {
+                      'HNF1A' => 1
+                    },
+          'TST-1' => {
+                       'CCDC6' => 1
+                     },
+          'POU3F2' => {
+                        'POU3F2' => 1
+                      },
+          'AR' => {
+                    'AKR1B1' => 1,
+                    'AR' => 1
+                  },
+          'PBX-1B' => {
+                        'PBX1' => 1
+                      },
+          'EGR' => {
+                     'EGR3' => 1,
+                     'EGR1' => 1,
+                     'EGR4' => 1,
+                     'EGR2' => 1
+                   },
+          'MAZR' => {
+                      'PATZ1' => 1
+                    },
+          'HOXA7' => {
+                       'HOXA7' => 1
+                     },
+          'ESR2' => {
+                      'ESR2' => 1
+                    },
+          'TAX' => {
+                     'CNTN2' => 1
+                   },
+          'NKX2-1' => {
+                        'NKX2-1' => 1
+                      },
+          'P53DECAMER' => {
+                            'TP53' => 1
+                          },
+          'SP4' => {
+                     'SP4' => 1
+                   },
+          'GCNF' => {
+                      'NR6A1' => 1
+                    },
+          'LXRDIRECTREPEAT4' => {
+                                  'NR1H2' => 1,
+                                  'NR1H3' => 1
+                                },
+          'PAX5' => {
+                      'PAX5' => 1
+                    },
+          'ATF4' => {
+                      'ATF4' => 1
+                    },
+          'AMEF-2' => {
+                        'MEF2A' => 1
+                      },
+          'TBX15' => {
+                       'TBX15' => 1
+                     },
+          'FOXO1' => {
+                       'FOXO1' => 1
+                     },
+          'CTCF' => {
+                      'CTCF' => 1
+                    },
+          'NF-1' => {
+                      'NF1' => 1
+                    },
+          'EGR-1' => {
+                       'EGR1' => 1
+                     },
+          'ZNF515' => {
+                        'GLIS3' => 1
+                      },
+          'P52(NF-KAPPAB)' => {
+                                'NFKB2' => 1
+                              },
+          'AP1' => {
+                     'JUND' => 1,
+                     'JUN' => 1,
+                     'FOSB' => 1,
+                     'FOS' => 1
+                   },
+          'AP-4' => {
+                      'TFAP4' => 1
+                    },
+          'LMO2COMPLEX' => {
+                             'LMO2' => 1
+                           },
+          'CART-1' => {
+                        'ALX1' => 1
+                      },
+          'FREAC-7' => {
+                         'FOXL1' => 1
+                       },
+          'FAC1' => {
+                      'BPTF' => 1
+                    },
+          'AP-2ALPHA' => {
+                           'TFAP2A' => 1
+                         },
+          'S8' => {
+                    'PSMC5' => 1,
+                    'RPS8' => 1
+                  },
+          'PAX-7' => {
+                       'PAX7' => 1
+                     },
+          'SRF' => {
+                     'SRF' => 1
+                   },
+          'MAZ' => {
+                     'MAZ' => 1
+                   },
+          'STAT1' => {
+                       'STAT1' => 1
+                     },
+          'GABPA' => {
+                       'GABPA' => 1
+                     },
+          'AML' => {
+                     'RUNX1' => 1
+                   },
+          'NURR1' => {
+                       'NR4A2' => 1
+                     },
+          'ZID' => {
+                     'ZBTB6' => 1
+                   },
+          'HMGIY' => {
+                       'HMGA1' => 1
+                     },
+          'SOX2' => {
+                      'SOX2' => 1
+                    },
+          'ALPHA-CP1' => {
+                           'PCBP1' => 1
+                         },
+          'LMAF' => {
+                      'MAF' => 1
+                    },
+          'IPF1' => {
+                      'PDX1' => 1
+                    },
+          'KROX' => {
+                      'EGR2' => 1
+                    },
+          'P53' => {
+                     'TP53' => 1
+                   },
+          'SPI-B' => {
+                       'SPIB' => 1
+                     },
+          'IRF' => {
+                     'TRIM63' => 1
+                   },
+          'PRRX2' => {
+                       'PRRX2' => 1
+                     },
+          'RSRFC4' => {
+                        'MEF2A' => 1
+                      },
+          'ELK4' => {
+                      'ELK4' => 1
+                    },
+          'TEF' => {
+                     'TEF' => 1
+                   },
+          'GAF' => {
+                     'RAB11FIP5' => 1
+                   },
+          'HMGA2' => {
+                       'HMGA2' => 1
+                     },
+          'MSX-3' => {
+                       'MSX2' => 1
+                     },
+          'STAT5A(HOMOTETRAMER)' => {
+                                      'STAT5A' => 1
+                                    },
+          'MYOGENIN' => {
+                          'MYOG' => 1
+                        },
+          'DELTAEF1' => {
+                          'ZEB1' => 1
+                        },
+          'CDP' => {
+                     'CUX1' => 1
+                   },
+          'FOXO3A' => {
+                        'FOXO3' => 1
+                      },
+          'ATF' => {
+                     'ATF5' => 1,
+                     'ATF4' => 1,
+                     'ATF1' => 1,
+                     'GDNF' => 1,
+                     'ATF3' => 1,
+                     'ATF7' => 1,
+                     'ATF2' => 1,
+                     'ATF6' => 1
+                   },
+          'RUSH-1ALPHA' => {
+                             'HLTF' => 1
+                           },
+          'SF1' => {
+                     'SF1' => 1
+                   },
+          'MZF1_1-4' => {
+                          'MZF1' => 1
+                        },
+          'EGR-3' => {
+                       'EGR3' => 1
+                     },
+          'CIZ' => {
+                     'ZNF384' => 1
+                   },
+          'SRY' => {
+                     'SRY' => 1
+                   },
+          'GZF1' => {
+                      'GZF1' => 1
+                    },
+          'MYB' => {
+                     'MYB' => 1
+                   },
+          'ZFX' => {
+                     'ZFX' => 1
+                   }
+        };

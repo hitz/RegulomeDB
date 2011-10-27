@@ -9,6 +9,9 @@ use base 'Class::Accessor';
 use Data::Dumper;
 my @CHRS = (1..22,"X","Y"); # human chromosomes;
 
+my $mapPwmtoHugoFile = 'data/RegulomeDB/mapPWMtoHUGO.hash';
+my $mapPwmtoHugo = do $mapPwmtoHugoFile || die "Could not open $mapPwmtoHugoFile";
+
 Regulome::RegulomeDB->mk_accessors(qw/dbh dbs sth type dbfile dbdir data_mapping/);
 # maybe put in some generic base class...
 sub new {
