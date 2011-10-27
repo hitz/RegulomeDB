@@ -249,11 +249,11 @@ sub score() {
 	for my $pair (@$scores) {
 		my ($item, $ref, $rest) = @$pair; #safe guard in case we later return more columns!
 		if($item =~ /PWM_(\w+)/) {
-			$PWMs{$1}++;
+			@PWMs{ keys &hPWMtoHUGO($1) } = 1;
 		} elsif($item =~ /DNase/) {
 			$DNase = 1;
 		} elsif($item =~ /FP_.+_(\w+)/) {
-			$footprints{$1}++;
+			@footprints{ keys &hPWMtoHUGO($1) } = 1;
 		} elsif($item =~ /eQTL/) {
 			$eqtl = 1;
 		} elsif($item =~ /MANUAL/) {
@@ -295,6 +295,20 @@ sub score() {
 	return $score;
 	
 }
+
+sub hPWMtoHUGO {
+	my $old_factor_name = shift;
+	my %results = ();
+	my @split_names = split(/[:=]/,$old_factor_name);
+	foreach(@split_names) {
+		if($_ ne "") {
+			@results{ keys %{$TFmap->{uc($_)}} } = 1;
+		}
+	}
+  	return %results;
+}
+
+
 sub process(){
 	my $self = shift;
 	my $coords = shift; # [chr, position]
