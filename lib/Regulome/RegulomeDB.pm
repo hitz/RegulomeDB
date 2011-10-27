@@ -302,10 +302,10 @@ sub hPWMtoHUGO {
 	my @split_names = split(/[:=]/,$old_factor_name);
 	foreach(@split_names) {
 		if($_ ne "") {
-			@results{ keys %{$TFmap->{uc($_)}} } = 1;
+			@results{ keys %{$mapPwmtoHugo->{uc($_)}} } = 1;
 		}
 	}
-  	return %results;
+  	return \%results;
 }
 
 
