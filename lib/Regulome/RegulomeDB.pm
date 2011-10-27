@@ -9,6 +9,7 @@ use base 'Class::Accessor';
 use Data::Dumper;
 my @CHRS = (1..22,"X","Y"); # human chromosomes;
 
+#This will load a hash to map PWM names to proper HUGO gene sets
 my $mapPwmtoHugoFile = 'data/RegulomeDB/mapPWMtoHUGO.hash';
 my $mapPwmtoHugo = do $mapPwmtoHugoFile || die "Could not open $mapPwmtoHugoFile";
 
