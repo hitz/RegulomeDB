@@ -8,6 +8,11 @@ use lib './lib';
 use_ok 'Regulome';
 use_ok 'Regulome::RegulomeDB';
 
+$ENV{MOJO_CHUNK_SIZE} = 2621440;
+$ENV{MOJO_MAX_MESSAGE_SIZE} = 10000000000; # 10 GB upload limit
+$ENV{MOJO_MAX_MEMORY_SIZE}  = 10000000000; # 10 GB upload limit
+
+
 my $testSubmit = "
 chrX	55034742	55034747	Hif1-alpha_regulatory_promoter_element;PMID21207956								
 chrX	55034862	55034867	Hif1-alpha_regulatory_promoter_element;PMID21207956								
@@ -183,7 +188,6 @@ my $testGenome = "t/data/snp-TEST20110209-final.vcf";
 ok("-e $testGenome", "does genome file exist");
 
 my $t = Test::Mojo->new('Regulome');
-
 open(FH, $testBig);
 my $t0 = Benchmark->new;
 my $testLocal = join("\n", (<FH>));
@@ -215,7 +219,28 @@ use_ok('Regulome::RDB');
 my $ctl = Regulome::RDB->new(app => $r);
 
 $t0 = Benchmark->new;
-my $run_file = $t->post_form_ok('/running' => {file_data => { file => $testFile} });
+my $run_file = $t->post_form_ok('/fastrun' => {file_data => { file => $testFile} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+$t1 = Benchmark->new;
+$td = timediff($t1, $t0);
+print "Small file load:",timestr($td),"\n";
+
+$t0 = Benchmark->new;
+$run_file = $t->post_form_ok('/fastrun' => {file_data => { file => $testBig} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+$t1 = Benchmark->new;
+$td = timediff($t1, $t0);
+print "10K file load:",timestr($td),"\n";
+
+$t0 = Benchmark->new;
+$run_file = $t->post_form_ok('/fastrun' => {file_data => { file => $testBig2} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+$t1 = Benchmark->new;
+$td = timediff($t1, $t0);
+print "10K file load (reverse):",timestr($td),"\n";
+
+$t0 = Benchmark->new;
+$run_file = $t->post_form_ok('/running' => {file_data => { file => $testFile} });
 $run_file->status_is(200)->content_like(qr/Elapsed/);
 $t1 = Benchmark->new;
 $td = timediff($t1, $t0);
@@ -233,7 +258,38 @@ $run_file = $t->post_form_ok('/running' => {file_data => { file => $testBig2} })
 $run_file->status_is(200)->content_like(qr/Elapsed/);
 $t1 = Benchmark->new;
 $td = timediff($t1, $t0);
+
 print "10K file load (reverse):",timestr($td),"\n";
+$t0 = Benchmark->new;
+$run_file = $t->post_form_ok('/fastrun' => {file_data => { file => $testBigger} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+$t1 = Benchmark->new;
+$td = timediff($t1, $t0);
+print "100K file load:",timestr($td),"\n";
+
+$t0 = Benchmark->new;
+$run_file = $t->post_form_ok('/fastrun' => {file_data => { file => $testGenome} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+$t1 = Benchmark->new;
+$td = timediff($t1, $t0);
+print "Genome file load:",timestr($td),"\n";
+
+
+print "10K file load (reverse):",timestr($td),"\n";
+$t0 = Benchmark->new;
+$run_file = $t->post_form_ok('/running' => {file_data => { file => $testBigger} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+$t1 = Benchmark->new;
+$td = timediff($t1, $t0);
+print "100K file load:",timestr($td),"\n";
+
+$t0 = Benchmark->new;
+$run_file = $t->post_form_ok('/running' => {file_data => { file => $testGenome} });
+$run_file->status_is(200)->content_like(qr/Elapsed/);
+$t1 = Benchmark->new;
+$td = timediff($t1, $t0);
+print "Genome file load:",timestr($td),"\n";
+
 
 for my $chr (1..22,'X','Y') {
 	open(FH, "t/data/chr$chr.test.vcf") || die "could not open t/data/chr$chr.test.vcf";
@@ -260,6 +316,8 @@ for my $chr (1..22,'X','Y') {
 	print "$count random SNPS ($nres results) from chr$chr.vcf took: ",timestr($td),"\n";
 	close(FH);
 }
+
+exit;
 
 $t0 = Benchmark->new;
 for my $line (split("\n"), $testLocal) {

@@ -110,7 +110,7 @@ sub submit {
 	}
 
 	my $t2 = Benchmark->new();
-	print STDERR "Time to process ", scalar @$input," lines and ",scalar @dataTable," results: ",timestr(timediff($t2,$t1)),"\n";
+	#print STDERR "Time to process ", scalar @$input," lines and ",scalar @dataTable," results: ",timestr(timediff($t2,$t1)),"\n";
 	$self->stash(
 				  snpDataTable =>
 					Mojo::JSON->new->encode(
@@ -133,7 +133,7 @@ sub submit {
 	);
 
 	my $t3 = Benchmark->new();
-	print STDERR "Time to set up rendering ",timestr(timediff($t3,$t2)),"\n";
+	#print STDERR "Time to set up rendering ",timestr(timediff($t3,$t2)),"\n";
 	$self->render(template => 'RDB/running');
 
 }
@@ -158,7 +158,7 @@ sub minimum_submit {
 		push @$dataTable, @$res;
 		push @$errors, @$err if @$err;
 		$t1 = Benchmark->new();
-		print STDERR "Time to process manual data ",timestr(timediff($t1,$t0)),"\n";
+		#print STDERR "Time to process manual data ",timestr(timediff($t1,$t0)),"\n";
 		
 	} elsif ( $data = $self->req->upload('file_data')->asset->get_chunk() ) {
 
@@ -171,7 +171,7 @@ sub minimum_submit {
 		    $self->app->log->debug("Processing data (Chunk: ",$n+1," from file...");
 		    my $input = [ split( "\n", $data ) ];
 		    $input->[0] = $remnant.$input->[0];
-		    print STDERR "New first line: ",$input->[0],"\n" if $remnant;
+		    #print STDERR "New first line: ",$input->[0],"\n" if $remnant;
 		    $remnant = pop @$input;
 		    $n += scalar @$input;
 		    my ($res, $err)  = $self->process_chunk($input);

@@ -14,7 +14,7 @@
 
 == Other application ==
 * snp/chr:/coord: -> snp page  DONE
-* refactor into controllers - SNP done, RDB not 
+* refactor into controllers - DONE (possibly move to Regulome/Controller dir
 * download results
 * snpid -> multi coordinates disambiguation page?
 * implement not found pages
