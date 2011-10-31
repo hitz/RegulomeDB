@@ -18,9 +18,10 @@ EOF
 # Application
 $ENV{MOJO_APP} ||= 'Regulome';
 
-#$ENV{MOJO_MAX_MESSAGE_SIZE} = 5000000000; # 5 GB upload limit
+#$ENV{MOJO_MAX_MESSAGE_SIZE} = 50000000000; # 50 GB upload limit
 #$ENV{MOJO_CHUNK_SIZE} = 131072; # 128K ~1000 VCF lines
 $ENV{MOJO_CHUNK_SIZE} = 262144; # 256K ~2000 VCF lines
+$ENV{MOJO_MAX_MEMORY} = 32000000000; # 32 Gb for production machine
 
 # Start commands
 Mojolicious::Commands->start;

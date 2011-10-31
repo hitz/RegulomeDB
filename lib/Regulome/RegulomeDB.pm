@@ -176,8 +176,12 @@ sub full_score () {
 					} elsif (ref($map) eq 'ARRAY') {
 						$hit->{$colName} = join(" ",@f[$map->[0] .. $#f]);
 					} elsif ($map =~ /\d+/) {
-						$sc->{factors}->{$f[$map]}++ if exists $factors->{$colName};
-						$hit->{$colName} = $f[$map];
+						if (exists $factors->{$colName}) {
+							for my $alt (&hPWMtoHUGO($f[$map])) {
+								$sc->{factors}->{$alt}++;
+							}
+						}						
+						$hit->{$colName} = $f[$map]; # replace with alt hit?
 					} else {
 						$hit->{$colName} = $map;
 					}
@@ -249,18 +253,17 @@ sub score() {
 	for my $pair (@$scores) {
 		my ($item, $ref, $rest) = @$pair; #safe guard in case we later return more columns!
 		if($item =~ /PWM_(\w+)/) {
-			@PWMs{ keys %{&hPWMtoHUGO($1)} } = 1;
+			@PWMs{ &hPWMtoHUGO($1) } = 1;
 		} elsif($item =~ /DNase/) {
 			$DNase = 1;
 		} elsif($item =~ /FP_.+_(\w+)/) {
-			@footprints{ keys %{&hPWMtoHUGO($1)} } = 1;
+			@footprints{ &hPWMtoHUGO($1) } = 1;
 		} elsif($item =~ /eQTL/) {
 			$eqtl = 1;
 		} elsif($item =~ /MANUAL/) {
 			$manual = 1;
 		} elsif($item =~ /^TF_.*?_([^\s_]+)/) {
-			#$item =~ s/_.*//; fix regex above
-			$chips{$1}++;
+			@chips{ &hPWMtoHUGO($1) } = 1;
 		}
 	}
 	
@@ -292,6 +295,9 @@ sub score() {
 						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
 	} 
 
+	#print STDERR "CHIPS: ", Dumper %chips;
+	#print STDERR "PWMS: ", Dumper %PWMs;
+	#print STDERR "FPS", Dumper %footprints;
 	return $score;
 	
 }
@@ -305,7 +311,8 @@ sub hPWMtoHUGO {
 			@results{ keys %{$mapPwmtoHugo->{uc($_)}} } = 1;
 		}
 	}
-  	return \%results;
+	$results{$old_factor_name} = 1;
+  	return keys %results;
 }
 
 

@@ -53,8 +53,8 @@ is(ref($chk->[0]),'ARRAY',"check_coord returns ARRAY_REF of ARRAY_REF");
 ($format, $chk) = $cntrl->check_coord(\@pos2);
 
 
-#open (OUT,">tmp.pm");
-#my $out = {};
+#open (OUT,">tmp.pm"); see note below
+my $out = {};
 for my $c (keys %$sampleBED) {
 	($format, $chk) = $cntrl->check_coord($c);
 	is(scalar(@$chk), 1, "BED returns 1 SNP");
@@ -64,18 +64,23 @@ for my $c (keys %$sampleBED) {
 	# note: coordinates of process thrown out, checked in SnpDB.t
 	is_deeply([ map $_->[0], @$scan ], $sampleBED->{$c}->{results},"Check BED results $snp->[0] $snp->[1]");
 	is_deeply([ map $_->[1], @$scan ], $sampleBED->{$c}->{refs},"Check BED refs $snp->[0] $snp->[1]");
-	is($rdb->score($scan), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
+	my $sc;
+	is(($sc = $rdb->score($scan)), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
 	my $fsc = $rdb->full_score($scan,$snp->[0]);
 	is($fsc->{score}, $sampleBED->{$c}->{score}, "Check BED score_full $snp->[0] $snp->[1]");
-	#print Dumper $fsc;
-#	$out->{$c} = {
-#		refs => [ map $_->[1], @$scan ],
-#		results => [ map $_->[0], @$scan ],
-#		score => $sc
-#	};
+	print "$c => ", Dumper $fsc;
+=pod
+   Below code is useful for regenerating sampleBED.pm when database or scoring changes.
+	$out->{$c} = { 
+		refs => [ map $_->[1], @$scan ],
+		results => [ map $_->[0], @$scan ],
+		score => $sc
+	};
+=cut
 }
+# see above note
 #print OUT Dumper $out;
-
+exit;
 for my $vcf (keys %$sampleVCF) {
 	($format, $chk) = $cntrl->check_coord($vcf);
 	is($format, 'VCF - 1 Based', "Check VCF format");

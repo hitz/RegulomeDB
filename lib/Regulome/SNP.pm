@@ -190,6 +190,7 @@ sub snp_table {
 														bInfo     => 0,
 														bLengthChange => 0,
 														bPaginate => 0,
+														iDisplayLength => scalar @data,
 													}	
 														);
 		} else {
