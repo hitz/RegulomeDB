@@ -21,9 +21,28 @@
 </div>
 %= javascript "/js/jquery.dataTables.min.js"
 <script>
+	var createLinks =  function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+				var content = aData[aData.length-1];
+				var td = $('td', nRow).eq(aData.length-1);
+				// Reference is the last column... all bets are off if you move it!!!
+		            	if (content.match(/PMID/)) {
+		            	
+					td.html(td.html().replace(/PMID([0-9]+)/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed?term=$1\">$1</a>"));
+            		    	} else if (content.match(/NCP000/)) {
+					td.html('<a href=\"http://www.genome.gov/10005107\">ENCODE</a>');
+				} else if (content.match(/^M0/)) {
+					td.html(td.html().replace(/(M[0-9]+).pwm/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed=12520026\">$1</a>"));
+				} else if (content.match(/^MA/)) {
+				        td.html(td.html().replace(/(MA[0-9\.]+).pwm/,"<a href=\"http://jaspar.genereg.net/cgi-bin/jaspar_db.pl?ID=$1&rm=present&collection=CORE\">$1</a>"));
+				}
+		           	 return nRow;
+        		    };
+
 	$(function() {
 		<% for my $sect (@$sections) { next unless keys %$sect; %>
-			$('#<%= $sect->{table_id} %>').dataTable(<%= b($sect->{data_table}) %>);
+			var dtParams = <%= b($sect->{data_table}) %>;
+			dtParams['fnRowCallback'] = createLinks;
+			$('#<%= $sect->{table_id} %>').dataTable(dtParams);
 		<% } %>
 	});
 </script>  
