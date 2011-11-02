@@ -21,7 +21,7 @@
   <div id='location'>
 	<%=image '/images/SCGPM_Logo_Graphic.png', alt => 'SCGPM logo', height=> 30 %>
 	A project of the Center for Genomics and Personalized Medicine at Stanford University.
-	<%=image '/images/Stanford-seal.gif', alt => 'Stanford logo', height=> 40 %>
+	<%=image '/images/Stanford-seal-small.gif', alt => 'Stanford logo', height => 35 %>
 
   </div>
 
