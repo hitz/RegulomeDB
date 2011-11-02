@@ -39,11 +39,9 @@
         		    };
 
 	var createHelpLinks = function( nHead, aasData, iStart, iEnd, aiDisplay) {
-				console.log($(nHead));
-				$('th div',nHead).each(function(val) {
-					console.log(val);
-					if (val.html() && $(val).html().match(/Cell Type/) ) {
-						$(val).html("<a href=\"http://genome.ucsc.edu/ENCODE/cellTypes.html\"><span class=\"ui-icon ui-icon-help\"></span>"+$(val).html());
+				$('th div', nHead).each(function(index) {
+					if ($(this).html() && $(this).html().match(/Cell Type/) ) {
+						$(this).html("<a title=\"Help on Cell Type\" href=\"http://genome.ucsc.edu/ENCODE/cellTypes.html\"><span class=\"ui-icon ui-icon-help\"></span>"+$(this).html());
 					}
 				   });
 			     };

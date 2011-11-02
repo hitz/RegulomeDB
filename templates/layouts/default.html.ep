@@ -31,6 +31,7 @@
 	<%=image '/images/Stanford-seal.gif', alt => 'Stanford logo', height=> 40 %>
 
   </div>
+
   <div id='footer'>
    <p>RegulomeDB (TM) Copyright &#169;2011 The Board of Trustees of 
 Leland Stanford Junior University. 
