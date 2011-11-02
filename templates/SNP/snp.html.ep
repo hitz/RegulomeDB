@@ -27,21 +27,32 @@
 				// Reference is the last column... all bets are off if you move it!!!
 		            	if (content.match(/PMID/)) {
 		            	
-					td.html(td.html().replace(/PMID([0-9]+)/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed?term=$1\">$1</a>"));
+					td.html(td.html().replace(/PMID([0-9]+)/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/$1\">$1</a>"));
             		    	} else if (content.match(/NCP000/)) {
 					td.html('<a href=\"http://www.genome.gov/10005107\">ENCODE</a>');
 				} else if (content.match(/^M0/)) {
-					td.html(td.html().replace(/(M[0-9]+).pwm/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed=12520026\">$1</a>"));
+					td.html(td.html().replace(/(M[0-9]+).pwm/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/16381825\">$1</a>"));
 				} else if (content.match(/^MA/)) {
 				        td.html(td.html().replace(/(MA[0-9\.]+).pwm/,"<a href=\"http://jaspar.genereg.net/cgi-bin/jaspar_db.pl?ID=$1&rm=present&collection=CORE\">$1</a>"));
 				}
 		           	 return nRow;
         		    };
 
+	var createHelpLinks = function( nHead, aasData, iStart, iEnd, aiDisplay) {
+				console.log($(nHead));
+				$('th div',nHead).each(function(val) {
+					console.log(val);
+					if (val.html() && $(val).html().match(/Cell Type/) ) {
+						$(val).html("<a href=\"http://genome.ucsc.edu/ENCODE/cellTypes.html\"><span class=\"ui-icon ui-icon-help\"></span>"+$(val).html());
+					}
+				   });
+			     };
+
 	$(function() {
 		<% for my $sect (@$sections) { next unless keys %$sect; %>
 			var dtParams = <%= b($sect->{data_table}) %>;
 			dtParams['fnRowCallback'] = createLinks;
+			dtParams['fnHeaderCallback'] = createHelpLinks;
 			$('#<%= $sect->{table_id} %>').dataTable(dtParams);
 		<% } %>
 	});

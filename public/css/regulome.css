@@ -63,9 +63,20 @@ div#input {
   height: 50px;
 }
 
+#location
+{
+  width: 700px;
+  font-size:14px;
+  text-align: center;
+}
+
+#location > img { 
+  vertical-align: middle;
+}
+
 #footer p
 {
-    font-size: 12px;
+    font-size: 9px;
     color: #EFF3EA;
     padding: 14px;
 }

@@ -17,6 +17,16 @@
 	 </div>
   </div>  
   <%= content %>
+
+
+  <div id='location'>
+	<%=image '/images/SCGPM_Logo_Graphic.png', alt => 'SCGPM logo', height=> 30 %>
+	A project of the Center for Genomics and Personalized Medicine at Stanford University.
+	<%=image '/images/Stanford-seal.gif', alt => 'Stanford logo', height=> 40 %>
+
+  </div>
+
+
  <div id='footer'>
    <p>RegulomeDB (TM) Copyright &#169;2011 The Board of Trustees of 
 Leland Stanford Junior University. 

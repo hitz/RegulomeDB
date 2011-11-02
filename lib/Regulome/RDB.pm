@@ -39,14 +39,14 @@ sub submit {
 					  },
 					  { sTitle => 'dbSNP ID', sClass => 'aligncenter' },
 					  {
-						 sTitle => 'Regulome DB Score (click to see data)',
+						 sTitle => '<a href="/help#score"><span class="ui-icon ui-icon-help"></span></a>Regulome DB Score',
 						 sClass => 'aligncenter',
 						 sWidth => '12em'
 					  },
 					  {
 						 sTitle => 'Other Resources',
 						 sClass => 'aligncenter',
-						 sWidth => '17em'
+						 sWidth => '18em'
 					  }
 	);
 	my ( $n, $nsnps ) = ( 0, 0 );
@@ -96,7 +96,7 @@ sub submit {
 				   ? "No data"
 				   : $self->link_to(
 								$score, "/snp/$snp->[0]/$snp->[1]",
-								'tip' => 'Click on score to see supporting data'
+								'title' => 'Click on score to see supporting data'
 				   )
 				),
 				join( ' | ', @otherResources )
