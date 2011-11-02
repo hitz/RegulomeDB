@@ -72,7 +72,7 @@ sub new {
      				    ],		        		
     	},
      	DNase => {
-    		regex => '(DNase)_(.+)_{0,1}(.*)',
+    		regex => '^(DNase)_(.+)_{0,1}(.*)',
       		columns => [ { 'Method' => 'DNase hypersensitivity'},
      				     { 'Location' => '' },
      				     { 'Cell Type' => 1 },
@@ -80,11 +80,11 @@ sub new {
      				     { 'Reference' => '' },
      				    ],		        		
     	},
-    	MANUAL => {
-    		regex => '(MANUAL)_(.*)',
-    		columns => [ { 'Method' => 'Manual'},
+    	Other => {
+    		regex => '(.*)_(MANUAL|MANUALTF)$',
+    		columns => [ { 'Method' => 'Other'},
     		     		 { 'Location' => '' },   		
-    					 { 'Experiment' => [1,'rest'] },
+    					 { 'Experiment' => [0,'rest'] },
     					 { 'Reference' => '' },
     					]
     	}
