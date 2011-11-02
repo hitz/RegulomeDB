@@ -90,13 +90,42 @@ sub new {
      				     { 'Reference' => '' },
      				    ],		     
      	},
+    	MANUALFP  => {
+    		regex => '\(.*footprint(.*)\)_\((.*)\)_\((.*)\)_MANUAL',
+      		columns => [ { 'Method' => "(0)"},
+     				     { 'Location' => '' },
+     				     { 'Motif' => "(2)" }, 
+     				     { 'Cell Type' => "(1)"},
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	MANUALPWM  => {
+    		regex => 'MOTIF_\((.*)\)_MANUAL',
+      		columns => [ { 'Method' => 'PWM'},
+     				     { 'Location' => '' },
+     				     { 'Motif' => "(1)" }, 
+     				     { 'Cell Type' => ''},
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	MANUALSNV =>  {
+    		regex => 'SNV_\((.*)\)_\((.*)\)_\((.*)\)_MANUAL',
+      		columns => [ { 'Method' => ''},
+     				     { 'Location' => '' },
+     				     { 'Affected Gene' => "(2)" }, 
+     				     { 'Cell Type' => "(1)" },
+     				     { 'Additional Information' => "(3)" },
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
     	Other => {
     		regex => '(.*)_(MANUAL|MANUALTF)$',
-    		columns => [ { 'Method' => 'Other'},
+    		columns => [ { 'Method' => "(0)"},
     		     		 { 'Location' => '' },   		
-    					 { 'Experiment' => [0,'rest'] },
-    					 { 'Reference' => '' },
-    					]
+    				 { 'Cell Type' => "(1)" },
+    				 { 'Annotation' => "(2)" },
+    				 { 'Reference' => '' },
+    				]
     	}
     };
     $self->data_mapping($mapping);
