@@ -39,7 +39,7 @@ sub submit {
 					  },
 					  { sTitle => 'dbSNP ID', sClass => 'aligncenter' },
 					  {
-						 sTitle => '<div class="ui-state-default ui-corner-all" style="width: 16px; "><a title="help on scoring" href="/help#score"><span class="ui-icon ui-icon-help"></span></a></div>Regulome DB Score',
+						 sTitle => '<a title="help on scoring" href="/help#score"><span class="text-ui-icon ui-icon ui-icon-help"></span></a>Regulome DB Score',
 						 sClass => 'aligncenter',
 						 sWidth => '14em'
 					  },

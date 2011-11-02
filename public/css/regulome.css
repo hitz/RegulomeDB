@@ -292,6 +292,12 @@ div.dataTables_length
 // not sure why this need to override ui-state-error
 }
 
+.text-ui-icon {
+    display: inline-block !important;
+    padding-right: 1px !important;
+// additional styling when icons in embedded 
+}
+
 div.container {
     width: 900px;
 }

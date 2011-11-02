@@ -41,7 +41,7 @@
 	var createHelpLinks = function( nHead, aasData, iStart, iEnd, aiDisplay) {
 				$('th div', nHead).each(function(index) {
 					if ($(this).html() && $(this).html().match(/Cell Type/) ) {
-						$(this).html("<a title=\"Help on Cell Type\" href=\"http://genome.ucsc.edu/ENCODE/cellTypes.html\"><span class=\"ui-icon ui-icon-help\"></span>"+$(this).html());
+						$(this).html("<a title=\"Help on Cell Type\" href=\"http://genome.ucsc.edu/ENCODE/cellTypes.html\"><span class=\"text-ui-icon ui-icon ui-icon-help\"></span>"+$(this).html());
 					}
 				   });
 			     };

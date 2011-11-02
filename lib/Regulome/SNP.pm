@@ -137,7 +137,7 @@ sub snp_table {
 	my $sections = [
 		 { title => 'Protein Binding',
 		   table_id    => 'protein_binding',
-		   methods => { TF => 1},
+		   methods => { TF => 1, MANUALTF => 1},
 		   data_table => [],
 		 },    
 		 { title => 'Conserved motifs',

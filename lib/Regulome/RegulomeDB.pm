@@ -80,6 +80,16 @@ sub new {
      				     { 'Reference' => '' },
      				    ],		        		
     	},
+     	MANUALTF  => {
+     		regex => '\((.*)\)_\((.*)\)_\((.*)\)_MANUALTF',
+     		columns => [ { 'Method' => "(0)" },
+     				     { 'Location' => '' },
+     				     { 'Bound Protein' => "(2)" }, 
+     				     { 'Cell Type' => "(1)" },
+     				     { 'Additional Info' => '' },
+     				     { 'Reference' => '' },
+     				    ],		     
+     	},
     	Other => {
     		regex => '(.*)_(MANUAL|MANUALTF)$',
     		columns => [ { 'Method' => 'Other'},
@@ -154,6 +164,7 @@ sub full_score () {
     
 	for my $record (@$results) {
 		my ($item, $ref, $min, $max) = @$record;
+		my $record_has_hit = 0;
 		for my $type (keys %{ $self->data_mapping }) {
 			# needs to be an array of hits, but a hash of factors
 			my $regex = $self->data_mapping->{$type}->{regex};
@@ -163,8 +174,10 @@ sub full_score () {
 				
 				# BEGIN THE UGLY PARSE-O-MATIC
 				my @f = split('_', $item);
+				my @f_paren = split('\)_\({0,1}', $item);
 				for my $col (@{ $self->data_mapping->{$type}->{columns} }) {
 					my ($colName, $map) = %$col;
+					my $map_paren;
 					
 					if ($colName eq 'Location') {
 						$hit->{$colName} = "$chr:$min..$max";
@@ -175,6 +188,10 @@ sub full_score () {
 						$hit->{$colName} = '';
 					} elsif (ref($map) eq 'ARRAY') {
 						$hit->{$colName} = join(" ",@f[$map->[0] .. $#f]);
+					} elsif (($map_paren) = $map =~ /\((\d+)\)/) {
+						($hit->{$colName}) = $f_paren[$map_paren] =~ /\(?(.*)/;
+						$hit->{$colName} =~ s/_/ /g;
+						$hit->{$colName} =~ s/(\w+)/\u\L$1/g;
 					} elsif ($map =~ /\d+/) {
 						if (exists $factors->{$colName}) {
 							for my $alt (&hPWMtoHUGO($f[$map])) {
@@ -188,9 +205,11 @@ sub full_score () {
 						
 				}
 				push @{ $sc->{hits} }, $hit if keys %$hit;
-				$score->{$type} = $sc if @{ $sc->{hits} };				
+				$score->{$type} = $sc if @{ $sc->{hits} };
+				$record_has_hit++ if keys %$hit; #Keeping track of hits for Other MANUAL type				
 			}
 		}
+		pop(@{ $score->{Other}->{hits} }) if ($record_has_hit > 1); #If the record has a hit then remove from Other
 	}
 	
 	my $pwmmatched = 0;

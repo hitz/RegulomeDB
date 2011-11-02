@@ -16,7 +16,7 @@
    </div>
    <div id='error_detail'>
    <% for my $err (@$error) { %>
-   	  <p class='note'><span class="ui-icon ui-icon-alert"></span><%= $err->{msg} %></p>
+   	  <p class='note'><span class="text-ui-icon ui-icon ui-icon-alert"></span><%= $err->{msg} %></p>
    	  <pre><%= $err->{inp} %></pre>
    <% } %>
    </div>
@@ -42,8 +42,8 @@
 									$( this ).dialog( "close" );
 							 	}
 							 },
-							 maxHeight: 400,
-							width: 800
+							 height: 600,
+							 width: 800
 		});
 		$( '#expand_error').click(function() {
 			$( "#error_detail" ).dialog( "open" );
