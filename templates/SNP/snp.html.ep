@@ -5,10 +5,12 @@
 <h2>Score: <%= $score->{score} %></h2>
 </div>
 <div id='genomic_region'>
-  <% my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewTop?r='; %>
+  <% my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/ViewBottom?r='; %>
   <!-- # must append X:50030991;export=png -->
   <% $chr =~ s/chr//; %>
-  <%=image $ensembleImgURL.$chr.':'.$pos.';export=png', alt => 'Ensemble Browser', width => '740px' %>
+  <% my $pos_upstream = $pos-50000; %>
+  <% my $pos_downstream = $pos+50000; %>
+  <%=image $ensembleImgURL.$chr.':'.$pos_upstream.'-'.$pos_downstream.';export=png', alt => 'Ensemble Browser', width => '740px' %>
 </div>
 <div class='container'>
 <% for my $sect (@$sections) { %>
