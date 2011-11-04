@@ -22,5 +22,6 @@ t/benchmark/*
 t/temp.out
 data/RegulomeDB/*.db
 data/SnpDB/*.db
+data/GencodeDB/*.db
 *.bk
 nytprof*
