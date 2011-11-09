@@ -24,3 +24,4 @@ data/RegulomeDB/*.db
 data/SnpDB/*.db
 *.bk
 nytprof*
+public/tmp

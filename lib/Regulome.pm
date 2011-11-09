@@ -3,6 +3,7 @@ use Mojo::Base 'Mojolicious';
 use lib 'lib';
 use Regulome::RegulomeDB;
 use Regulome::SnpDB;
+use MojoX::Session::Store::File;
 
 # This method will run once at server start
 sub startup {
@@ -24,6 +25,7 @@ sub startup {
 						   }
 	);
 
+
 	$self->helper( 'rdb'   => sub { return $regDB } );
 	$self->helper( 'snpdb' => sub { return $snDB } );
 
@@ -31,6 +33,12 @@ sub startup {
 	$self->plugin('PODRenderer');
 	$self->secret("fortnight");
 	$self->plugin('RequestTimer');
+	$self->plugin(
+			session => {
+				stash_key => 'session',
+				store     => 'file' , #MojoX::Session::Store::File->new(), # could also be DBI or Libmemcached
+				expires_delta => 3600, # 1 hour, can be extended
+			});
 	
 
 	# Routes
@@ -55,6 +63,13 @@ sub startup {
 	    });
 	    
 	$r->post('/running')->to(controller => 'RDB', action => 'submit');
+
+	$r->get('/status')->to(controller => 'RDB', action => 'ajax_process');
+	
+	$r->get('/results')->to(controller => 'RDB', action => 'results');
+
+	$r->get('/results/:sid/')->to(controller => 'RDB', action => 'results');
+	
 }
 
 1;

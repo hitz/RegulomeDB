@@ -260,13 +260,13 @@ div.dataTables_length
   padding-bottom: 4px;
 }
 
-#about_content
+#about_content, #info
 {
     width: 880px;
     margin: 22px auto;
 }
 
-#about_content p
+#about_content p, #info p
 {
     padding: 12px;
 }
