@@ -138,21 +138,24 @@ sub check_session {
 	
 	my $self = shift;
 	my $session = $self->stash->{session};
-	if ($session->load) {
+	if ($session->load($session->sid)) {
 		if ($session->is_expired) {
+			print STDERR "Session expired, creating a new one: ";
 			$session->flush;
 			$session->create;
 		} else {
+			print STDERR "Old Session: ";
 			if ($session->data('is_running')) {
 				$session->extend_expires;
 				$session->flush
 			}
 		}
 	} else {
+		print STDERR "New Session: ";
 		$session->create;
 		$session->flush;
-	}	
-	print STDERR $self->dumper($session->sid, $session->data);
+	}
+	print STDERR $self->dumper($session->sid, $session->data);	
 	return $session;
 }
 
@@ -179,30 +182,32 @@ sub submit {
 	if ( $self->req->upload('file_data') ) {
 
 		if ($self->req->upload('file_data')->asset->size() > $MAX_SIZE) {
-			
-			# set sessions and temp files
-			if (my $pid = fork()) { # not sure this is the best way to do this
-			    my $size = $self->req->upload('file_data')->asset->size;
-				$session->data( 
+
+			# create session, then fork
+			my $size = $self->req->upload('file_data')->asset->size;
+			$session->data( 
 							 file_size => $size,
 							 chunk => 0,
-							 count => 0,
+							 ninp => 0,
 							 nsnps => 0,
 							 estimated_time_remaining => 10*($size/$ENV{MOJO_CHUNK_SIZE}),
 							 remnant => '',
-				);
+			);
 			
-				$session->flush;
-				$self->render(template => 'RDB/running'); 
+			$session->flush;
+			$self->stash(session => $session); # make sure the child gets it.
+			
+			if (my $pid = fork()) { # not sure this is the best way to do this
+				return $self->render(template => 'RDB/running'); 
 			# this page will AJAX-ily check results and deliver.
 			} elsif (defined $pid) {
+				local $SIG{INT} = "IGNORE"; # so children die.
 				$self->stash(file => $self->req->upload('file_data')->asset);
-				close STDOUT;					
 				$self->start_process;
 				my $data_remains = 1;
 				while($data_remains) { $data_remains = $self->continue_process }
 				$self->end_process;
-				
+				exit(0);
 			} else {
 				die "Could not fork $! in RDB.pm!";
 			}
@@ -224,7 +229,7 @@ sub submit {
 	push @$errors, @$err if @$err;
 	
 	make_path('public/tmp/results') unless -d 'public/tmp/results';
-	my $outfile_name =  "public/tmp/results/regulome.$sid.raw.json";
+	my $outfile_name =  "public/tmp/results/regulome_short.$sid.raw.json";
 	my $outfile = IO::File->new("> $outfile_name") || die "Could not open $outfile_name!";
 	$session->data(outfile=>$outfile_name);
 
@@ -287,32 +292,40 @@ sub start_process {
 	
 	my $self = shift;
 
-	my $session = $self->check_session;
+	my $session = $self->stash->{session};
 	
 	my $outfile;
-	my $outfile_name = $session->data('outfile') || '';  # this probably shouldn't be set.
 	my $sid = $session->sid;
-	unless ($outfile_name) {
-		$outfile_name = "public/tmp/results/regulome.$sid.raw.json";
-		$outfile = IO::File->new("> $outfile_name") || die "Could not open $outfile_name\n";
-		$outfile->print('['); # begin JSON array or arrays hack
-		$session->data(outfile => $outfile_name);
-	}
+	
+	my $outfile_name = "public/tmp/results/regulome.$sid.raw.json";
+	$outfile = IO::File->new("> $outfile_name") || die "Could not open $outfile_name\n";
+	$outfile->print('['); # begin JSON array or arrays hack
+	$session->data(outfile => $outfile_name);
+	$self->stash(outfile => $outfile);
+	
+	
+	my $errfile = IO::File->new("> public/tmp/results/regulome.$sid.err");
+	$self->stash('errfile' => $errfile);					
+	
 		
 	$session->data(is_running => '1');
 	
 	$session->flush; # hmmm... in case someone tries again while it's running.
 	
-	$self->stash(outfile => $outfile);
-
+	$errfile->print("DEBUG: Set up process for $outfile_name\n");
+	$errfile->print("DEBUG: session $sid", $self->dumper($session->data));
+	$errfile->flush();
 }
+
 sub continue_process {
 	
 	my $self = shift;
 	my $session = $self->check_session;
+	my $sid = $session->sid;
 
 	my $file = $self->stash('file');
 	my $outfile = $self->stash('outfile');
+	my $errfile = $self->stash('errfile');
 	
 	my $chunks = $session->data('chunk');
 	my $size = $session->data('file_size');
@@ -320,16 +333,18 @@ sub continue_process {
 	my $n = $session->data('ninp');
 	my $remnant = $session->data('remnant');
 	
-	
 	my $loc = $chunks*$ENV{MOJO_CHUNK_SIZE};
-	
+	$outfile->print(",\n") if $chunks > 0; # string together output arrays.
 	my $data_remains = 1;
 	if ($loc >= $size ) {
 		$data_remains = 0;
 		$loc = $size;
 	}
 
-	$self->app->log->debug("Processing data (Chunk: $chunks) from file: ${file->path} @ $loc");
+	$errfile->print("DEBUG: session $sid", $self->dumper($session->data));
+	$errfile->print("DEBUG: Processing data (Chunk: $chunks) from user uploaded file @ $loc\n");
+	$errfile->print("DEBUG: ",$size-$loc, " Data remains\n") if $data_remains;
+	
 	my $data = $file->get_chunk($loc);
 	
 	my $input = [ split( "\n", $data ) ];
@@ -339,20 +354,25 @@ sub continue_process {
 	my ($res, $err)  = $self->process_chunk($input);
 	
 	$nsnps += scalar @$res;	    
-	#push @$errors, @$err if @$err;  Keep errors "local" - or should we dump to file??
+	
+	my $err_json = $self->render(json => { error => $err }, partial => 1) if @$err;
+	$errfile->print($err_json."\n");
 	my $json = $self->render(json => $res, partial => 1);
+	$json = substr($json, 1, length($json)-2); # cut off []
 	$outfile->print($json);
 
 	$session->data(
-		 	       chunk => $chunks++,
+		 	       chunk => ++$chunks,
 			       ninp => $n,
 			       nsnps => $nsnps,
-			       remant => $remnant,
+			       remnant => $remnant,
 			       error => $err,
 				   estimated_time_remaining => 10*(($size/$ENV{MOJO_CHUNK_SIZE})-$chunks),
 	);
 		
 	$session->flush;
+	$errfile->flush;
+	$outfile->flush;
 	return $data_remains;
 }
 
@@ -362,6 +382,8 @@ sub end_process {
 	my $session = $self->check_session;
 
 	my $file = $self->stash('file');
+	my $outfile = $self->stash('outfile');
+	my $errfile = $self->stash('errfile');
 
 	if (my $remnant = $session->data('remnant')){
 
@@ -371,8 +393,9 @@ sub end_process {
 			
 		my ($last, $last_err) = $self->process_chunk([$remnant]);
 
-		$self->stash(error => $last_err);
-		$file->print($self->render(json => $last, partial => 1));
+		$errfile->print($self->render(json => $last_err, partial =>1)."\n") if @$last_err;
+		my $json = $self->render(json => $last, partial => 1);
+		$outfile->print(substr($json , 1, length($json)-2 ));
 		
 		$session->data(
 			chunk => $chunks++,
@@ -384,16 +407,22 @@ sub end_process {
 	}
 		
 	$session->data( is_running => 0 );
-	$file->print("]");
-	$file->close();
+	$outfile->print("]\n");
+	$outfile->close();
 	$session->flush;   		 		
+
+	my $sid = $session->sid;
+	my $chunks = $session->data('chunk');
+	print STDERR ("DEBUG: session $sid", $self->dumper($session->data));
+	print STDERR ("DEBUG: Finished Processing data (Chunk: $chunks) from user uploaded file\n");
+
 
 }
 
 sub ajax_status {
 	my $self = shift;
 	
-	my $session = $self->check_session;
+	my $session = $self->check_session; # this is where we might come back later.
 
 	my @fields = qw/ninp nsnps error chunk estimated_time_remaining is_running/;
 	

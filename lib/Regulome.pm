@@ -64,7 +64,7 @@ sub startup {
 	    
 	$r->post('/running')->to(controller => 'RDB', action => 'submit');
 
-	$r->get('/status')->to(controller => 'RDB', action => 'ajax_process');
+	$r->get('/status')->to(controller => 'RDB', action => 'ajax_status');
 	
 	$r->get('/results')->to(controller => 'RDB', action => 'results');
 

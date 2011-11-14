@@ -35,7 +35,7 @@
 				$( '#snp_no').html(data.nsnps);
 				$( '#input_no').html(data.ninp);
 				});
-			}, 2000);
+			}, 2000); 
 		$( '#stop').button().click(function(){window.clearInterval(int)});
 			
 		$( '#error_detail' ).dialog({
