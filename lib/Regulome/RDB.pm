@@ -4,6 +4,8 @@ use File::Path qw/make_path remove_tree/;
 
 our $MAX_SIZE = 1024; # maximum size for direct submit.  
 # 1024 is a testing value, ca. 1Mb would be more appropriate
+our $BROWSE_PADDING = 10000;
+# +/- range for browse links
 
 sub submit_old {
 
@@ -26,7 +28,6 @@ sub submit_old {
 	$self->stash( remnant => '' );
 
 	# below should go in some helper module or DB somewhere.
-	my $BROWSE_PADDING = 10000;
 	my $externalURL = {
 		ENSEMBL => 'http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
 		# must append X:50020991-50040991
@@ -168,7 +169,12 @@ sub submit {
 	my $errors = [];
 	my $n = 0;
 
-	# always start a new session (although I guess we could allow people in the future to run > 1 job)
+	# always start a new session 
+	# I think this is wrong now - because of the reload page situation
+	# it needs to check the current session see if it's see running and just 
+	# attach to that one.
+	# should we also check the upload file name?  Does that even make sense?
+	
 	my $session = $self->stash->{session};
 	if ($session->load) {
 		#delete existing session
@@ -244,32 +250,47 @@ sub submit {
 sub display {
 	
 	my $self = shift;
-	my $data = shift;
-	my $errors = shift;
-	my $n = shift;
-	
+	my $data = shift || undef;
+	my $errors = shift || undef;
+	my $n = shift || 0;
+
 	my @dtColumns = (
-					  {
-						 sTitle => 'chromosome',
-						 sClass => 'aligncenter',
-						 sWidth => '2em'
-					  },
 					  {
 						 sTitle => 'Coordinate (0-based)',
 						 sClass => 'aligncenter',
-						 sWidth => '12em'
+						 sWidth => '14em'
 					  },
+					  { sTitle => 'dbSNP ID', sClass => 'aligncenter' },
 					  {
 						 sTitle => 'Regulome DB Score (click to see data)',
 						 sClass => 'aligncenter',
 						 sWidth => '12em'
 					  },
+					  {
+						 sTitle => 'Other Resources',
+						 sClass => 'aligncenter',
+						 sWidth => '17em'
+					  }
 	);
+	my $sid = $self->param('sid') || $self->stash->{session}->sid || 0;
+	
+	my $nsnps = 0;
+	if ( (!$data || !$n) && $sid) {
+		my $session = $self->stash->{session};
+		$session->load($sid);
+		my $data_file = $session->data->{outfile};
+		my $error_file = $session->data->{errfile};
+		$n = $session->data->{ninp};
+		$nsnps = $session->data->{nsnps};
+	} else {
+		$nsnps = scalar @$data;
+	}
+	
 
 	$self->stash( { 
 					error => $errors,
                     ninp  => $n,
-					nsnps => scalar(@$data),
+					nsnps => $nsnps,
 					remnant => '',
                     snpDataTable =>
 				 		 Mojo::JSON->new->encode(
@@ -304,8 +325,10 @@ sub start_process {
 	$self->stash(outfile => $outfile);
 	
 	
-	my $errfile = IO::File->new("> public/tmp/results/regulome.$sid.err");
-	$self->stash('errfile' => $errfile);					
+	my $errfile_name = "public/tmp/results/regulome.$sid.err";
+	my $errfile = IO::File->new("> $errfile_name");
+	$self->stash('errfile' => $errfile);
+	$session->data(errfile => $errfile_name);			
 	
 		
 	$session->data(is_running => '1');
@@ -355,8 +378,11 @@ sub continue_process {
 	
 	$nsnps += scalar @$res;	    
 	
-	my $err_json = $self->render(json => { error => $err }, partial => 1) if @$err;
-	$errfile->print($err_json."\n");
+	if (@$err) {
+		my $err_json = $self->render(json => { error => $err }, partial => 1);
+		$errfile->print($err_json."\n");
+	}
+		
 	my $json = $self->render(json => $res, partial => 1);
 	$json = substr($json, 1, length($json)-2); # cut off []
 	$outfile->print($json);
@@ -425,10 +451,9 @@ sub ajax_status {
 	my $session = $self->check_session; # this is where we might come back later.
 
 	my @fields = qw/ninp nsnps error chunk estimated_time_remaining is_running/;
-	
 	my %jsonData = map { $_ => $session->data("$_") } @fields;
 
-	print STDERR "checking ajax status: ", $self->dumper($session->sid, $session->data);
+	$self->app->log->debug("checking ajax status: ".$self->dumper($session->sid, $session->data));
 	$self->render(json => \%jsonData);
 	
 }
@@ -457,11 +482,18 @@ sub process_chunk {
 		for my $snp (@$snps) {
 			my $res      = $self->rdb->process($snp);
 			my $score          = $self->rdb->score($res);
+			my $coordRange =
+			    $snp->[0] . ':'
+			  . ( $snp->[1] - $BROWSE_PADDING ) . '-'
+			  . ( $snp->[1] + $BROWSE_PADDING );
+			$coordRange =~ s/^chr//;
+			
 			push @result,
 			  [
-				$snp->[0], #chromosome
-			        $snp->[1], #position
-				$score
+				$snp->[0].':'.$snp->[1], #chromosome:position
+			    $self->snpdb->getRsid($snp) || "n/a",
+				$score,
+				$coordRange,
 			  ];
 		}
 	}

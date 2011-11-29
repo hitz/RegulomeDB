@@ -29,12 +29,16 @@
 	$(function() {
 	    int = setInterval(function(){
 	    	$.getJSON("status/",false, function(data) {
-	    		console.log('Chunk ran OK');
-				$( '#time').html(data.estimated_time_remaining);
-				$( '#chunk_no').html(data.chunk);
-				$( '#snp_no').html(data.nsnps);
-				$( '#input_no').html(data.ninp);
-				});
+	    		if (data.is_running) {
+		    		console.log('Still Running...');
+					$( '#time').html(data.estimated_time_remaining);
+					$( '#chunk_no').html(data.chunk);
+					$( '#snp_no').html(data.nsnps);
+					$( '#input_no').html(data.ninp);
+				} else {
+					window.location.replace("/results/<%= $session->sid %>");
+				}
+			  });
 			}, 2000); 
 		$( '#stop').button().click(function(){window.clearInterval(int)});
 			

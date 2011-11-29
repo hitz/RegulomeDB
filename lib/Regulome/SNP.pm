@@ -11,17 +11,28 @@ sub id {
 	$self->snp_table($coord,$rsid);
 }
 
-sub coord {
+sub rsid_from_coord {
 	my $self = shift;
-
 	my $chr = $self->param('chr');
 	$chr =~ tr/[xy]/[XY]/;
 	$chr = "chr$chr" unless $chr =~ /^chr/;
 	my $nt  = $self->param('nt');
 	my $rsid = $self->app->snpdb->getRsid([$chr, $nt]) || 'n/a';
-	
-	#$self->to('/not_found') unless $rsid;
+
+	return ($chr, $nt, $rsid);
+}
+sub coord {
+	my $self = shift;
+
+	my ($chr,$nt,$rsid)= $self->rsid_from_coord;
 	$self->snp_table([$chr, $nt], $rsid);
+}
+
+sub ajax_rsid {
+	my $self = shift;
+	my ($chr,$nt,$rsid)= $self->rsid_from_coord;
+
+	$self->render(json=>{ rsid => $rsid });	
 }
 =pod
 Protein binding

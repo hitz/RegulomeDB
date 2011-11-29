@@ -68,7 +68,11 @@ sub startup {
 	
 	$r->get('/results')->to(controller => 'RDB', action => 'results');
 
-	$r->get('/results/:sid/')->to(controller => 'RDB', action => 'results');
+	$r->get('/results/:sid/')->to(controller => 'RDB', action => 'display');
+	
+	$r->get('/rsid/:chr/:nt')->to(controller => 'SNP', action => 'ajax_rsid');
+
+	$r->get('/rsid/:id')->to(controller => 'SNP', action => 'ajax_coord');
 	
 }
 

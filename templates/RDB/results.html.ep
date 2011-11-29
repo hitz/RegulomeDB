@@ -30,8 +30,97 @@
 </div>
 %= javascript "/js/jquery.dataTables.min.js"
 <script>
+	var externalURL = {
+		ENSEMBL: 'http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
+		// must append X:50020991-50040991
+		dbSNP: 'http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=',
+		// must append DBSNP id
+		UCSC: 'http://genome.ucsc.edu/cgi-bin/hgTracks?org=Human&db=hg19&position=chr',
+		//must append X:50020991-50040991
+	};
+
+	var inflateTable =  function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+		var td = $('td', nRow).eq(2);
+		if (td.html()=="5") {
+			td.html('No Data');
+		} else {
+			td.html('<a href=\"/snp/'+aData[0]+'/'+aData[1]+'\" tip="Click on score to see supporting data">'+aData[2]+'</a>');
+		}
+		// col1: "aData[0]:aData[1]"
+		// col2: rsid = snpdb->getRsid([aData[0],aData[1]])
+		// col3: "no data" || <a href='/snp/rsid' tip='Click on score to see supporting data'>aData[2]</a>
+		// col4: join(" | ", $externalURL->foo)
+		td = $('td',nRow).eq(3);
+		var range = td.html();  // possibly aData[3]? should be the same
+		if (!range.match('href')) { // only the first time through
+			var content = [];
+			_.each(externalURL, function(url,db) {
+				if (db == 'dbSNP' ) {
+					var rsid = $('td',nRow).eq(1).html();
+				if (rsid.match('^rs') ) content.push('<a href=\"'+url+rsid+'\">'+db+'</a>');
+					} else if (db != 'dbSNP') {
+				content.push('<a href=\"'+url+range+'\">'+db+'</a>');								}
+			});
+			td.html(content.join(" | ")); 
+		}
+    	return nRow;
+    };
+
+	var inflateTableAjax =  function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+		for(i=0;i<aData.length; i++) {
+			var td = $('td', nRow).eq(i);
+			// col1: "aData[0]:aData[1]"
+			// col2: rsid = snpdb->getRsid([aData[0],aData[1]])
+			// col3: "no data" || <a href='/snp/rsid' tip='Click on score to see supporting data'>aData[2]</a>
+			// col4: join(" | ", $externalURL->foo)
+			var rsid = "";
+			switch(i)
+			{
+				case 0:
+					td.html(aData[0]+":"+aData[1]);
+					break;
+				case 1:
+					$.ajax("/rsid/"+aData[0]+"/"+aData[1],
+						   { dataType: 'json',
+						     success: function(data) { rsid = data.rsid; $('td',nRow).eq(1).html(data.rsid) },
+						     timeout: 200,
+						     async: false,
+						     error:  function(jqXHR, textStatus, errorThrown) { 
+						     	$('td',nRow).eq(1).html("RSID ajax failure: ( "+textStatus+" ) "+ errorThrown);
+						     	}
+						     }
+						     ); 
+					break;
+				case 2:
+					if (td.html()=="5") {
+						td.html('No Data');
+					} else {
+						td.html('<a href=\"/snp/'+aData[0]+'/'+aData[1]+'\" tip="Click on score to see supporting data">'+aData[2]+'</a>');
+					}
+					break;
+				case 3:
+					var range = td.html();  // possibly aData[3]? should be the same
+					var content = [];
+					_.each(externalURL, function(url,db) {
+						if (db == 'dbSNP' ) {
+						    var rsid = $('td',nRow).eq(1).html();
+						    if (rsid.match('^rs') ) content.push('<a href=\"'+url+rsid+'\">'+db+'</a>');
+						} else if (db != 'dbSNP') {
+							content.push('<a href=\"'+url+range+'\">'+db+'</a>');
+						}
+					});
+					td.html(content.join(" | ")); 
+		 			break;
+		 		};
+    	}
+    	return nRow;
+    };
+
 	$(function() {
-		$('#snp_analysis').dataTable(<%= b($snpDataTable) %>);
+		var dtParams = <%= b($snpDataTable) %>;
+		dtParams['fnRowCallback'] = inflateTable;
+	
+		$('#snp_analysis').dataTable(dtParams);
 		$( '#error_detail' ).dialog({
 							 title: 'Errors:',
 							 autoOpen: false,
