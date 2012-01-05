@@ -6,7 +6,7 @@
    <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
    <% } %> 
 </div>
-<% if (scalar @$error) { %>
+<% if ($error) { %>
    <div id='error' class='ui-state-error ui-corner-all'>
       <p>
       <span class="ui-icon ui-icon-alert"></span>
@@ -44,7 +44,8 @@
 		if (td.html()=="5") {
 			td.html('No Data');
 		} else {
-			td.html('<a href=\"/snp/'+aData[0]+'/'+aData[1]+'\" tip="Click on score to see supporting data">'+aData[2]+'</a>');
+			var snp = aData[0].split(':');
+			td.html('<a href=\"/snp/'+snp[0]+'/'+snp[1]+'\" tip="Click on score to see supporting data">'+aData[2]+'</a>');
 		}
 		// col1: "aData[0]:aData[1]"
 		// col2: rsid = snpdb->getRsid([aData[0],aData[1]])

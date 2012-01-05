@@ -21,7 +21,7 @@
        % end    
 </div>
 <div id='upload'>
-	  <p class='note'>Or upload a file (only first ~2,000 lines will be processed)</p>
+	  <p class='note'>Or upload a file</p>
        %= form_for running => @attrs => begin
        <span class='file-wrapper'>
            %= file_field 'file_data', id => 'file_upload'

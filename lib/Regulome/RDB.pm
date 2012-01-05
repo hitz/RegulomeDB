@@ -275,6 +275,14 @@ sub display {
 	my $sid = $self->param('sid') || $self->stash->{session}->sid || 0;
 	
 	my $nsnps = 0;
+	my $dtParams = 	{
+								   aoColumns => \@dtColumns,
+								   bJQueryUI => 'true',
+								   aaSorting => [ [ 2, 'asc' ], [ 0, 'asc' ] ],
+								   bFilter   => 0,
+								   bDeferRender => 1,
+								 };
+	
 	if ( (!$data || !$n) && $sid) {
 		my $session = $self->stash->{session};
 		$session->load($sid);
@@ -282,8 +290,12 @@ sub display {
 		my $error_file = $session->data->{errfile};
 		$n = $session->data->{ninp};
 		$nsnps = $session->data->{nsnps};
+		$dtParams->{bProcessing} = 'true';
+        $dtParams->{sAjaxSource} = $data_file;
+		
 	} else {
 		$nsnps = scalar @$data;
+		$dtParams->{aaData}  = $data
 	}
 	
 
@@ -292,17 +304,7 @@ sub display {
                     ninp  => $n,
 					nsnps => $nsnps,
 					remnant => '',
-                    snpDataTable =>
-				 		 Mojo::JSON->new->encode(
-								 {
-								   aaData    => $data,
-								   aoColumns => \@dtColumns,
-								   bJQueryUI => 'true',
-								   aaSorting => [ [ 2, 'asc' ], [ 0, 'asc' ] ],
-								   bFilter   => 0,
-								   bDeferRender => 1,
-								 }
-						)
+                    snpDataTable => Mojo::JSON->new->encode($dtParams),
 				  } );
 
 
@@ -320,7 +322,7 @@ sub start_process {
 	
 	my $outfile_name = "public/tmp/results/regulome.$sid.raw.json";
 	$outfile = IO::File->new("> $outfile_name") || die "Could not open $outfile_name\n";
-	$outfile->print('['); # begin JSON array or arrays hack
+	$outfile->print('{ aaData: ['); # begin JSON array or arrays hack
 	$session->data(outfile => $outfile_name);
 	$self->stash(outfile => $outfile);
 	
@@ -433,7 +435,7 @@ sub end_process {
 	}
 		
 	$session->data( is_running => 0 );
-	$outfile->print("]\n");
+	$outfile->print("]}\n");
 	$outfile->close();
 	$session->flush;   		 		
 
