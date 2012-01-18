@@ -307,18 +307,18 @@ sub score() {
 	
 	for my $pair (@$scores) {
 		my ($item, $ref, $rest) = @$pair; #safe guard in case we later return more columns!
-		if($item =~ /PWM_(\w+)/) {
-			@PWMs{ &hPWMtoHUGO($1) } = 1;
+		if($item =~ /(PWM)_(.+)/) {
+			@PWMs{ &hPWMtoHUGO($2) } = 1;
 		} elsif($item =~ /DNase/) {
 			$DNase = 1;
-		} elsif($item =~ /FP_.+_(\w+)/) {
-			@footprints{ &hPWMtoHUGO($1) } = 1;
+		} elsif($item =~ /(FP)_(.+)_(.+)/) {
+			@footprints{ &hPWMtoHUGO($3) } = 1;
 		} elsif($item =~ /eQTL/) {
 			$eqtl = 1;
 		} elsif($item =~ /MANUAL/) {
 			$manual = 1;
-		} elsif($item =~ /^TF_.*?_([^\s_]+)/) {
-			@chips{ &hPWMtoHUGO($1) } = 1;
+		} elsif($item =~ /^(TF)_(.+)_(.+)_{0,1}(.*)/) {
+			@chips{ &hPWMtoHUGO($3) } = 1;
 		}
 	}
 	
