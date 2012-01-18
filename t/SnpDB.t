@@ -83,6 +83,10 @@ my $sampleGFFrange = {
 'chr6	user	      feature	138022520	138023100	.		+	0	PMID=1656391'
 	=> [ [
             'chr6',
+            138022519
+          ],
+          [
+            'chr6',
             138022539
           ],
           [
