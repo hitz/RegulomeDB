@@ -92,7 +92,7 @@ sub submit {
 				$coordStr,
 				$snpID,
 				(
-				   $score == 5
+				   $score eq 7
 				   ? "No data"
 				   : $self->link_to(
 								$score, "/snp/$snp->[0]/$snp->[1]",
