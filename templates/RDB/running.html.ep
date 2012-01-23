@@ -1,38 +1,47 @@
 % layout 'default';
 % title 'Running ReguomeDB search...';
-<div id='input' class='ui-state-highlight ui-corner-all'>
-   <p>The search has evaluated <strong><%= $ninp %></strong> input line(s) and found <strong><%= $nsnps %></strong> SNP(s).</p>
-   <% if ($remnant) { %>
-   <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
-   <% } %> 
+
+<div id='info' class='ui-widget-content ui-corner-all'>
+<h2>Your search is running...</h2><span id="stop">Stop</span>
+<p>Working on the <span id="chunk_no"><%= $session->data->{chunk}+1 %></span>th chunk.</p>
+<p>This page will periodically refresh.  Your data will be available at <a href="/results/<%= $session->sid %>" title="results"><%= $session->sid %></a> for 48 hours.</p>
 </div>
-<% if (scalar @$error) { %>
+<div id='input' class='ui-state-highlight ui-corner-all'>
+   <p>The search has evaluated <strong><span id="input_no"><%= $session->data->{count} || 0 %></span></strong> input line(s) and found <span id="snp_no"><strong><%= $session->data->{nsnps} || 0 %></span></strong> SNP(s).</p>
+   <p> Estimated time of completion: <span id="time"><%= $session->data->{estimated_time_remaining} %></time> seconds from now.</p>
+</div>
+<% if ($session->data->{error}) { %>
    <div id='error' class='ui-state-error ui-corner-all'>
       <p>
       <span class="ui-icon ui-icon-alert"></span>
-      <strong>Alert:</strong> <%= scalar @$error %> input error(s) were found. 
+      <strong>Alert:</strong> <%= scalar @{$session->data->{error}} %> input error(s) were found in this chunk
       <a id='expand_error' href='#'/> Details...</a>
      </p>
    </div>
    <div id='error_detail'>
-   <% for my $err (@$error) { %>
+   <% for my $err (@{$session->data->{error}}) { %>
    	  <p class='note'><span class="text-ui-icon ui-icon ui-icon-alert"></span><%= $err->{msg} %></p>
    	  <pre><%= $err->{inp} %></pre>
    <% } %>
    </div>
 <% } %>
-<div id='output'>
-  <h1 class='aligncenter'>Summary of SNP analysis</h1>
-  <!-- div id='summary_graphic><p class='note'>Graphic coming soon!</p></div -->
-  <div id='summary_table'>
-     <table id='snp_analysis' class='display' cellspacing='0' cellpadding='0' border='0'></table>
-  </div>
-</div>
-%= javascript "/js/jquery.dataTables.min.js"
 <script>
 	$(function() {
-		$('#snp_analysis').dataTable(<%= b($snpDataTable) %>);
-		//$( 'a[tip]' ).tooltip(); tooltips no worky
+	    int = setInterval(function(){
+	    	$.getJSON("status/",false, function(data) {
+	    		if (data.is_running) {
+		    		console.log('Still Running...');
+					$( '#time').html(data.estimated_time_remaining);
+					$( '#chunk_no').html(data.chunk);
+					$( '#snp_no').html(data.nsnps);
+					$( '#input_no').html(data.ninp);
+				} else {
+					window.location.replace("/results/<%= $session->sid %>");
+				}
+			  });
+			}, 2000); 
+		$( '#stop').button().click(function(){window.clearInterval(int)});
+			
 		$( '#error_detail' ).dialog({
 							 title: 'Errors:',
 							 autoOpen: false,

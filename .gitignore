@@ -25,3 +25,4 @@ data/SnpDB/*.db
 data/GencodeDB/*.db
 *.bk
 nytprof*
+public/tmp

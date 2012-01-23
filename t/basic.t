@@ -31,6 +31,24 @@ ok("-e $testGenome", "does genome file exist");
 my $t = Test::Mojo->new('Regulome');
 $t->get_ok('/welcome')->status_is(200)->content_like(qr/Mojolicious/i);
 my $search = $t->get_ok('/search')->status_is(200);
+=pod
+routes as of 11/14/11
+/search             *     search       
+/about              *     about        
+/help               *     help         
+/                   *                  
+/index              *     index        
+/snp/:id/           *     snpid        
+/snp/:chr/:nt       *     snpchrnt     
+/running            GET   running      
+/running            POST  running    
+Need to prevent resubmission of post!
+  
+/status             GET   status       
+/results            GET   results      
+/results/:sid/      GET   resultssid   
+=cut
+
 my $run_data = $t->post_form_ok('/running' => {data => $testSubmit});
 $run_data->status_is(200)->content_like(qr/Elapsed/);
 
