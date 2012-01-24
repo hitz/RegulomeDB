@@ -291,7 +291,9 @@ sub display {
 		$n = $session->data->{ninp};
 		$nsnps = $session->data->{nsnps};
 		$dtParams->{bProcessing} = 'true';
-        $dtParams->{sAjaxSource} = $data_file;
+		my $ajax_url = $data_file;
+		$ajax_url =~ s%.+(/tmp/.+$)%$1%;
+        $dtParams->{sAjaxSource} = $ajax_url;
 		
 	} else {
 		$nsnps = scalar @$data;
@@ -322,7 +324,7 @@ sub start_process {
 	
 	my $outfile_name = "public/tmp/results/regulome.$sid.raw.json";
 	$outfile = IO::File->new("> $outfile_name") || die "Could not open $outfile_name\n";
-	$outfile->print('{ aaData: ['); # begin JSON array or arrays hack
+	$outfile->print('{ "aaData": ['); # begin JSON array or arrays hack
 	$session->data(outfile => $outfile_name);
 	$self->stash(outfile => $outfile);
 	
@@ -386,8 +388,7 @@ sub continue_process {
 	}
 		
 	my $json = $self->render(json => $res, partial => 1);
-	$json = substr($json, 1, length($json)-2); # cut off []
-	$outfile->print($json);
+	$outfile->print($self->trim_json($json));
 
 	$session->data(
 		 	       chunk => ++$chunks,
@@ -404,6 +405,17 @@ sub continue_process {
 	return $data_remains;
 }
 
+sub trim_json {
+	
+	# little snippet to allow us to string together arrays into JSON
+	my $self = shift;
+	my $json = shift;
+	my $trimmed_json = substr($json , 1, length($json)-2 );
+	$trimmed_json =~ s/,$//g; # remove any trailing ,s
+	
+	return $trimmed_json;
+	
+}
 sub end_process {
 	
 	my $self = shift;
@@ -423,7 +435,7 @@ sub end_process {
 
 		$errfile->print($self->render(json => $last_err, partial =>1)."\n") if @$last_err;
 		my $json = $self->render(json => $last, partial => 1);
-		$outfile->print(substr($json , 1, length($json)-2 ));
+		$outfile->print($self->trim_json($json));
 		
 		$session->data(
 			chunk => $chunks++,
