@@ -1,5 +1,5 @@
 % layout 'home';
-% title 'Search ReguomeDB';
+% title 'Search RegulomeDB';
 <div id='banner'>
 <%=image '/images/RegulomeLogoFinal.gif', alt => 'Regulome Logo', width => '500px' %>
 
@@ -14,7 +14,7 @@
 	<a href='#gff_example' class='input_example' >GFF3</a> files.
 
        % my @attrs = (method => 'POST', enctype => 'multipart/form-data');
-       %= form_for running => @attrs => begin
+       %= form_for results => @attrs => begin
            %= text_area 'data', rows => '12', id =>'input_text' => begin
             % end
           %= submit_button 'Submit'

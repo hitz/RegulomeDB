@@ -32,7 +32,7 @@ sub startup {
 	# Documentation browser under "/perldoc" (this plugin requires Perl 5.10)
 	$self->plugin('PODRenderer');
 	$self->secret("fortnight");
-	$self->plugin('RequestTimer');
+	#$self->plugin('RequestTimer');
 	$self->plugin(
 			session => {
 				stash_key => 'session',
@@ -62,13 +62,15 @@ sub startup {
 	    '/running' => sub { shift->render({template => 'search'})
 	    });
 	    
-	$r->post('/running')->to(controller => 'RDB', action => 'submit');
+	$r->post('/results')->to(controller => 'RDB', action => 'submit'); # post without chunking
+
+	$r->post('/running')->to(controller => 'RDB', action => 'submit'); # post with chunking
 
 	$r->get('/status')->to(controller => 'RDB', action => 'ajax_status');
 	
-	$r->get('/results')->to(controller => 'RDB', action => 'results');
+	$r->get('/results')->to(controller => 'RDB', action => 'results'); # currently undefined
 
-	$r->get('/results/:sid/')->to(controller => 'RDB', action => 'display');
+	$r->get('/results/:sid/')->to(controller => 'RDB', action => 'display'); # get stored results
 	
 	$r->get('/rsid/:chr/:nt')->to(controller => 'SNP', action => 'ajax_rsid');
 

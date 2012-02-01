@@ -1,14 +1,13 @@
 use strict;
 use warnings;
 
-use Test::More 'no_plan';
+use Test::More skip_all => "Gearman Not implemented";
 use Storable qw( freeze thaw);
 use List::Util qw( sum );
 
 use_ok('Gearman::Worker');
 use_ok('Gearman::Client');
 
-die "Gearman not implemented\n";
 if (my $pid = fork()) {
 	print "(Parent) Do I ever get here?\n";
 	my $client = Gearman::Client->new;
