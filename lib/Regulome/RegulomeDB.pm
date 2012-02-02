@@ -90,13 +90,42 @@ sub new {
      				     { 'Reference' => '' },
      				    ],		     
      	},
+    	MANUALFP  => {
+    		regex => '\(.*footprint(.*)\)_\((.*)\)_\((.*)\)_MANUAL',
+      		columns => [ { 'Method' => "(0)"},
+     				     { 'Location' => '' },
+     				     { 'Motif' => "(2)" }, 
+     				     { 'Cell Type' => "(1)"},
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	MANUALPWM  => {
+    		regex => 'MOTIF_\((.*)\)_MANUAL',
+      		columns => [ { 'Method' => 'PWM'},
+     				     { 'Location' => '' },
+     				     { 'Motif' => "(1)" }, 
+     				     { 'Cell Type' => ''},
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
+    	MANUALSNV =>  {
+    		regex => 'SNV_\((.*)\)_\((.*)\)_\((.*)\)_MANUAL',
+      		columns => [ { 'Method' => ''},
+     				     { 'Location' => '' },
+     				     { 'Affected Gene' => "(2)" }, 
+     				     { 'Cell Type' => "(1)" },
+     				     { 'Additional Information' => "(3)" },
+     				     { 'Reference' => '' },
+     				    ],		        		
+    	},
     	Other => {
     		regex => '(.*)_(MANUAL|MANUALTF)$',
-    		columns => [ { 'Method' => 'Other'},
+    		columns => [ { 'Method' => "(0)"},
     		     		 { 'Location' => '' },   		
-    					 { 'Experiment' => [0,'rest'] },
-    					 { 'Reference' => '' },
-    					]
+    				 { 'Cell Type' => "(1)" },
+    				 { 'Annotation' => "(2)" },
+    				 { 'Reference' => '' },
+    				]
     	}
     };
     $self->data_mapping($mapping);
@@ -146,7 +175,7 @@ sub full_score () {
 	my $chr = shift;
 	
 	my $score  = {
-		score => 5, 
+		score => 7, 
 	};
 	return $score unless @$results;
 	#scoring scheme
@@ -223,22 +252,29 @@ sub full_score () {
 		}
 	}
 	
-	$score->{score} = 4;
-	if(keys %{ $score->{TF}->{factors} }|| keys %{ $score->{DNase} }) {
-		$score->{score} = 3;
-	} 
+#	$score->{score} = 4;
+#	if(keys %{ $score->{TF}->{factors} }|| keys %{ $score->{DNase} }) {
+#		$score->{score} = 3;
+#	} 
+#
+#	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} }) {
+#		$score->{score} = 2;
+#	} 
+#
+#	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} } && keys %{ $score->{PWM} }) {
+#		$score->{score} = ($pwmmatched ? 
+#			(keys %{ $score->{FP}} ? 
+#				(keys %{ $score->{eQTL}} ?  
+#					($fpmatched ? 
+#						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
+#	} 
 
-	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} }) {
-		$score->{score} = 2;
-	} 
-
-	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} } && keys %{ $score->{PWM} }) {
-		$score->{score} = ($pwmmatched ? 
-			(keys %{ $score->{FP}} ? 
-				(keys %{ $score->{eQTL}} ?  
-					($fpmatched ? 
-						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
-	} 
+	my $chip_count = keys(%{ $score->{TF}->{factors} });
+	my $pwm_count = keys(%{ $score->{PWM} });
+	my $footprint_count = keys(%{ $score->{FP} });
+	my $eqtl_count = keys(%{ $score->{eQTL} });
+	my $dnase_count = keys(%{ $score->{DNase} });
+	$score->{score} = &calculate_score($chip_count, $dnase_count, $pwm_count, $footprint_count, $eqtl_count, $pwmmatched, $fpmatched);
 
 	return $score;
 		
@@ -248,7 +284,7 @@ sub score() {
 	my $self = shift;
 	my $scores = shift; #Array Ref[ [scores,ref].]
 	
-	return 5 unless @$scores; # zero hits
+	return 7 unless @$scores; # zero hits
 
 	#scoring scheme
 	# 1 -> known to cause heteroallelic binidng
@@ -271,18 +307,18 @@ sub score() {
 	
 	for my $pair (@$scores) {
 		my ($item, $ref, $rest) = @$pair; #safe guard in case we later return more columns!
-		if($item =~ /PWM_(\w+)/) {
-			@PWMs{ &hPWMtoHUGO($1) } = 1;
+		if($item =~ /(PWM)_(.+)/) {
+			@PWMs{ &hPWMtoHUGO($2) } = 1;
 		} elsif($item =~ /DNase/) {
 			$DNase = 1;
-		} elsif($item =~ /FP_.+_(\w+)/) {
-			@footprints{ &hPWMtoHUGO($1) } = 1;
+		} elsif($item =~ /(FP)_(.+)_(.+)/) {
+			@footprints{ &hPWMtoHUGO($3) } = 1;
 		} elsif($item =~ /eQTL/) {
 			$eqtl = 1;
 		} elsif($item =~ /MANUAL/) {
 			$manual = 1;
-		} elsif($item =~ /^TF_.*?_([^\s_]+)/) {
-			@chips{ &hPWMtoHUGO($1) } = 1;
+		} elsif($item =~ /^(TF)_(.+)_(.+)_{0,1}(.*)/) {
+			@chips{ &hPWMtoHUGO($3) } = 1;
 		}
 	}
 	
@@ -296,29 +332,99 @@ sub score() {
 			$fpmatched = 1;
 		}
 	}
-	
-	my $score = 4;
-	if(%chips || $DNase == 1) {
-		$score = 3;
-	} 
 
-	if(%chips && $DNase == 1) {
-		$score = 2;
-	} 
+#	my $score = 4;
+#	if(%chips || $DNase == 1) {
+#		$score = 3;
+#	} 
+#
+#	if(%chips && $DNase == 1) {
+#		$score = 2;
+#	} 
+#
+#	if(%chips && $DNase == 1 && %PWMs) {
+#		$score = ($pwmmatched ? 
+#			(%footprints ? 
+#				($eqtl ?  
+#					($fpmatched ? 
+#						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
+#	} 
 
-	if(%chips && $DNase == 1 && %PWMs) {
-		$score = ($pwmmatched ? 
-			(%footprints ? 
-				($eqtl ?  
-					($fpmatched ? 
-						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
-	} 
+	my $chip_count = keys(%chips);
+	my $pwm_count = keys(%PWMs);
+	my $footprint_count = keys(%footprints);
+	my $score = &calculate_score($chip_count, $DNase, $pwm_count, $footprint_count, $eqtl, $pwmmatched, $fpmatched);
 
 	#print STDERR "CHIPS: ", Dumper %chips;
 	#print STDERR "PWMS: ", Dumper %PWMs;
 	#print STDERR "FPS", Dumper %footprints;
 	return $score;
 	
+}
+
+
+#Slower but legible for now
+sub calculate_score {
+    my($chip, $DNase, $PWM, $footprint, $eqtl, $pwmmatched, $fpmatched) = @_;
+
+    my $score = 7;
+
+    if($chip >= 1 || $DNase >= 1 || $PWM >= 1 || $footprint >= 1 || $eqtl >= 1) {
+        $score = 6;
+    }
+
+    if($chip >= 1 || $DNase >= 1) {
+        $score = 5;
+    }
+
+    if($chip >= 1 && $DNase >= 1) {
+        $score = 4;
+    }
+
+    if($chip >= 1 && $pwmmatched >= 1) {
+        $score = "3b";
+    }
+
+    if($chip >= 1 && $DNase >= 1 && $PWM >= 1) {
+        $score = "3a";
+    }
+
+    if($chip >= 1 && $DNase >= 1 && $PWM >= 1 && $pwmmatched >= 1) {
+        $score = "2c";
+    }
+
+    if($chip >= 1 && $DNase >= 1 && $PWM >= 1 && $footprint >= 1) {
+        $score = "2b";
+    }
+
+    if($chip >= 1 && $DNase >= 1 && $PWM >= 1 && $pwmmatched >= 1 && $footprint >= 1 && $fpmatched >= 1) {
+        $score = "2a";
+    }
+    
+    if($eqtl >= 1) {
+        if($DNase >= 1 || $chip >= 1) {
+            $score = "1f";
+        }
+        if($chip >= 1) {
+            if($pwmmatched >= 1) {
+                $score = "1e";
+            }
+            if($PWM >= 1 && $DNase >= 1) {
+                $score = "1d";
+            }
+            if($pwmmatched >= 1 && $DNase >= 1) {
+                $score = "1c";
+            }
+            if($PWM >= 1 && $footprint >= 1 && $DNase >= 1) {
+                $score = "1b";
+            }
+            if($pwmmatched >= 1 && $fpmatched >= 1 && $DNase >= 1) {
+                $score = "1a";
+            }
+        }
+    }
+    
+  return $score;
 }
 
 sub hPWMtoHUGO {

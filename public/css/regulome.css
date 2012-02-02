@@ -98,6 +98,11 @@ div#input {
   margin: 0 145px;
 }
 
+#genomic_region > a
+{
+  margin: 0 145px;
+}
+
 #banner h1, #banner h2
 {
     text-align: center;
