@@ -2,7 +2,7 @@ package Regulome::RDB;
 use Mojo::Base 'Mojolicious::Controller';
 use File::Path qw/make_path remove_tree/;
 
-our $MAX_SIZE = 1024; # maximum size for direct submit.  
+our $MAX_SIZE = 24; # maximum size for direct submit.  
 # 1024 is a testing value, ca. 1Mb would be more appropriate
 our $BROWSE_PADDING = 10000;
 # +/- range for browse links
@@ -76,7 +76,8 @@ sub submit {
 			$self->stash(session => $session); # make sure the child gets it.
 			
 			if (my $pid = fork()) { # not sure this is the best way to do this
-				return $self->render(template => 'RDB/running'); 
+			    print STDERR "forking child\n";
+			    return $self->render(template => 'RDB/running'); 
 			# this page will AJAX-ily check results and deliver.
 			} elsif (defined $pid) {
 				local $SIG{INT} = "IGNORE"; # so children die.
@@ -85,17 +86,20 @@ sub submit {
 				my $data_remains = 1;
 				while($data_remains) { $data_remains = $self->continue_process }
 				$self->end_process;
+				print STDERR "killing child\n";
 				exit(0);
 			} else {
 				die "Could not fork $! in RDB.pm!";
 			}
 			
 		} else {
+		    print STDERR "File very small so just processing in-line\n";
 			$data = $self->req->upload('file_data')->asset->slurp();
 			$self->app->log->debug("Processing whole file...");
 		}
 		
 	} elsif ( $data = $self->param('data') ) {
+	        print STDERR "Just a regular submit\n";
 		$self->app->log->debug('Processing manual data...');
 		
 	}

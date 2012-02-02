@@ -179,12 +179,17 @@ sub test_file {
 
     my $run_file = $t->post_form_ok('/running' => {file_data => { file => $fn} });
     $run_file->status_is(200)->content_like(qr/Running.../);
-    $run_file->content_like(qr/href=\"\/results\/([a-z0-9]+)\"/);
-    my $div = $run_file->tx->res->dom->at('div#info a'); # get session from link
-    my $sessionid = ($div ? $div->text : 0);
+    for my $cookie (@{$run_file->tx->res->cookies}) {
+	next if $cookie->{name} ne 'sid';
+	next if exists($cookie->{max_age});
+	$sessionid = $cookie->{value};
+    }
+    #   now scraped this from cookie
+    #$run_file->content_like(qr/href=\"\/results\/([a-z0-9]+)\"/);
+    #my $div = $run_file->tx->res->dom->at('div#info a'); # get session from link
+    #my $sessionid = ($div ? $div->text : 0);
     return $sessionid unless $sessionid;
-# could also scrape this from cookie, but it's the link that must work.
-    print STDERR "Session $sessionid\n";
+    #print STDERR "Session $sessionid\n";
 
     my $status;
     my $not_done = 1;
