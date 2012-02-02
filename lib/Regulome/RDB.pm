@@ -58,11 +58,12 @@ sub submit {
 	make_path('public/tmp/results', {mode => 0777}) unless -d 'public/tmp/results';
 	
 	if ( $self->req->upload('file_data') ) {
+	    my $size = $self->req->upload('file_data')->asset->size;
+	    #print STDERR "File uploaded size: $size\n";
 
-		if ($self->req->upload('file_data')->asset->size() > $MAX_SIZE) {
+		if ($size > $MAX_SIZE) {
 
 			# create session, then fork
-			my $size = $self->req->upload('file_data')->asset->size;
 			$session->data( 
 							 file_size => $size,
 							 chunk => 0,
@@ -76,7 +77,7 @@ sub submit {
 			$self->stash(session => $session); # make sure the child gets it.
 			
 			if (my $pid = fork()) { # not sure this is the best way to do this
-			    print STDERR "forking child\n";
+			    #print STDERR "forking child\n";
 			    return $self->render(template => 'RDB/running'); 
 			# this page will AJAX-ily check results and deliver.
 			} elsif (defined $pid) {
@@ -86,7 +87,7 @@ sub submit {
 				my $data_remains = 1;
 				while($data_remains) { $data_remains = $self->continue_process }
 				$self->end_process;
-				print STDERR "killing child\n";
+				#print STDERR "killing child\n";
 				exit(0);
 			} else {
 				die "Could not fork $! in RDB.pm!";
@@ -99,7 +100,7 @@ sub submit {
 		}
 		
 	} elsif ( $data = $self->param('data') ) {
-	        print STDERR "Just a regular submit\n";
+	        #print STDERR "Just a regular submit\n";
 		$self->app->log->debug('Processing manual data...');
 		
 	}
@@ -115,7 +116,7 @@ sub submit {
 	my $outfile = IO::File->new("> $outfile_name") || die "Could not open $outfile_name!";
 	$session->data(outfile=>$outfile_name);
 
-	my $json = $self->render(json => $dataTable, partial => 1); # partial will not detach
+	my $json = $self->render(json => {aaData => $dataTable}, partial => 1); # partial will not detach
 	$outfile->print($json);
 	
 	$session->flush;
@@ -263,9 +264,11 @@ sub continue_process {
 		my $err_json = $self->render(json => { error => $err }, partial => 1);
 		$errfile->print($err_json."\n");
 	}
-		
-	my $json = $self->render(json => $res, partial => 1);
-	$outfile->print($self->trim_json($json));
+	
+	if(@$res) {
+	    my $json = $self->render(json => $res, partial => 1);
+	    $outfile->print($self->trim_json($json));
+	}
 
 	my $timeleft = 10*(($size/$ENV{MOJO_CHUNK_SIZE})-$chunks);
 	$timeleft = "<1.0" if $timeleft < 1.0;
@@ -313,9 +316,11 @@ sub end_process {
 		my ($last, $last_err) = $self->process_chunk([$remnant]);
 
 		$errfile->print($self->render(json => $last_err, partial =>1)."\n") if @$last_err;
-		my $json = $self->render(json => $last, partial => 1);
-		$outfile->print($self->trim_json($json));
-		
+		if ($last) {
+		    my $json = $self->render(json => $last, partial => 1);
+		    $outfile->print($self->trim_json($json));
+		}
+
 		$session->data(
 			chunk => $chunks++,
 			ninp  => $n++,
