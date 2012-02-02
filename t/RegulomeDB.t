@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 use strict;
 use warnings;
 use Test::More 'no_plan';
@@ -34,7 +35,7 @@ my $sampleGFF = {
 'chr6	user	      SNP	138022520	138022520	.		+	0	PMID=1656391
 '	=> 'chr6    138022519       138022520'
 };
-
+ 
 # generic is tested as Range in SnpDB.t
 
 my (@pos1) = ("chrx",6608467);
@@ -53,7 +54,7 @@ is(ref($chk->[0]),'ARRAY',"check_coord returns ARRAY_REF of ARRAY_REF");
 ($format, $chk) = $cntrl->check_coord(\@pos2);
 
 
-#open (OUT,">tmp.pm"); see note below
+#open (OUT,">tmp.pm"); #see note below
 my $out = {};
 for my $c (keys %$sampleBED) {
 	($format, $chk) = $cntrl->check_coord($c);
@@ -70,7 +71,7 @@ for my $c (keys %$sampleBED) {
 	is($fsc->{score}, $sampleBED->{$c}->{score}, "Check BED score_full $snp->[0] $snp->[1]");
 	print "$c => ", Dumper $fsc;
 =pod
-   Below code is useful for regenerating sampleBED.pm when database or scoring changes.
+#   Below code is useful for regenerating sampleBED.pm when database or scoring changes.
 	$out->{$c} = { 
 		refs => [ map $_->[1], @$scan ],
 		results => [ map $_->[0], @$scan ],
@@ -80,7 +81,7 @@ for my $c (keys %$sampleBED) {
 }
 # see above note
 #print OUT Dumper $out;
-exit;
+#exit;
 for my $vcf (keys %$sampleVCF) {
 	($format, $chk) = $cntrl->check_coord($vcf);
 	is($format, 'VCF - 1 Based', "Check VCF format");

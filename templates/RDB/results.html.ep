@@ -1,5 +1,5 @@
 % layout 'default';
-% title 'Running ReguomeDB search...';
+% title 'Running RegulomeDB search...';
 <div id='input' class='ui-state-highlight ui-corner-all'>
    <p>The search has evaluated <strong><%= $ninp %></strong> input line(s) and found <strong><%= $nsnps %></strong> SNP(s).</p>
    <% if ($remnant) { %>

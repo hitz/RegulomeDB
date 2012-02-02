@@ -2,161 +2,33 @@ package Regulome::RDB;
 use Mojo::Base 'Mojolicious::Controller';
 use File::Path qw/make_path remove_tree/;
 
-our $MAX_SIZE = 1024; # maximum size for direct submit.  
+our $MAX_SIZE = 24; # maximum size for direct submit.  
 # 1024 is a testing value, ca. 1Mb would be more appropriate
 our $BROWSE_PADDING = 10000;
 # +/- range for browse links
 
-sub submit_old {
-
-	my $self = shift;
-	my $data;
-
-	my $t0 = Benchmark->new();
-	if ( $data = $self->param('data') ) {
-		$self->app->log->debug('Processing manual data...');
-	} elsif ( $data = $self->req->upload('file_data')->asset->slurp() ) {
-
-		# this needs to be changed for "real" 3M SNP files
-		$self->app->log->debug("Processing data from file...");
-	}
-
-	$data =~ s/(.+\n)([^\n]*)$/$1/;    # trim trailing
-	my $remnant = $2;                                 # we will need this later
-	my $input = [ split( "\n", $data ), $remnant ];   # just process it for now.
-	     #$self->stash( coords  => $input );
-	$self->stash( remnant => '' );
-
-	# below should go in some helper module or DB somewhere.
-	my $externalURL = {
-		ENSEMBL => 'http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
-		# must append X:50020991-50040991
-		dbSNP => 'http://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=',
-		# must append DBSNP id
-		UCSC => 'http://genome.ucsc.edu/cgi-bin/hgTracks?org=Human&db=hg19&position=chr',
-		# must append X:50020991-50040991
-	};
-
-	my @dataTable = ();
-	my @dtColumns = (
-					  {
-						 sTitle => 'Coordinate (0-based)',
-						 sClass => 'aligncenter',
-						 sWidth => '14em'
-					  },
-					  { sTitle => 'dbSNP ID', sClass => 'aligncenter' },
-					  {
-						 sTitle => 'Regulome DB Score (click to see data)',
-						 sClass => 'aligncenter',
-						 sWidth => '12em'
-					  },
-					  {
-						 sTitle => 'Other Resources',
-						 sClass => 'aligncenter',
-						 sWidth => '17em'
-					  }
-	);
-	my ( $n, $nsnps ) = ( 0, 0 );
-	my @errors = ();
-	for my $c (@$input) {
-		next
-		  if ( !$c || $c =~ /^#/ || $c !~ /\d+/ );   # got to have some numbers!
-		$n++;
-		my ( $format, $snps ) = $self->check_coord($c);
-		if ( $format eq 'ERROR' ) {
-			push @errors,
-			  {
-				msg => $snps->[0]->[0],
-				inp => $snps->[0]->[1],
-			  };
-			next;
-		}
-		$nsnps += scalar(@$snps);
-		for my $snp (@$snps) {
-			$self->app->log->debug(
-				   "Looking up $snp->[0], $snp->[1] [Detected format $format]");
-			my $res      = $self->rdb->process($snp);
-			my $coordStr = $snp->[0] . ':' . $snp->[1];
-			my $coordRange =
-			    $snp->[0] . ':'
-			  . ( $snp->[1] - $BROWSE_PADDING ) . '-'
-			  . ( $snp->[1] + $BROWSE_PADDING );
-			$coordRange =~ s/^chr//;
-			my $snpID          = $self->snpdb->getRsid($snp) || "n/a";
-			my $score          = $self->rdb->score($res);
-			my @otherResources = ();
-
-			for my $res ( keys %$externalURL ) {
-				my $val = $coordRange;    # default
-				$val = $snpID if $res eq 'dbSNP';
-				next if ( !$val || $val eq 'n/a' );    # god so hacky
-				push @otherResources,
-				  $self->link_to( $res, $externalURL->{$res} . $val );
-			}
-
-			push @dataTable,
-			  [
-				$coordStr,
-				$snpID,
-				(
-				   $score eq 7
-				   ? "No data"
-				   : $self->link_to(
-								$score, "/snp/$snpID",
-								'tip' => 'Click on score to see supporting data'
-				   )
-				),
-				join( ' | ', @otherResources )
-			  ];
-		}
-	}
-
-	$self->stash(
-				  snpDataTable =>
-					Mojo::JSON->new->encode(
-								 {
-								   aaData    => \@dataTable,
-								   aoColumns => \@dtColumns,
-								   bJQueryUI => 'true',
-								   aaSorting => [ [ 2, 'asc' ], [ 0, 'asc' ] ],
-								   bFilter   => 0,
-								   bDeferRender => 1,
-								 }
-					)
-	);
-	$self->stash(
-				  {
-					ninp  => $n,
-					nsnps => $nsnps,
-					error => \@errors,
-				  }
-	);
-
-	$self->render(template => 'RDB/running');
-
-}
 sub check_session {
 	
 	my $self = shift;
 	my $session = $self->stash->{session};
 	if ($session->load($session->sid)) {
 		if ($session->is_expired) {
-			print STDERR "Session expired, creating a new one: ";
+			#print STDERR "Session expired, creating a new one: ";
 			$session->flush;
 			$session->create;
 		} else {
-			print STDERR "Old Session: ";
+			#print STDERR "Old Session: ";
 			if ($session->data('is_running')) {
 				$session->extend_expires;
 				$session->flush
 			}
 		}
 	} else {
-		print STDERR "New Session: ";
+		#print STDERR "New Session: ";
 		$session->create;
 		$session->flush;
 	}
-	print STDERR $self->dumper($session->sid, $session->data);	
+	#print STDERR $self->dumper($session->sid, $session->data);	
 	return $session;
 }
 
@@ -204,7 +76,8 @@ sub submit {
 			$self->stash(session => $session); # make sure the child gets it.
 			
 			if (my $pid = fork()) { # not sure this is the best way to do this
-				return $self->render(template => 'RDB/running'); 
+			    print STDERR "forking child\n";
+			    return $self->render(template => 'RDB/running'); 
 			# this page will AJAX-ily check results and deliver.
 			} elsif (defined $pid) {
 				local $SIG{INT} = "IGNORE"; # so children die.
@@ -213,17 +86,20 @@ sub submit {
 				my $data_remains = 1;
 				while($data_remains) { $data_remains = $self->continue_process }
 				$self->end_process;
+				print STDERR "killing child\n";
 				exit(0);
 			} else {
 				die "Could not fork $! in RDB.pm!";
 			}
 			
 		} else {
+		    print STDERR "File very small so just processing in-line\n";
 			$data = $self->req->upload('file_data')->asset->slurp();
 			$self->app->log->debug("Processing whole file...");
 		}
 		
 	} elsif ( $data = $self->param('data') ) {
+	        print STDERR "Just a regular submit\n";
 		$self->app->log->debug('Processing manual data...');
 		
 	}
@@ -358,7 +234,7 @@ sub continue_process {
 	my $size = $session->data('file_size');
 	my $nsnps = $session->data('nsnps');
 	my $n = $session->data('ninp');
-	my $remnant = $session->data('remnant');
+	my $remnant = $session->data('remnant') || '';
 	
 	my $loc = $chunks*$ENV{MOJO_CHUNK_SIZE};
 	$outfile->print(",\n") if $chunks > 0; # string together output arrays.
@@ -375,9 +251,10 @@ sub continue_process {
 	my $data = $file->get_chunk($loc);
 	
 	my $input = [ split( "\n", $data ) ];
-	$input->[0] = $remnant.$input->[0];
+	$input->[0] = ($input->[0] ? $remnant.$input->[0] : $remnant);
 	$remnant = pop @$input;
 	$n += scalar @$input;
+
 	my ($res, $err)  = $self->process_chunk($input);
 	
 	$nsnps += scalar @$res;	    
@@ -390,13 +267,15 @@ sub continue_process {
 	my $json = $self->render(json => $res, partial => 1);
 	$outfile->print($self->trim_json($json));
 
+	my $timeleft = 10*(($size/$ENV{MOJO_CHUNK_SIZE})-$chunks);
+	$timeleft = "<1.0" if $timeleft < 1.0;
 	$session->data(
 		 	       chunk => ++$chunks,
 			       ninp => $n,
 			       nsnps => $nsnps,
 			       remnant => $remnant,
 			       error => $err,
-				   estimated_time_remaining => 10*(($size/$ENV{MOJO_CHUNK_SIZE})-$chunks),
+		       estimated_time_remaining => $timeleft,
 	);
 		
 	$session->flush;
@@ -453,8 +332,8 @@ sub end_process {
 
 	my $sid = $session->sid;
 	my $chunks = $session->data('chunk');
-	print STDERR ("DEBUG: session $sid", $self->dumper($session->data));
-	print STDERR ("DEBUG: Finished Processing data (Chunk: $chunks) from user uploaded file\n");
+	$errfile->print("DEBUG: session $sid", $self->dumper($session->data));
+	$errfile->print("DEBUG: Finished Processing data (Chunk: $chunks) from user uploaded file\n");
 
 
 }

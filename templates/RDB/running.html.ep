@@ -1,5 +1,5 @@
 % layout 'default';
-% title 'Running ReguomeDB search...';
+% title 'Running RegulomeDB search...';
 
 <div id='info' class='ui-widget-content ui-corner-all'>
 <h2>Your search is running...</h2><span id="stop">Stop</span>
