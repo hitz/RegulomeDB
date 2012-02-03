@@ -3,6 +3,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use File::Path qw/make_path remove_tree/;
 
 our $MAX_SIZE = 24; # maximum size for direct submit.  
+our $MAX_ERRORS = 1000; # maximum number of errors before quit.
 # 1024 is a testing value, ca. 1Mb would be more appropriate
 our $BROWSE_PADDING = 10000;
 # +/- range for browse links
@@ -71,6 +72,7 @@ sub submit {
 							 nsnps => 0,
 							 estimated_time_remaining => 10*($size/$ENV{MOJO_CHUNK_SIZE}),
 							 remnant => '',
+							 error => [],
 			);
 			
 			$session->flush;
@@ -171,6 +173,7 @@ sub display {
 		my $ajax_url = $data_file;
 		$ajax_url =~ s%.+(/tmp/.+$)%$1%;
         $dtParams->{sAjaxSource} = $ajax_url;
+        $errors = $session->data->{error};
 		
 	} else {
 		$nsnps = scalar @$data;
@@ -235,10 +238,10 @@ sub continue_process {
 	my $size = $session->data('file_size');
 	my $nsnps = $session->data('nsnps');
 	my $n = $session->data('ninp');
+	my $all_errors = $session->data('error') || [];
 	my $remnant = $session->data('remnant') || '';
 	
 	my $loc = $chunks*$ENV{MOJO_CHUNK_SIZE};
-	$outfile->print(",\n") if $chunks > 0; # string together output arrays.
 	my $data_remains = 1;
 	if ($loc >= $size ) {
 		$data_remains = 0;
@@ -261,30 +264,41 @@ sub continue_process {
 	$nsnps += scalar @$res;	    
 	
 	if (@$err) {
+		push @$all_errors, @$err;
+		#print STDERR "found ", scalar @$err, " new errors, total now: ",scalar @$all_errors,"\n";
 		my $err_json = $self->render(json => { error => $err }, partial => 1);
 		$errfile->print($err_json."\n");
 	}
 	
 	if(@$res) {
+		$outfile->print(",\n") if $chunks > 0; # string together output arrays.
 	    my $json = $self->render(json => $res, partial => 1);
 	    $outfile->print($self->trim_json($json));
 	}
 
 	my $timeleft = 10*(($size/$ENV{MOJO_CHUNK_SIZE})-$chunks);
 	$timeleft = "<1.0" if $timeleft < 1.0;
+	if(@$all_errors > $MAX_ERRORS) {
+		my $msg = "Greater than $MAX_ERRORS erros, giving up after $n lines";
+		warn $msg;
+		errfile->print($msg);
+		unshift @$all_errors, { inp => "GLOBAL ERROR", msg => $msg};
+		
+	}
 	$session->data(
 		 	       chunk => ++$chunks,
 			       ninp => $n,
 			       nsnps => $nsnps,
 			       remnant => $remnant,
-			       error => $err,
-		       estimated_time_remaining => $timeleft,
+			       error => $all_errors,
+		       	   estimated_time_remaining => $timeleft,
 	);
 		
 	$session->flush;
 	$errfile->flush;
 	$outfile->flush;
-	return $data_remains;
+	
+	return (@$all_errors > $MAX_ERRORS ? 0 : $data_remains);
 }
 
 sub trim_json {
@@ -312,20 +326,24 @@ sub end_process {
 		my $chunks = $session->data('chunk');
 		my $nsnps = $session->data('nsnps');
 		my $n = $session->data('ninp');
+		my $all_errors = $session->data('error') || [];
 			
 		my ($last, $last_err) = $self->process_chunk([$remnant]);
 
-		$errfile->print($self->render(json => $last_err, partial =>1)."\n") if @$last_err;
-		if ($last) {
+		if(@$last_err) {
+			push @$all_errors, @$last_err;
+			$errfile->print($self->render(json => $last_err, partial =>1)."\n");
+		}
+		if (@$last) {
 		    my $json = $self->render(json => $last, partial => 1);
 		    $outfile->print($self->trim_json($json));
 		}
 
 		$session->data(
 			chunk => $chunks++,
-			ninp  => $n++,
+			ninp  => ++$n,
 			nsnps => $nsnps + scalar(@$last),
-			error => $last_err,
+			error => $all_errors,
 		);
 		    
 	}

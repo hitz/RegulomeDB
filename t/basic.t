@@ -498,13 +498,13 @@ $run_data->status_is(200)->text_is('div#output h1' => 'Summary of SNP analysis')
 $run_data = $t->post_form_ok('/results' => {data => $testSNP});
 $run_data->status_is(200)->text_is('div#input p::nth-child(2)' => '4'); # this is the number of SNPs found
 
-$run_data = $t->post_form_ok('/results' => {data => $testZero});
-$run_data->status_is(200)->text_is('div#input p::nth-child(2)' => '21');
-
 $run_data = $t->post_form_ok('/results' => {data => $testOne});
 $run_data->status_is(200)->text_is('div#input p::nth-child(2)' => '21');
 
 $run_data = $t->post_form_ok('/results' => {data => $testBed});
+$run_data->status_is(200)->text_is('div#input p::nth-child(2)' => '21');
+
+$run_data = $t->post_form_ok('/results' => {data => $testZero});
 $run_data->status_is(200)->text_is('div#input p::nth-child(2)' => '21');
 
 $run_data = $t->post_form_ok('/results' => {data => $testBed2});
@@ -546,8 +546,6 @@ $results->status_is(200)->text_is('div#input p::nth-child(2)' => '93');
 $sessionid = test_file($testBig);
 $results = $t->get_ok("/results/$sessionid");
 $results->status_is(200)->text_is('div#input p::nth-child(2)' => '10000');
-
-
 
 exit; ## below tests fail 
 $sessionid = test_file($testBigger);
