@@ -10,7 +10,7 @@
    <p>The search has evaluated <strong><span id="input_no"><%= $session->data->{count} || 0 %></span></strong> input line(s) and found <span id="snp_no"><strong><%= $session->data->{nsnps} || 0 %></span></strong> SNP(s).</p>
    <p> Estimated time of completion: <span id="time"><%= $session->data->{estimated_time_remaining} %></time> seconds from now.</p>
 </div>
-<% if ($session->data->{error}) { %>
+<% if ($session->data->{error} && @{$session->data->{error}}) { %>
    <div id='error' class='ui-state-error ui-corner-all'>
       <p>
       <span class="ui-icon ui-icon-alert"></span>

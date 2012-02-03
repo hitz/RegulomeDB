@@ -96,7 +96,7 @@ sub submit {
 			}
 			
 		} else {
-		    print STDERR "File very small so just processing in-line\n";
+		    #print STDERR "File very small so just processing in-line\n";
 			$data = $self->req->upload('file_data')->asset->slurp();
 			$self->app->log->debug("Processing whole file...");
 		}
@@ -271,7 +271,8 @@ sub continue_process {
 	}
 	
 	if(@$res) {
-		$outfile->print(",\n") if $chunks > 0; # string together output arrays.
+#		$outfile->print(",\n") if $chunks > 0; # string together output arrays.
+		$outfile->print(",") if $chunks > 0; # string together output arrays.
 	    my $json = $self->render(json => $res, partial => 1);
 	    $outfile->print($self->trim_json($json));
 	}
@@ -336,7 +337,7 @@ sub end_process {
 		}
 		if (@$last) {
 		    my $json = $self->render(json => $last, partial => 1);
-		    $outfile->print($self->trim_json($json));
+		    $outfile->print(",".$self->trim_json($json));
 		}
 
 		$session->data(

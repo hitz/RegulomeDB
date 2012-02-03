@@ -6,7 +6,7 @@
    <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
    <% } %> 
 </div>
-<% if ($error) { %>
+<% if ($error && @$error) { %>
    <div id='error' class='ui-state-error ui-corner-all'>
       <p>
       <span class="ui-icon ui-icon-alert"></span>
