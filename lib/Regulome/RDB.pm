@@ -141,14 +141,14 @@ sub display {
 					  },
 					  { sTitle => 'dbSNP ID', sClass => 'aligncenter' },
 					  {
-						 sTitle => 'Regulome DB Score (click to see data)',
+						 sTitle => '<a title="help on scoring" href="/help#score"><span class="text-ui-icon ui-icon ui-icon-help"></span></a>Regulome DB Score',
 						 sClass => 'aligncenter',
-						 sWidth => '12em'
+						 sWidth => '14em'
 					  },
 					  {
 						 sTitle => 'Other Resources',
 						 sClass => 'aligncenter',
-						 sWidth => '17em'
+						 sWidth => '18em'
 					  }
 	);
 	my $sid = $self->param('sid') || $self->stash->{session}->sid || 0;
@@ -159,7 +159,7 @@ sub display {
 								   bJQueryUI => 'true',
 								   aaSorting => [ [ 2, 'asc' ], [ 0, 'asc' ] ],
 								   bFilter   => 0,
-								   bDeferRender => 1,
+								   #bDeferRender => 1,
 								 };
 	
 	if ( (!$data || !$n) && $sid) {

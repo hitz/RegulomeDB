@@ -465,6 +465,8 @@ my $testGffFile = "t/data/RegulomeDB-test.gff3";
 ok(-e "$testGffFile", "does GFF3 file exist");
 my $testBigger = "t/data/Regulome-DB-100K.vcf";
 ok(-e "$testBigger", "does bigger file exist");
+my $testChr = "t/data/chr2.test.vcf";
+ok(-e "$testChr", "does chromosome sized snp file exist");
 my $testGenome = "t/data/snp-TEST20110209-final.vcf";
 ok(-e "$testGenome", "does genome file exist");
 
@@ -559,6 +561,25 @@ $results->status_is(200)->text_is('div#input p::nth-child(2)' => '100000');
 ok(!json_error($sessionid),"$sessionid is valid JSON");
 
 my $t0 = Benchmark->new;
+$sessionid = test_file($testChr);
+my $t1 = Benchmark->new;
+$results = $t->get_ok("/results/$sessionid");
+$results->status_is(200);
+my $t2 = Benchmark->new;
+#->text_is('div#input p::nth-child(2)' => '100000');
+ok(!json_error($sessionid),"$sessionid is valid JSON");
+my $t3 = Benchmark->new;
+my $td = timediff($t1, $t0);
+print "Chromosome file: process:",timestr($td),"\n";
+$td = timediff($t2,$t1);
+print "Chromosome file: results:",timestr($td),"\n";
+$td = timediff($t3,$t2);
+print "Chromosome file: check JSON:",timestr($td),"\n";
+$td = timediff($t3,$t0);
+print "Chromosome file: total:",timestr($td),"\n";
+
+exit;
+my $t0 = Benchmark->new;
 $sessionid = test_file($testGenome);
 my $t1 = Benchmark->new;
 $results = $t->get_ok("/results/$sessionid");
@@ -575,7 +596,6 @@ $td = timediff($t3,$t2);
 print "Genome file: check JSON:",timestr($td),"\n";
 $td = timediff($t3,$t0);
 print "Genome file: total:",timestr($td),"\n";
-
 
 # TODO unit tests for /snp/:id and /snp/:chr/:pos and static about, help, index pages.
 sub json_error {

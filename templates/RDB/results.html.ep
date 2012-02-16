@@ -41,13 +41,12 @@
 
 	var inflateTable =  function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 		var td = $('td', nRow).eq(2);
-		if (td.html()=="5") {
+		if (td.html()=="7") {
 			td.html('No Data');
 		} else {
 			var snp = aData[0].split(':');
-			td.html('<a href=\"/snp/'+snp[0]+'/'+snp[1]+'\" tip="Click on score to see supporting data">'+aData[2]+'</a>');
+			td.html('<a href=\"/snp/'+snp[0]+'/'+snp[1]+'\" title="Click on score to see supporting data">'+aData[2]+'</a>');
 		}
-		// col1: "aData[0]:aData[1]"
 		// col2: rsid = snpdb->getRsid([aData[0],aData[1]])
 		// col3: "no data" || <a href='/snp/rsid' tip='Click on score to see supporting data'>aData[2]</a>
 		// col4: join(" | ", $externalURL->foo)
@@ -119,9 +118,36 @@
 
 	$(function() {
 		var dtParams = <%= b($snpDataTable) %>;
-		dtParams['fnRowCallback'] = inflateTable;
-	
-		$('#snp_analysis').dataTable(dtParams);
+		//dtParams['fnRowCallback'] = inflateTable;
+	        dtParams['aoColumnDefs'] = [
+			{ "fnRender": function ( oObj ) {
+				if (oObj.aData[2] == 7) {
+					return 'No Data';
+				} else {
+					var snp = oObj.aData[0].split(':');
+					return '<a href=\"/snp/'+snp[0]+'/'+snp[1]+'\" title="Click on score to see supporting data">'+oObj.aData[2]+'</a>';
+				}
+			  },
+			  "bUseRendered": false,
+			  "aTargets": [ 2 ]
+			},
+			{ "fnRender": function ( oObj ) {
+				var content = [];
+				_.each(externalURL, function(url,db) {
+					if (db == 'dbSNP' ) {
+						var rsid = oObj.aData[1];
+						if (rsid.match('^rs') ) content.push('<a href=\"'+url+rsid+'\">'+db+'</a>');
+					} else if (db != 'dbSNP') {
+						content.push('<a href=\"'+url+oObj.aData[3]+'\">'+db+'</a>');						
+					}
+				});
+				return content.sort().join(" | ");
+			   },
+		           "aTargets": [ 3 ]
+		     	}
+			];
+			
+		var table = $('#snp_analysis').dataTable(dtParams);
 		$( '#error_detail' ).dialog({
 							 title: 'Errors:',
 							 autoOpen: false,
@@ -138,5 +164,7 @@
 			$( "#error_detail" ).dialog( "open" );
 			return false;
 		});
+	        table.fnAdjustColumnSizing();
+	        table.fnSort( [ [ 2, 'asc'] ]); // redraw for size and sorting
 	});
 </script>

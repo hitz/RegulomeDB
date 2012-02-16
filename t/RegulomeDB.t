@@ -69,9 +69,10 @@ for my $c (keys %$sampleBED) {
 	is(($sc = $rdb->score($scan)), $sampleBED->{$c}->{score}, "Check BED score $snp->[0] $snp->[1]");
 	my $fsc = $rdb->full_score($scan,$snp->[0]);
 	is($fsc->{score}, $sampleBED->{$c}->{score}, "Check BED score_full $snp->[0] $snp->[1]");
-	print "$c => ", Dumper $fsc;
-=pod
+#	print "$c => ", Dumper $fsc;
+
 #   Below code is useful for regenerating sampleBED.pm when database or scoring changes.
+=pod
 	$out->{$c} = { 
 		refs => [ map $_->[1], @$scan ],
 		results => [ map $_->[0], @$scan ],
