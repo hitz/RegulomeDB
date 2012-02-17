@@ -128,7 +128,7 @@
 					return '<a href=\"/snp/'+snp[0]+'/'+snp[1]+'\" title="Click on score to see supporting data">'+oObj.aData[2]+'</a>';
 				}
 			  },
-			  "bUseRendered": false,
+			  "sType": "html", // hack but works like I expect bUseRendered: false to!
 			  "aTargets": [ 2 ]
 			},
 			{ "fnRender": function ( oObj ) {

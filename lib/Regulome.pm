@@ -41,6 +41,10 @@ sub startup {
 			});
 	
 
+	# config
+	my $config = $self->plugin('Config');
+	$self->mode('development'); ## writes log file
+
 	# Routes
 	my $r = $self->routes;
 

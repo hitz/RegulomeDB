@@ -3,6 +3,7 @@
 !.perltidyrc
 *~
 *.log
+*.pid
 blib
 Makefile*
 !Makefile.PL
