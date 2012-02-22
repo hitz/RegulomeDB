@@ -1,10 +1,10 @@
 % layout 'default';
-% title 'Running RegulomeDB search...';
+% title 'RegulomeDB Results';
 <div id='input' class='ui-state-highlight ui-corner-all'>
    <p>The search has evaluated <strong><%= $ninp %></strong> input line(s) and found <strong><%= $nsnps %></strong> SNP(s).</p>
    <% if ($remnant) { %>
    <p>The following input snippet was left over<pre><%= $remnant %></pre></p>
-   <% } %> 
+   <% } %>
 </div>
 <% if ($error && @$error) { %>
    <div id='error' class='ui-state-error ui-corner-all'>
@@ -22,11 +22,29 @@
    </div>
 <% } %>
 <div id='output'>
+<% if ($nsnps > 50000) { %>
+  <div id="large_report" class="ui-widget-content ui-corner-all">
+  <p>This report is too large to display in the table. Use the download option.</p>
+  </div>
+<% } else { %>
   <h1 class='aligncenter'>Summary of SNP analysis</h1>
   <!-- div id='summary_graphic><p class='note'>Graphic coming soon!</p></div -->
   <div id='summary_table'>
      <table id='snp_analysis' class='display' cellspacing='0' cellpadding='0' border='0'></table>
   </div>
+<% } %>
+</div>
+<div>
+   % my @attrs = (method => 'POST', enctype => 'multipart/form-data'); 
+   %= form_for download => @attrs => begin 
+	<div id="download">
+		%= submit_button 'Download'
+		<input type="radio" id="dl_bed" name="format" value="bed" checked="checked" /><label for="dl_bed">BED</label>
+		<input type="radio" id="dl_vcf" name="format" value="vcf" /><label for="dl_vcf">VCF</label>
+		<input type="radio" id="dl_gff" name="format" value="gff" /><label for="dl_gff">GFF</label>
+	        <input type="hidden" name="sid" value="<%= $session->sid %>" />
+	</div>
+   % end 
 </div>
 %= javascript "/js/jquery.dataTables.min.js"
 <script>
@@ -39,86 +57,7 @@
 		//must append X:50020991-50040991
 	};
 
-	var inflateTable =  function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-		var td = $('td', nRow).eq(2);
-		if (td.html()=="7") {
-			td.html('No Data');
-		} else {
-			var snp = aData[0].split(':');
-			td.html('<a href=\"/snp/'+snp[0]+'/'+snp[1]+'\" title="Click on score to see supporting data">'+aData[2]+'</a>');
-		}
-		// col2: rsid = snpdb->getRsid([aData[0],aData[1]])
-		// col3: "no data" || <a href='/snp/rsid' tip='Click on score to see supporting data'>aData[2]</a>
-		// col4: join(" | ", $externalURL->foo)
-		td = $('td',nRow).eq(3);
-		var range = td.html();  // possibly aData[3]? should be the same
-		if (!range.match('href')) { // only the first time through
-			var content = [];
-			_.each(externalURL, function(url,db) {
-				if (db == 'dbSNP' ) {
-					var rsid = $('td',nRow).eq(1).html();
-				if (rsid.match('^rs') ) content.push('<a href=\"'+url+rsid+'\">'+db+'</a>');
-					} else if (db != 'dbSNP') {
-				content.push('<a href=\"'+url+range+'\">'+db+'</a>');								}
-			});
-			td.html(content.join(" | ")); 
-		}
-    	return nRow;
-    };
-
-	var inflateTableAjax =  function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-		for(i=0;i<aData.length; i++) {
-			var td = $('td', nRow).eq(i);
-			// col1: "aData[0]:aData[1]"
-			// col2: rsid = snpdb->getRsid([aData[0],aData[1]])
-			// col3: "no data" || <a href='/snp/rsid' tip='Click on score to see supporting data'>aData[2]</a>
-			// col4: join(" | ", $externalURL->foo)
-			var rsid = "";
-			switch(i)
-			{
-				case 0:
-					td.html(aData[0]+":"+aData[1]);
-					break;
-				case 1:
-					$.ajax("/rsid/"+aData[0]+"/"+aData[1],
-						   { dataType: 'json',
-						     success: function(data) { rsid = data.rsid; $('td',nRow).eq(1).html(data.rsid) },
-						     timeout: 200,
-						     async: false,
-						     error:  function(jqXHR, textStatus, errorThrown) { 
-						     	$('td',nRow).eq(1).html("RSID ajax failure: ( "+textStatus+" ) "+ errorThrown);
-						     	}
-						     }
-						     ); 
-					break;
-				case 2:
-					if (td.html()=="5") {
-						td.html('No Data');
-					} else {
-						td.html('<a href=\"/snp/'+aData[0]+'/'+aData[1]+'\" tip="Click on score to see supporting data">'+aData[2]+'</a>');
-					}
-					break;
-				case 3:
-					var range = td.html();  // possibly aData[3]? should be the same
-					var content = [];
-					_.each(externalURL, function(url,db) {
-						if (db == 'dbSNP' ) {
-						    var rsid = $('td',nRow).eq(1).html();
-						    if (rsid.match('^rs') ) content.push('<a href=\"'+url+rsid+'\">'+db+'</a>');
-						} else if (db != 'dbSNP') {
-							content.push('<a href=\"'+url+range+'\">'+db+'</a>');
-						}
-					});
-					td.html(content.join(" | ")); 
-		 			break;
-		 		};
-    	}
-    	return nRow;
-    };
-
-	$(function() {
 		var dtParams = <%= b($snpDataTable) %>;
-		//dtParams['fnRowCallback'] = inflateTable;
 	        dtParams['aoColumnDefs'] = [
 			{ "fnRender": function ( oObj ) {
 				if (oObj.aData[2] == 7) {
@@ -148,6 +87,7 @@
 			];
 			
 		var table = $('#snp_analysis').dataTable(dtParams);
+		$( '#download' ).buttonset();
 		$( '#error_detail' ).dialog({
 							 title: 'Errors:',
 							 autoOpen: false,
@@ -166,5 +106,4 @@
 		});
 	        table.fnAdjustColumnSizing();
 	        table.fnSort( [ [ 2, 'asc'] ]); // redraw for size and sorting
-	});
 </script>

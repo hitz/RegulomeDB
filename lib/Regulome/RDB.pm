@@ -520,4 +520,43 @@ sub check_coord {
 	return ( $format, [ [ $chr, $min ] ] );
 
 }
+
+sub download {
+
+    my $self=shift;
+    my $format = $self->param('format') || 'bed'; ## default dl format is BED
+    my $sid = $self->param('sid') || $self->render(template => 'RDB/dl_error');
+
+    my $resultsDir = 'public/tmp/results';
+    my $fn = "regulome.$sid.raw.json";
+
+    $fn = "regulome_short.$sid.raw.json" unless (-e "$resultsDir/$fn");
+
+    open(FH, "$resultsDir/$fn")  || die "Could not find output for session $sid ($fn)!";
+    $self->app->types->type(txt => 'application/octet-stream');
+    $self->tx->req->headers->header('content-disposition' => "attachment; filename=$fn");
+
+    my $results = <FH>;
+
+    my $table = Mojo::JSON->new->decode($results);
+
+    my $snps = [ sort { $a->[2] <=> $b->[2] } @{$table->{'aaData'}} ];
+    use Data::Dumper;
+
+    my @out = ();
+
+    for (@$snps) {
+	$_->[0] =~/(chr.*):([0-9]+)/;
+	if ($format eq 'bed') {
+	    push @out, join("\t", ($1,$2,$2+1,'SNP',$_->[2],0,'.','.','.',"# rsid: $_->[1]") );
+	} else {
+	    push @out, "Undefined Format: $format";
+	    last;
+	}
+
+    }     
+    $self->render(text => join("\n", @out), format => 'txt');
+    
+
+}
 1;

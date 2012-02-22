@@ -50,6 +50,15 @@ div#input {
     text-align: center;
 }
 
+#download {
+	padding: 8px;
+}
+
+#download input[type="submit"] {
+padding-top: 6px;
+padding-bottom: 7px;
+}
+
 #header, #footer
 {
   text-align: left;   
@@ -68,6 +77,7 @@ div#input {
   width: 700px;
   font-size:14px;
   text-align: center;
+  padding: 8px;
 }
 
 #location > img { 
@@ -206,6 +216,13 @@ div#input {
     width: 100%;
 }
 
+#large_report {
+	width: 800px;
+	padding: 6px;
+	margin: auto;
+	text-align: center;
+}
+
 div.dataTables_length
 {
     padding: 4px 15px;
@@ -332,7 +349,7 @@ span.selected-button {
     padding: 0.4em 1em;
 }
 
-input.ui-button, span.button{
+input.ui-button, label.ui-button, span.button{
     font-size: 14px;
 }
 

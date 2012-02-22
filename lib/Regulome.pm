@@ -79,6 +79,10 @@ sub startup {
 	$r->get('/rsid/:chr/:nt')->to(controller => 'SNP', action => 'ajax_rsid');
 
 	$r->get('/rsid/:id')->to(controller => 'SNP', action => 'ajax_coord');
+
+	$r->post('/download')->to(controller => 'RDB', action => 'download');
+       
+	$r->get('/download/:sid/')->to(controller => 'RDB', action => 'download');
 	
 }
 

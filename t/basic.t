@@ -475,6 +475,14 @@ $ENV{MOJO_CHUNK_SIZE} = 262144;
 $ENV{MOJO_MAX_MEMORY} = 32000000000; 
 
 my $t = Test::Mojo->new('Regulome');
+$t->app->hook(after_build_tx => sub {
+    my ($tx, $app) = @_;
+    $tx->on(connection => sub {
+      my ($tx, $id) = @_;
+      Mojo::IOLoop->stream($id)->timeout(0);
+    });
+  });
+
 $t->get_ok('/welcome')->status_is(200)->content_like(qr/Mojolicious/i);
 my $search = $t->get_ok('/search')->status_is(200);
 =pod
@@ -578,14 +586,13 @@ print "Chromosome file: check JSON:",timestr($td),"\n";
 $td = timediff($t3,$t0);
 print "Chromosome file: total:",timestr($td),"\n";
 
-exit;
 $t0 = Benchmark->new;
 $sessionid = test_file($testGenome);
 $t1 = Benchmark->new;
 $results = $t->get_ok("/results/$sessionid");
 $results->status_is(200); 
 $t2 = Benchmark->new;
-#->text_is('div#input p::nth-child(2)' => '100000');
+$results->text_is('div#input p::nth-child(2)' => '3739693');
 ok(!json_error($sessionid),"$sessionid is valid JSON");
 $t3 = Benchmark->new;
 $td = timediff($t1, $t0);
