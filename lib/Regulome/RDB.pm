@@ -540,7 +540,7 @@ sub download {
 
     my $table = Mojo::JSON->new->decode($results);
 
-    my $snps = [ sort { $a->[2] <=> $b->[2] } @{$table->{'aaData'}} ];
+    my $snps = [ sort { $a->[2] cmp $b->[2] } @{$table->{'aaData'}} ];
     use Data::Dumper;
 
     my @out = ();

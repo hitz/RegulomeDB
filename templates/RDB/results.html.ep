@@ -51,7 +51,7 @@
 
 </div>
 %= javascript "/js/jquery.dataTables.min.js"
-%= javascript "/js/jquery.form.min.js"
+%= javascript "/js/jquery.form.js"
 <script>
 	var externalURL = {
 		ENSEMBL: 'http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
