@@ -35,18 +35,23 @@
 <% } %>
 </div>
 <div>
-   % my @attrs = (method => 'POST', enctype => 'multipart/form-data'); 
+   % my @attrs = (method => 'POST', enctype => 'multipart/form-data', id => 'dl_form'); 
    %= form_for download => @attrs => begin 
 	<div id="download">
-		%= submit_button 'Download'
+		<input type="submit" id="dl_trigger" value="Download"/>
 		<input type="radio" id="dl_bed" name="format" value="bed" checked="checked" /><label for="dl_bed">BED</label>
 		<input type="radio" id="dl_vcf" name="format" value="vcf" /><label for="dl_vcf">VCF</label>
 		<input type="radio" id="dl_gff" name="format" value="gff" /><label for="dl_gff">GFF</label>
 	        <input type="hidden" name="sid" value="<%= $session->sid %>" />
+	   <span id="dl_message" class="ui-state-highlight" class='ui-corner-all'>Downloading...</span>
 	</div>
+
    % end 
 </div>
+
+</div>
 %= javascript "/js/jquery.dataTables.min.js"
+%= javascript "/js/jquery.form.min.js"
 <script>
 	var externalURL = {
 		ENSEMBL: 'http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
@@ -106,4 +111,13 @@
 		});
 	        table.fnAdjustColumnSizing();
 	        table.fnSort( [ [ 2, 'asc'] ]); // redraw for size and sorting
+
+		$( '#dl_message' ).hide();
+
+		//$( '#dl_trigger').button();
+		$( '#dl_form').ajaxForm(function() {
+			$( '#dl_message' ).show();
+			
+		});
+			
 </script>
