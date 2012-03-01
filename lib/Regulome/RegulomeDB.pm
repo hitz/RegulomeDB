@@ -108,7 +108,8 @@ sub _init_db {
 
 			$dbh->{$stch}->do($cache_statement);
 			$dbh->{$stch}->commit;
-			$sth->{$stch} = $dbh->{$stch}->prepare("SELECT * FROM (SELECT data_index.minX, data_index.maxX, data.label_id FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?) AS hits, labels WHERE labels.label_id = hits.label_id");
+			$sth->{$stch} = $dbh->{$stch}->prepare("SELECT * FROM (SELECT data_index.minX, data_index.maxX, data.label_id FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX > ?) AS hits, labels WHERE labels.label_id = 
+hits.label_id");
 		}
 		
 	} else {
