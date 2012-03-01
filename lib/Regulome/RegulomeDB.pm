@@ -23,110 +23,59 @@ sub new {
     $self->_init_db();
     
     my $mapping = {
-     	TF  => {
-     		regex => '(TF)_(.+)_(.+)_{0,1}(.*)',
-     		columns => [ { 'Method' => 'ChIP-Seq' },
-     				     { 'Location' => '' },
-     				     { 'Bound Protein' => 2 }, 
-     				     { 'Cell Type' => 1 },
-     				     { 'Additional Info' => [3,'rest'] },
-     				     { 'Reference' => '' },
-     				    ],		     
-     	},
-    	PWM => {
-    		regex => '(PWM)_(.+)',
-      		columns => [ { 'Method' => 'PWM'},
-     				     { 'Location' => '' },
-     				     { 'Motif' => 1 }, 
-     				     { 'Cell Type' => ''},
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-    	FP  => {
-    		regex => '(FP)_(.+)_(.+)',
-      		columns => [ { 'Method' => 'Footprinting'},
-     				     { 'Location' => '' },
-     				     { 'Motif' => 2 }, 
-     				     { 'Cell Type' => 1},
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-    	VAL => {
-    		regex => '(VAL)_(.+)_(.+)_{0,1}(.*)',
-      		columns => [ { 'Method' => 'Validated SNP'},
-     				     { 'Location' => '' },
-     				     { 'Affected Gene' => 2 }, 
-     				     { 'Cell Type' => 1 },
-     				     { 'Additional Information' => [3,'rest'] },
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-    	eQTL =>  {
-    		regex => '(eQTL)_(.+)_(.+)',
-      		columns => [ { 'Method' => 'eQTL'},
-     				     { 'Location' => '' },
-     				     { 'Affected Gene' => 2 }, 
-     				     { 'Cell Type' => 1 },
-     				     { 'Additional Information' => '' },
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-     	DNase => {
-    		regex => '^(DNase)_(.+)_{0,1}(.*)',
-      		columns => [ { 'Method' => 'DNase hypersensitivity'},
-     				     { 'Location' => '' },
-     				     { 'Cell Type' => 1 },
-     				     { 'Additional Information' => [2,'rest'] },
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-     	MANUALTF  => {
-     		regex => '\((.*)\)_\((.*)\)_\((.*)\)_MANUALTF',
-     		columns => [ { 'Method' => "(0)" },
-     				     { 'Location' => '' },
-     				     { 'Bound Protein' => "(2)" }, 
-     				     { 'Cell Type' => "(1)" },
-     				     { 'Additional Info' => '' },
-     				     { 'Reference' => '' },
-     				    ],		     
-     	},
-    	MANUALFP  => {
-    		regex => '\(.*footprint(.*)\)_\((.*)\)_\((.*)\)_MANUAL',
-      		columns => [ { 'Method' => "(0)"},
-     				     { 'Location' => '' },
-     				     { 'Motif' => "(2)" }, 
-     				     { 'Cell Type' => "(1)"},
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-    	MANUALPWM  => {
-    		regex => 'MOTIF_\((.*)\)_MANUAL',
-      		columns => [ { 'Method' => 'PWM'},
-     				     { 'Location' => '' },
-     				     { 'Motif' => "(1)" }, 
-     				     { 'Cell Type' => ''},
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-    	MANUALSNV =>  {
-    		regex => 'SNV_\((.*)\)_\((.*)\)_\((.*)\)_MANUAL',
-      		columns => [ { 'Method' => ''},
-     				     { 'Location' => '' },
-     				     { 'Affected Gene' => "(2)" }, 
-     				     { 'Cell Type' => "(1)" },
-     				     { 'Additional Information' => "(3)" },
-     				     { 'Reference' => '' },
-     				    ],		        		
-    	},
-    	Other => {
-    		regex => '(.*)_(MANUAL|MANUALTF)$',
-    		columns => [ { 'Method' => "(0)"},
-    		     		 { 'Location' => '' },   		
-    				 { 'Cell Type' => "(1)" },
-    				 { 'Annotation' => "(2)" },
-    				 { 'Reference' => '' },
-    				]
-    	}
+        Protein_Binding => {
+                columns => [ { 'Method' => 0 },
+                                { 'Location' => '' },
+                                { 'Bound Protein' => 1 },
+                                { 'Cell Type' => 2 },
+                                { 'Additional Info' => 3 },
+                                { 'Reference' => 4 },
+                        ],
+        },
+        Motifs => {
+                columns => [ { 'Method' => 0 },
+                                { 'Location' => '' },
+                                { 'Motif' => 1 },
+                                { 'Cell Type' => 2 },
+                                { 'PWM' => 3 },
+                                { 'Reference' => 4 },
+                        ],
+        },
+        Chromatin_Structure => {
+                columns => [ { 'Method' => 0 },
+                                { 'Location' => '' },
+                                { 'Cell Type' => 2 },
+                                { 'Additional Info' => 3 },
+                                { 'Reference' => 4 },
+                        ],
+        },
+        Single_Nucleotides => {
+                columns => [ { 'Method' => 0 },
+                                { 'Location' => '' },
+                                { 'Affected Gene' => 1 },
+                                { 'Cell Type' => 2 },
+                                { 'Additional Info' => 3 },
+                                { 'Reference' => 4 },
+                        ],
+        },
+        Related_Data => {
+                columns => [ { 'Method' => 0 },
+                                { 'Location' => '' },
+                                { 'Cell Type' => 2 },
+                                { 'Annotation' => 3 },
+                                { 'Reference' => 4 },
+                        ],
+        },
+        Histone_Modification => {
+                columns => [ { 'Method' => 0 },
+                                { 'Location' => '' },
+                                { 'Histone Mark' => 1 },
+                                { 'Cell Type' => 2 },
+                                { 'Additional Info' => 3 },
+                                { 'Reference' => 4 },
+                        ]
+        }
+
     };
     $self->data_mapping($mapping);
     return $self;
@@ -137,6 +86,8 @@ sub _init_db {
 	my $sth = {};
 	my $cache_statement = "PRAGMA cache_size = 1000000";
 	my $dbh; # could be a single connection or a hash
+
+	#Remove single type - can't practically use this
 	if ($self->type eq 'single') {
 		# this is current not used, don't even have the DB.
 		$dbh = DBI->connect("dbi:SQLite:dbname=".$self->dbfile,"","",
@@ -157,7 +108,7 @@ sub _init_db {
 
 			$dbh->{$stch}->do($cache_statement);
 			$dbh->{$stch}->commit;
-			$sth->{$stch} = $dbh->{$stch}->prepare("SELECT DISTINCT objname,objref,minX,maxX FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?");
+			$sth->{$stch} = $dbh->{$stch}->prepare("SELECT * FROM (SELECT data_index.minX, data_index.maxX, data.label_id FROM data, data_index WHERE data.id=data_index.id AND minX <= ? AND maxX >= ?) AS hits, labels WHERE labels.label_id = hits.label_id");
 		}
 		
 	} else {
@@ -167,7 +118,7 @@ sub _init_db {
 	$self->sth($sth);
 	
 }
-sub full_score () {
+sub full_score {
 	# this might be slower
 	# returns score, given the output of $self->process
 	my $self = shift;
@@ -178,253 +129,187 @@ sub full_score () {
 		score => 7, 
 	};
 	return $score unless @$results;
-	#scoring scheme
-	# 1 -> known to cause heteroallelic binidng
-	# 1.1 -> ChIP_seq + motif + footprints + DNase + eQTL
-	# 1.2 -> ChIP_seq + motif + footprint + DNase + eQTL
-	# 1.3 -> ChIP_seq + motif + footprint + DNase
-	# 1.4 -> ChIP_seq + motif + DNase
-	# 1.5 -> ChIP_seq + non-matched motif + DNase
-	# 2 -> ChIP_seq + DNase
-	# 3 -> ChIP_seq or DNase
-	# 4 -> other
 
-	my $factors = {'Bound Protein' => 1, 'Motif' => 2};
-    
 	for my $record (@$results) {
-		my ($item, $ref, $min, $max) = @$record;
-		my $record_has_hit = 0;
-		for my $type (keys %{ $self->data_mapping }) {
-			# needs to be an array of hits, but a hash of factors
-			my $regex = $self->data_mapping->{$type}->{regex};
-			my $sc = $score->{$type} || { hits => [], factors => {} };
-			if ($item =~ /$regex/) {
-				my $hit = {};
-				
-				# BEGIN THE UGLY PARSE-O-MATIC
-				my @f = split('_', $item);
-				my @f_paren = split('\)_\({0,1}', $item);
-				for my $col (@{ $self->data_mapping->{$type}->{columns} }) {
-					my ($colName, $map) = %$col;
-					my $map_paren;
-					
-					if ($colName eq 'Location') {
-						$hit->{$colName} = "$chr:$min..$max";
-					} elsif ($colName eq 'Reference') {
-						$hit->{$colName} = $ref;
-						# further processing later
-					} elsif (!$map)  {
-						$hit->{$colName} = '';
-					} elsif (ref($map) eq 'ARRAY') {
-						$hit->{$colName} = join(" ",@f[$map->[0] .. $#f]);
-					} elsif (($map_paren) = $map =~ /\((\d+)\)/) {
-						($hit->{$colName}) = $f_paren[$map_paren] =~ /\(?(.*)/;
-						$hit->{$colName} =~ s/_/ /g;
-						$hit->{$colName} =~ s/(\w+)/\u\L$1/g;
-					} elsif ($map =~ /\d+/) {
-						if (exists $factors->{$colName}) {
-							for my $alt (&hPWMtoHUGO($f[$map])) {
-								$sc->{factors}->{$alt}++;
-							}
-						}						
-						$hit->{$colName} = $f[$map]; # replace with alt hit?
-					} else {
-						$hit->{$colName} = $map;
-					}
-						
-				}
-				push @{ $sc->{hits} }, $hit if keys %$hit;
-				$score->{$type} = $sc if @{ $sc->{hits} };
-				$record_has_hit++ if keys %$hit; #Keeping track of hits for Other MANUAL type				
-			}
-		}
-		pop(@{ $score->{Other}->{hits} }) if ($record_has_hit > 1); #If the record has a hit then remove from Other
-	}
-	
-	my $pwmmatched = 0;
-	my $fpmatched = 0;
-	for my $key (keys %{$score->{TF}->{factors}}) {
-		if(exists $score->{PWM} && exists $score->{PWM}->{factors}->{$key}) {
-			$pwmmatched = 1;
-		}
-		if(exists $score->{FP} && exists $score->{FP}->{factors}->{$key}) {
-			$fpmatched = 1;
-		}
-	}
-	
-#	$score->{score} = 4;
-#	if(keys %{ $score->{TF}->{factors} }|| keys %{ $score->{DNase} }) {
-#		$score->{score} = 3;
-#	} 
-#
-#	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} }) {
-#		$score->{score} = 2;
-#	} 
-#
-#	if(keys %{ $score->{TF}->{factors} } && keys %{ $score->{DNase} } && keys %{ $score->{PWM} }) {
-#		$score->{score} = ($pwmmatched ? 
-#			(keys %{ $score->{FP}} ? 
-#				(keys %{ $score->{eQTL}} ?  
-#					($fpmatched ? 
-#						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
-#	} 
+                my($min, $max, $id1, $id2, $display_table, @fields) = @$record; #probably a field array works better
+                my $hit = {};
 
-	my $chip_count = keys(%{ $score->{TF}->{factors} });
-	my $pwm_count = keys(%{ $score->{PWM} });
-	my $footprint_count = keys(%{ $score->{FP} });
-	my $eqtl_count = keys(%{ $score->{eQTL} });
-	my $dnase_count = keys(%{ $score->{DNase} });
-	$score->{score} = &calculate_score($chip_count, $dnase_count, $pwm_count, $footprint_count, $eqtl_count, $pwmmatched, $fpmatched);
+                for my $col (@{ $self->data_mapping->{$display_table}->{columns} }) {
+                        my ($colName, $map) = %$col;
+                        $hit->{$colName} = $fields[$map] if defined $map;
+                }
+                $hit->{'Location'} = "$chr:$min..$max";
 
+		#hacky - 
+		#if(defined $hit->{'PWM'}) {
+		#	my $pwm_file = $hit->{'PWM'};
+		#	my $path = "data/PWMLogos/" . $pwm_file . ".png";
+		#	if(-e $path) { #we have the basic logo for this PWM
+		#		$hit->{'PWM'} .= ".png";
+		#	}
+		#}
+
+                push@{ $score->{$display_table}->{hits} }, $hit if keys %$hit; #can probably drop this conditional
+
+	}
+
+        $score->{score} = $self->calculate_score($score);
+	
 	return $score;
 		
 }
-sub score() {
+
+#merge this with above function
+sub score {
 	# returns score, given the output of $self->process
 	my $self = shift;
-	my $scores = shift; #Array Ref[ [scores,ref].]
+	my $results = shift; #Array Ref[ [scores,ref].]
 	
-	return 7 unless @$scores; # zero hits
+        my $score  = {
+                score => 7,
+        };
+        return $score unless @$results;
 
-	#scoring scheme
-	# 1 -> known to cause heteroallelic binidng
-	# 1.1 -> ChIP_seq + motif + footprints + DNase + eQTL
-	# 1.2 -> ChIP_seq + motif + footprint + DNase + eQTL
-	# 1.3 -> ChIP_seq + motif + footprint + DNase
-	# 1.4 -> ChIP_seq + motif + DNase
-	# 1.5 -> ChIP_seq + non-matched motif + DNase
-	# 2 -> ChIP_seq + DNase
-	# 3 -> ChIP_seq or DNase
-	# 4 -> other
-	
-	
-	my %PWMs = ();
-	my $DNase = 0;
-	my %footprints = ();
-	my $eqtl = 0;
-	my $manual = 0; ## no score for this yet
-	my %chips = ();
-	
-	for my $pair (@$scores) {
-		my ($item, $ref, $rest) = @$pair; #safe guard in case we later return more columns!
-		if($item =~ /(PWM)_(.+)/) {
-			@PWMs{ &hPWMtoHUGO($2) } = 1;
-		} elsif($item =~ /DNase/) {
-			$DNase = 1;
-		} elsif($item =~ /(FP)_(.+)_(.+)/) {
-			@footprints{ &hPWMtoHUGO($3) } = 1;
-		} elsif($item =~ /eQTL/) {
-			$eqtl = 1;
-		} elsif($item =~ /MANUAL/) {
-			$manual = 1;
-		} elsif($item =~ /^(TF)_(.+)_(.+)_{0,1}(.*)/) {
-			@chips{ &hPWMtoHUGO($3) } = 1;
-		}
-	}
-	
-	my $pwmmatched = 0;
-	my $fpmatched = 0;
-	for my $key (keys %chips) {
-		if(exists $PWMs{$key}) {
-			$pwmmatched = 1;
-		}
-		if(exists $footprints{$key}) {
-			$fpmatched = 1;
-		}
-	}
+        for my $record (@$results) {
+                my($min, $max, $id1, $id2, $display_table, @fields) = @$record; #probably a field array works better
+                my $hit = {};
 
-#	my $score = 4;
-#	if(%chips || $DNase == 1) {
-#		$score = 3;
-#	} 
-#
-#	if(%chips && $DNase == 1) {
-#		$score = 2;
-#	} 
-#
-#	if(%chips && $DNase == 1 && %PWMs) {
-#		$score = ($pwmmatched ? 
-#			(%footprints ? 
-#				($eqtl ?  
-#					($fpmatched ? 
-#						1.1 : 1.2)  : 1.3 ) : 1.4 ) : 1.5);
-#	} 
+                for my $col (@{ $self->data_mapping->{$display_table}->{columns} }) {
+                        my ($colName, $map) = %$col;
+                        $hit->{$colName} = $fields[$map] if defined $map;
+                }
+                #$hit->{'Location'} = "$chr:$min..$max";
+                push@{ $score->{$display_table}->{hits} }, $hit if keys %$hit; #can probably drop this conditional
 
-	my $chip_count = keys(%chips);
-	my $pwm_count = keys(%PWMs);
-	my $footprint_count = keys(%footprints);
-	my $score = &calculate_score($chip_count, $DNase, $pwm_count, $footprint_count, $eqtl, $pwmmatched, $fpmatched);
+        }
 
-	#print STDERR "CHIPS: ", Dumper %chips;
-	#print STDERR "PWMS: ", Dumper %PWMs;
-	#print STDERR "FPS", Dumper %footprints;
-	return $score;
-	
+        $score->{score} = $self->calculate_score($score);
+
+        return $score->{score};
 }
 
 
 #Slower but legible for now
 sub calculate_score {
-    my($chip, $DNase, $PWM, $footprint, $eqtl, $pwmmatched, $fpmatched) = @_;
 
-    my $score = 7;
+    my $self = shift;
+        my $to_score = shift;
 
-    if($chip >= 1 || $DNase >= 1 || $PWM >= 1 || $footprint >= 1 || $eqtl >= 1) {
-        $score = 6;
-    }
+        my $score = 7;
 
-    if($chip >= 1 || $DNase >= 1) {
-        $score = 5;
-    }
+        my %TF_factors = ();
+        my %PWM_factors = ();
+        my %FOOTPRINT_factors = ();
+        #FLAGS:
+        my ($CHIP, $DNASE, $PWM, $FOOTPRINT, $EQTL, $PWM_matched, $FOOTPRINT_matched) = (0) x 7;
 
-    if($chip >= 1 && $DNase >= 1) {
-        $score = 4;
-    }
-
-    if($chip >= 1 && $pwmmatched >= 1) {
-        $score = "3b";
-    }
-
-    if($chip >= 1 && $DNase >= 1 && $PWM >= 1) {
-        $score = "3a";
-    }
-
-    if($chip >= 1 && $DNase >= 1 && $PWM >= 1 && $pwmmatched >= 1) {
-        $score = "2c";
-    }
-
-    if($chip >= 1 && $DNase >= 1 && $PWM >= 1 && $footprint >= 1) {
-        $score = "2b";
-    }
-
-    if($chip >= 1 && $DNase >= 1 && $PWM >= 1 && $pwmmatched >= 1 && $footprint >= 1 && $fpmatched >= 1) {
-        $score = "2a";
-    }
-    
-    if($eqtl >= 1) {
-        if($DNase >= 1 || $chip >= 1) {
-            $score = "1f";
+        #Transcription Facotrs
+        if(keys %{ $to_score->{Protein_Binding} }) {
+                $CHIP = 1;
+                foreach(@{ $to_score->{Protein_Binding}->{hits} }) {
+                        $TF_factors{$_->{'Bound Protein'}} = 1;
+                }
         }
-        if($chip >= 1) {
-            if($pwmmatched >= 1) {
-                $score = "1e";
-            }
-            if($PWM >= 1 && $DNase >= 1) {
-                $score = "1d";
-            }
-            if($pwmmatched >= 1 && $DNase >= 1) {
-                $score = "1c";
-            }
-            if($PWM >= 1 && $footprint >= 1 && $DNase >= 1) {
-                $score = "1b";
-            }
-            if($pwmmatched >= 1 && $fpmatched >= 1 && $DNase >= 1) {
-                $score = "1a";
-            }
+
+        #DNase
+        if(keys %{ $to_score->{Chromatin_Structure} }) {
+                foreach(@{ $to_score->{Chromatin_Structure}->{hits} }) {
+                        if(exists($_->{Method}) && $_->{Method} eq "DNase-seq") {
+                                $DNASE = 1;
+                        }
+                }
         }
-    }
-    
-  return $score;
+
+        #PWMs and Footprints
+        if(keys %{ $to_score->{Motifs} }) {
+                foreach(@{ $to_score->{Motifs}->{hits} }) {
+                        if(exists($_->{Method}) && $_->{Method} eq "PWM") {
+                                $PWM = 1;
+                                @PWM_factors{ keys %{&hPWMtoHUGO( $_->{Motif} )} } = 1;
+                        }
+                        if(exists($_->{Method}) && $_->{Method} eq "Footprinting") {
+                                $FOOTPRINT = 1;
+                                @FOOTPRINT_factors{ keys %{&hPWMtoHUGO( $_->{Motif} )} } = 1;
+                        }
+                }
+        }
+
+        #eQTLs (also considering dsQTLs as equivalent)
+        if(keys %{ $to_score->{Single_Nucleotides} }) {
+                foreach(@{ $to_score->{Single_Nucleotides}->{hits} }) {
+                        if(exists($_->{Method}) && ( $_->{Method} eq "eQTL" || $_->{Method} eq "dsQTL" )) {
+                                $EQTL = 1;
+                        }
+                }
+        }
+
+        # Match PWMs and Footprints to TFs
+        for my $tfkey (keys %TF_factors) {
+                if( exists $PWM_factors{ $tfkey } ) {
+                        $PWM_matched = 1;
+                }
+                if( exists $FOOTPRINT_factors{ $tfkey } ) {
+                        $FOOTPRINT_matched = 1;
+                }
+        }
+
+        #Now the scoring
+        if($CHIP == 1 || $DNASE == 1 || $PWM == 1 || $FOOTPRINT == 1 || $EQTL == 1) {
+                $score = 6;
+        }
+
+        if($CHIP == 1 || $DNASE == 1) {
+                $score = 5;
+        }
+
+        if($CHIP == 1 && $DNASE == 1) {
+                $score = 4;
+        }
+
+        if($CHIP == 1 && $PWM_matched == 1) {
+                $score = "3b";
+        }
+
+        if($CHIP == 1 && $DNASE == 1 && $PWM == 1) {
+                $score = "3a";
+        }
+        
+        if($CHIP == 1 && $DNASE == 1 && $PWM == 1 && $PWM_matched == 1) {
+                $score = "2c";
+        }
+                         
+        if($CHIP == 1 && $DNASE == 1 && $PWM == 1 && $FOOTPRINT == 1) {
+                $score = "2b";
+        }
+        
+        if($CHIP == 1 && $DNASE == 1 && $PWM == 1 && $PWM_matched == 1 && $FOOTPRINT == 1 && $FOOTPRINT_matched == 1) {
+                $score = "2a";
+        }
+                                
+        if($EQTL == 1) {
+                if($DNASE == 1 || $CHIP == 1) {
+                        $score = "1f";
+                }
+                if($CHIP == 1) {
+                        if($PWM_matched == 1) {
+                                $score = "1e";
+                        }
+                        if($PWM == 1 && $DNASE == 1) {
+                                $score = "1d";
+                        }
+                        if($PWM_matched == 1 && $DNASE == 1) {
+                                $score = "1c";
+                        }
+                        if($PWM == 1 && $FOOTPRINT == 1 && $DNASE == 1) {
+                                $score = "1b";
+                        }
+                        if($PWM_matched == 1 && $FOOTPRINT_matched == 1 && $DNASE == 1) {
+                                $score = "1a";
+                        }
+                }
+        }
+                 
+	return $score;
 }
 
 sub hPWMtoHUGO {
@@ -437,7 +322,8 @@ sub hPWMtoHUGO {
 		}
 	}
 	$results{$old_factor_name} = 1;
-  	return keys %results;
+  	return \%results;
+    
 }
 
 

@@ -25,6 +25,8 @@ t/temp.out
 data/RegulomeDB/*.db
 data/SnpDB/*.db
 data/GencodeDB/*.db
+data/PWMLogos
+public/images/PWMLogos/
 *.bk
 nytprof*
 public/tmp

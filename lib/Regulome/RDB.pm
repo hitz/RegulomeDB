@@ -446,11 +446,14 @@ sub check_coord {
 		$min = $4;
 		$max = $6;
 
+		#Dropping 1 based raw input support (VCF and GFF are still 1 based) - APB
 		# ch:nnnn..mmmm - or ch:nnnn-mmmm # 1 based input, subtract
 		if ( $3 =~ /[:-_]/ || $5 =~ /\S/ ) {
-			$format = 'Generic - 1 Based';
-			$min--;
-			$max--;
+			$format = 'Generic - 0 Based';
+			#$min--;
+			if($max != $min) {
+				$max--;	#EXCLUSIVE
+			}
 		} else {
 			$format = 'BED - 0 Based';
 			$max--;    #EXCLUSIVE

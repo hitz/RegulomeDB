@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:svg="http://www.w3.org/2000/svg" xml:lang="en"
+xmlns="http://www.w3.org/1999/xhtml">
+  <head><title>SVG test</title>
+   <link href="/css/regulome.css" media="screen" rel="stylesheet" type="text/css">
+   <link href="/css/custom-theme/jquery-ui-1.8.16.custom.css" media="screen" rel="stylesheet" type="text/css">
+   <link href="/css/jquery.svg.css" media="screen" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+<div id="svg" style="height: 286px;"></div>
+   <script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
+   <script src="/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+   <script src="/js/underscore-min.js" type="text/javascript"></script>
+   <script src="/js/jquery.tools.min.js" type="text/javascript"></script>
+   <script src="/js/jquery.svg.js" type="text/javascript"></script>
+<script>
+var draw = function(svg) {
+    svg.describe("This graphic links to an external image"); 
+    var img = svg.image(100, 50, 720,286, 
+    "images/ucsc_example.png"); 
+    svg.title(img, "My image"); 
+    var style = svg.group({stroke: 'red',strokeWidth: 3,opacity: 0.7});
+    svg.line(style, 460,50,460,336);
+    
+};
+$(function() {
+   $('#svg').svg({onLoad: draw});
+});
+
+</script>
+</body>
+</html>
+
+

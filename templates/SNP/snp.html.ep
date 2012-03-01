@@ -8,11 +8,16 @@
   <% my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/Region?r='; %>
   <% my $ensembleLinkURL = 'http://uswest.ensembl.org/Homo_sapiens/Location/View?db=core;r='; %>
   <!-- # must append X:50030991;export=png -->
+
+  <% my $ucscImgURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgRenderTracks?hgsid=245174063&leftLabels=off&textSize=12&mrna=hide&intronEst=hide&knownGene=hide&refGene=full&refGene.baseColorDrawOpt=genomicCodons&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position='; %>
+  <% my $ucscLinkURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgTracks?leftLabels=on&mrna=hide&intronEst=hide&knownGene=hide&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position='; %>
+  <!-- # must append chrX:upstream-downstrem for UCSC -->
+
   <% $chr =~ s/chr//; %>
-  <% my $pos_upstream = $pos-10000; %>
-  <% my $pos_downstream = $pos+10000; %>
-  <a href="<%==$ensembleLinkURL.$chr.':'.$pos_upstream.'-'.$pos_downstream %>">
-  <%=image $ensembleImgURL.$chr.':'.$pos_upstream.'-'.$pos_downstream.';export=png', alt => 'Ensemble Browser', width => '740px' %>
+  <% my $pos_upstream = $pos-200; %>
+  <% my $pos_downstream = $pos+200; %>
+  <a href="<%==$ucscLinkURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream %>">
+  <%=image $ucscImgURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream, alt => 'UCSC Browser', width => '740px' %>
   </a>
 </div>
 <div class='container'>
@@ -25,24 +30,8 @@
 <% } %>   
 </div>
 %= javascript "/js/jquery.dataTables.min.js"
+%= javascript "/js/jquery.svg.js"
 <script>
-	var createLinks =  function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-				var content = aData[aData.length-1];
-				var td = $('td', nRow).eq(aData.length-1);
-				// Reference is the last column... all bets are off if you move it!!!
-		            	if (content.match(/PMID/)) {
-		            	
-					td.html(td.html().replace(/PMID([0-9]+)/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/$1\">$1</a>"));
-            		    	} else if (content.match(/NCP000/)) {
-					td.html('<a href=\"http://www.genome.gov/10005107\">ENCODE</a>');
-				} else if (content.match(/^M0/)) {
-					td.html(td.html().replace(/(M[0-9]+).pwm/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/16381825\">$1</a>"));
-				} else if (content.match(/^MA/)) {
-				        td.html(td.html().replace(/(MA[0-9\.]+).pwm/,"<a href=\"http://jaspar.genereg.net/cgi-bin/jaspar_db.pl?ID=$1&rm=present&collection=CORE\">$1</a>"));
-				}
-		           	 return nRow;
-        		    };
-
 	var createHelpLinks = function( nHead, aasData, iStart, iEnd, aiDisplay) {
 				$('th div', nHead).each(function(index) {
 					if ($(this).html() && $(this).html().match(/Cell Type/) ) {
@@ -51,12 +40,52 @@
 				   });
 			     };
 
+	var aoCallBacks = [
+			   { "fnRender": function ( oObj ) {
+				var colData = oObj.aData[oObj.aData.length-1];
+				if (colData.match(/PMID/) ) {
+					return  colData.replace(/PMID([\d]+)/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/$1\">$1</a>");
+           		    	} else if (colData.match(/NCP000/)) {
+					return '<a href=\"http://www.genome.gov/10005107\">ENCODE</a>';
+				}
+			     },
+			  "aTargets": [ -1 ]
+			  }
+	];
+
 	$(function() {
 		<% for my $sect (@$sections) { next unless keys %$sect; %>
 			var dtParams = <%= b($sect->{data_table}) %>;
-			dtParams['fnRowCallback'] = createLinks;
+			<% if ($sect->{table_id} eq 'motifs') { %>
+			   dtParams['aoColumnDefs'] = aoCallBacks; 
+			   dtParams['aoColumnDefs'].push(
+			  { "fnRender": function ( oObj ) {
+				if (oObj.aData.length > 4) {
+					var colData = oObj.aData[4];
+					var loc = oObj.aData[1];
+					var index = 1;
+					if(loc.match( /chr.+:(\d+)..(\d+)/) ) {
+					 	var start = RegExp.$1;
+      						var snp = <%= $pos %>;
+						index = snp - start + 1;
+					}
+					var fn = colData.replace(/(.+)/,"/images/PWMLogos/$1"+"_"+index+".png");
+						
+					return "<img src=\""+fn+"\" alt=\"seqlogo\" onerror=\"this.src='/images/blank.png';this.height='1'\">"+colData;
+				}
+			     } ,
+			  "aTargets": [ 4 ]
+			  }
+			);
+ 			<% } else { %>
+			    dtParams['aoColumnDefs'] = aoCallBacks; 
+			<% } %>
+
 			dtParams['fnHeaderCallback'] = createHelpLinks;
 			$('#<%= $sect->{table_id} %>').dataTable(dtParams);
+			<% if ($sect->{table_id} eq 'motifs') { %>
+			dtParams['aoColumnDefs'].pop();
+			<% } %>
 		<% } %>
 	});
 </script>  
