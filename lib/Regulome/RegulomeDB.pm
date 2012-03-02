@@ -141,15 +141,6 @@ sub full_score {
                 }
                 $hit->{'Location'} = "$chr:$min..$max";
 
-		#hacky - 
-		#if(defined $hit->{'PWM'}) {
-		#	my $pwm_file = $hit->{'PWM'};
-		#	my $path = "data/PWMLogos/" . $pwm_file . ".png";
-		#	if(-e $path) { #we have the basic logo for this PWM
-		#		$hit->{'PWM'} .= ".png";
-		#	}
-		#}
-
                 push@{ $score->{$display_table}->{hits} }, $hit if keys %$hit; #can probably drop this conditional
 
 	}

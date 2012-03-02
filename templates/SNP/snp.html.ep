@@ -69,9 +69,11 @@
       						var snp = <%= $pos %>;
 						index = snp - start + 1;
 					}
-					var fn = colData.replace(/(.+)/,"/images/PWMLogos/$1"+"_"+index+".png");
+//					var fn = colData.replace(/(.+)/,"/images/PWMLogos/$1"+"_"+index+".png");
+					var fn = "/images/PWMLogos/"+colData+"_"+index+".png";
 						
-					return "<img src=\""+fn+"\" alt=\"seqlogo\" onerror=\"this.src='/images/blank.png';this.height='1'\">"+colData;
+//					return "<img src=\""+fn+"\" alt=\"seqlogo\" onerror=\"this.src='/images/blank.png';this.height='1'\">"+colData;
+					return "<a href=\""+fn+"\"><img src=\""+fn+"\" alt=\"seqlogo\" width=150px onerror=\"this.src='/images/blank.png';this.height='1';this.width='1'\"></a>";
 				}
 			     } ,
 			  "aTargets": [ 4 ]

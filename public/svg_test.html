@@ -8,17 +8,23 @@ xmlns="http://www.w3.org/1999/xhtml">
    <link href="/css/jquery.svg.css" media="screen" rel="stylesheet" type="text/css">
   </head>
   <body>
-<div id="svg" style="height: 286px;"></div>
+<div id="svg"></div>
    <script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
    <script src="/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
    <script src="/js/underscore-min.js" type="text/javascript"></script>
    <script src="/js/jquery.tools.min.js" type="text/javascript"></script>
    <script src="/js/jquery.svg.js" type="text/javascript"></script>
 <script>
+var ucscImgURL =
+'http://genome.cse.ucsc.edu/cgi-bin/hgRenderTracks?hgsid=245174063&leftLabels=off&textSize=12&mrna=hide&intronEst=hide&knownGene=hide&refGene=full&refGene.baseColorDrawOpt=genomicCodons&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position=chrX:146993187-146993587';
+
+var ucscLinkURL =
+'http://genome.cse.ucsc.edu/cgi-bin/hgTracks?leftLabels=on&mrna=hide&intronEst=hide&knownGene=hide&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position=chrX:146993187-146993587';
+
 var draw = function(svg) {
     svg.describe("This graphic links to an external image"); 
-    var img = svg.image(100, 50, 720,286, 
-    "images/ucsc_example.png"); 
+    var img = svg.image(100, 50, 720,0, 
+    ucscImgURL); 
     svg.title(img, "My image"); 
     var style = svg.group({stroke: 'red',strokeWidth: 3,opacity: 0.7});
     svg.line(style, 460,50,460,336);
