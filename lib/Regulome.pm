@@ -10,22 +10,26 @@ sub startup {
 	my $self = shift;
 
 	#$self->log->level('error');
-	my $regDB = Regulome::RegulomeDB->new(
+	my $regDB;
+	my $snDB;
+	# eval added when DB not available
+	eval {
+	  $regDB = Regulome::RegulomeDB->new(
 								 {
 								   type  => 'multi',
 								   dbdir => 'data/RegulomeDB'
 								 }
-	);
+	  );
 
-	my $snDB = Regulome::SnpDB->new(
+	  $snDB = Regulome::SnpDB->new(
 						   {
 							 type          => 'single',
 							 dbfile_all    => 'data/SnpDB/dbSNP132.db',
 							 dbfile_common => 'data/SnpDB/dbSNP132Common.db',
 						   }
-	);
+	  );
 
-
+	};
 	$self->helper( 'rdb'   => sub { return $regDB } );
 	$self->helper( 'snpdb' => sub { return $snDB } );
 

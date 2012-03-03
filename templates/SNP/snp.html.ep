@@ -4,7 +4,6 @@
 <h1>Data supporting <%= $chr %>:<%= $pos %> (<%= $snpid %>) </h1>
 <h2>Score: <%= $score->{score} %></h2>
 </div>
-<div id='genomic_region'>
   <% my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/Region?r='; %>
   <% my $ensembleLinkURL = 'http://uswest.ensembl.org/Homo_sapiens/Location/View?db=core;r='; %>
   <!-- # must append X:50030991;export=png -->
@@ -12,14 +11,19 @@
   <% my $ucscImgURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgRenderTracks?hgsid=245174063&leftLabels=off&textSize=12&mrna=hide&intronEst=hide&knownGene=hide&refGene=full&refGene.baseColorDrawOpt=genomicCodons&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position='; %>
   <% my $ucscLinkURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgTracks?leftLabels=on&mrna=hide&intronEst=hide&knownGene=hide&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position='; %>
   <!-- # must append chrX:upstream-downstrem for UCSC -->
-
   <% $chr =~ s/chr//; %>
   <% my $pos_upstream = $pos-200; %>
   <% my $pos_downstream = $pos+200; %>
-  <a href="<%==$ucscLinkURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream %>">
-  <%=image $ucscImgURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream, alt => 'UCSC Browser', width => '740px' %>
+   <! -- below needs to skip URL escapes using Mojo::Bytestream!! -->
+  <% my $fullLink = b($ucscLinkURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream); %>
+  <% my $fullImg = b($ucscImgURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream); %>
+<div id='genomic_region'>
+  <!-- this div is used to get image size and is then hidden when redline is drawn by SVG -->
+  <a href="<%==$fullLink %>">
+  <img src=<%==$fullImg %>, alt='UCSC Browser', width='740px' />
   </a>
 </div>
+<div id="genome_svg"></div>
 <div class='container'>
 <% for my $sect (@$sections) { %>
    <% next unless keys %$sect; %>
@@ -52,6 +56,22 @@
 			  "aTargets": [ -1 ]
 			  }
 	];
+
+	var draw = function(svg) {
+    	svg.describe("Genome Browser from USCS with SNP marked in Red"); 
+    	var img_height = $('#genomic_region img').height();
+    	$('#genomic_region').hide();
+    	var link = svg.link('<%= $fullLink %>');
+    	var img = svg.image( link, 0, 0, 740, img_height, '<%= $fullImg %>'); 
+    	svg.title(img, "Genome Browser for <%= $chr %>:<%= $pos %> (<%= $snpid %>)"); 
+	    var style = svg.group({stroke: 'red',strokeWidth: 2,opacity: 0.7});
+    	var bracket = svg.group({stroke: 'black', strokeWidth: 40, opacity: 0.2});
+    	svg.line(style, 370,0,370,img_height); // bright red
+    	svg.line(bracket, 370,0,370,img_height);
+    	var vb = "0 0 740 "+img_height;
+    	svg.configure({viewBox: vb}, true);
+    	$('#genome_svg').height(img_height);
+};
 
 	$(function() {
 		<% for my $sect (@$sections) { next unless keys %$sect; %>
@@ -90,4 +110,10 @@
 			<% } %>
 		<% } %>
 	});
+	
+	// Note that this MUST be done after images are loaded!
+	$(window).load(function() {
+   		$('#genome_svg').svg({onLoad: draw});
+	});
+	
 </script>  

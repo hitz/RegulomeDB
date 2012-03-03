@@ -113,6 +113,13 @@ padding-bottom: 7px;
   margin: 0 145px;
 }
 
+#genome_svg 
+{
+	padding: 6px 0;
+	margin: 0 auto;
+	width: 740px;
+}
+
 #banner h1, #banner h2
 {
     text-align: center;
