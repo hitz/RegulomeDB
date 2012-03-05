@@ -8,7 +8,7 @@
   <% my $ensembleLinkURL = 'http://uswest.ensembl.org/Homo_sapiens/Location/View?db=core;r='; %>
   <!-- # must append X:50030991;export=png -->
 
-  <% my $ucscImgURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgRenderTracks?hgsid=245174063&leftLabels=off&textSize=12&mrna=hide&intronEst=hide&knownGene=hide&refGene=full&refGene.baseColorDrawOpt=genomicCodons&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position='; %>
+  <% my $ucscImgURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgRenderTracks?hgS_doLoadUrl=submit&hgS_loadUrlName=http://regulomedb.org:8080/UCSC_Graphic_Session.txt&position='; %>
   <% my $ucscLinkURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgTracks?leftLabels=on&mrna=hide&intronEst=hide&knownGene=hide&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position='; %>
   <!-- # must append chrX:upstream-downstrem for UCSC -->
   <% $chr =~ s/chr//; %>
