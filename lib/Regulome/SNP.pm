@@ -178,7 +178,7 @@ sub snp_table {
 		 },    
 	];
 	
-	my $score = $self->app->rdb->full_score($res,$chr);
+	my $score = $self->app->rdb->score($res,$chr);
 	
 	for my $sect (@$sections) {
 		my @data = ();

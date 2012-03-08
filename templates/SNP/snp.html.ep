@@ -3,6 +3,14 @@
 <div id='banner'>
 <h1>Data supporting <%= $chr %>:<%= $pos %> (<%= $snpid %>) </h1>
 <h2>Score: <%= $score->{score} %></h2>
+<%
+my $score_description = "";
+if($score->{score} =~ /1/) { $score_description .= "Likely to affect binding and linked to expression of a gene target" };
+if($score->{score} =~ /2/) { $score_description .= "Likely to affect binding" };
+if($score->{score} =~ /3/) { $score_description .= "Less likely to affect binding" };
+if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence" };
+%>
+<h2><%= $score_description %></h2>
 </div>
   <% my $ensembleImgURL = 'http://uswest.ensembl.org/Homo_sapiens/Component/Location/Web/Region?r='; %>
   <% my $ensembleLinkURL = 'http://uswest.ensembl.org/Homo_sapiens/Location/View?db=core;r='; %>

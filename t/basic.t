@@ -576,6 +576,7 @@ $results->status_is(200);
 my $t2 = Benchmark->new;
 #->text_is('div#input p::nth-child(2)' => '100000');
 ok(!json_error($sessionid),"$sessionid is valid JSON");
+exit; #shorter test
 my $t3 = Benchmark->new;
 my $td = timediff($t1, $t0);
 print "Chromosome file: process:",timestr($td),"\n";

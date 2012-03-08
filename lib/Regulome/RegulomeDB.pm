@@ -119,43 +119,12 @@ hits.label_id");
 	$self->sth($sth);
 	
 }
-sub full_score {
-	# this might be slower
-	# returns score, given the output of $self->process
-	my $self = shift;
-	my $results = shift; #Array Ref[ [scores,ref, min, max].]
-	my $chr = shift;
-	
-	my $score  = {
-		score => 7, 
-	};
-	return $score unless @$results;
 
-	for my $record (@$results) {
-                my($min, $max, $id1, $id2, $display_table, @fields) = @$record; #probably a field array works better
-                my $hit = {};
-
-                for my $col (@{ $self->data_mapping->{$display_table}->{columns} }) {
-                        my ($colName, $map) = %$col;
-                        $hit->{$colName} = $fields[$map] if defined $map;
-                }
-                $hit->{'Location'} = "$chr:$min..$max";
-
-                push@{ $score->{$display_table}->{hits} }, $hit if keys %$hit; #can probably drop this conditional
-
-	}
-
-        $score->{score} = $self->calculate_score($score);
-	
-	return $score;
-		
-}
-
-#merge this with above function
 sub score {
 	# returns score, given the output of $self->process
 	my $self = shift;
 	my $results = shift; #Array Ref[ [scores,ref].]
+	my $chr = shift || '';
 	
         my $score  = {
                 score => 7,
@@ -168,16 +137,16 @@ sub score {
 
                 for my $col (@{ $self->data_mapping->{$display_table}->{columns} }) {
                         my ($colName, $map) = %$col;
-                        $hit->{$colName} = $fields[$map] if defined $map;
+                        $hit->{$colName} = $fields[$map] if $map ne "";
                 }
-                #$hit->{'Location'} = "$chr:$min..$max";
+                $hit->{'Location'} = "$chr:$min..$max";
                 push@{ $score->{$display_table}->{hits} }, $hit if keys %$hit; #can probably drop this conditional
 
         }
 
         $score->{score} = $self->calculate_score($score);
 
-        return $score->{score};
+        return $score;
 }
 
 

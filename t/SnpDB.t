@@ -243,42 +243,138 @@ my $commonTest = {
 
 my $snpResult = { rs55998931 => [
           [
-            'DNase_Be2c',
-            'NCP000',
-            '10420',
-            '10570'
+            10400,
+            10550,
+            395,
+            395,
+            'Histone_Modification',
+            'ChIP-seq',
+            'H3k4me3',
+            'Hvmf',
+            '',
+            'NCP000'
           ],
           [
-            'DNase_Hvmf',
-            'NCP000',
-            '10440',
-            '10590'
+            10400,
+            10550,
+            395,
+            395,
+            'Histone_Modification',
+            'ChIP-seq',
+            'H3k4me3',
+            'Hvmf',
+            '',
+            'NCP000'
           ],
           [
-            'DNase_Jurkat',
-            'NCP000',
-            '10440',
-            '10590'
+            10420,
+            10570,
+            10,
+            10,
+            'Chromatin_Structure',
+            'DNase-seq',
+            '',
+            'Be2c',
+            '',
+            'NCP000'
           ],
           [
-            'DNase_Nb4',
-            'NCP000',
-            '10440',
-            '10590'
+            10440,
+            10590,
+            77,
+            77,
+            'Chromatin_Structure',
+            'DNase-seq',
+            '',
+            'Hvmf',
+            '',
+            'NCP000'
           ],
           [
-            'TF_H1-hESC_TAF7',
-            'NCP000',
-            '10332',
-            '10536'
+            10440,
+            10590,
+            79,
+            79,
+            'Chromatin_Structure',
+            'DNase-seq',
+            '',
+            'Jurkat',
+            '',
+            'NCP000'
           ],
           [
-            'TF_HepG2_ZBTB33',
-            'NCP000',
-            '10382',
-            '10578'
+            10440,
+            10590,
+            89,
+            89,
+            'Chromatin_Structure',
+            'DNase-seq',
+            '',
+            'Nb4',
+            '',
+            'NCP000'
+          ],
+          [
+            10020,
+            10775,
+            168,
+            168,
+            'Histone_Modification',
+            'ChIP-seq',
+            'H3k09me3',
+            'Dnd41',
+            '',
+            'NCP000'
+          ],
+          [
+            10064,
+            10667,
+            148,
+            148,
+            'Histone_Modification',
+            'ChIP-seq',
+            'H3k09me3',
+            'Nt2d1',
+            '',
+            'NCP000'
+          ],
+          [
+            10139,
+            10530,
+            303,
+            303,
+            'Histone_Modification',
+            'ChIP-seq',
+            'H4k20me1',
+            'Nhdfad',
+            '',
+            'NCP000'
+          ],
+          [
+            10332,
+            10536,
+            66103,
+            66103,
+            'Protein_Binding',
+            'ChIP-seq',
+            'TAF7',
+            'H1-hESC',
+            '',
+            'NCP000'
+          ],
+          [
+            10382,
+            10578,
+            66139,
+            66139,
+            'Protein_Binding',
+            'ChIP-seq',
+            'ZBTB33',
+            'HepG2',
+            '',
+            'NCP000'
           ]
-   ]
+        ]
 };
 
 my $snpdb = Regulome::SnpDB->new({ type=>'single', 
@@ -307,16 +403,21 @@ while (my ($snpid, $c) = each (%$allTest)) {
 	($format, $chk) = $cntrl->check_coord($snpid);
 	is(scalar(@$chk),1,"Only 1 coord returned for SNP");
 	my $scan = $r->rdb->process($chk->[0]);
+	#use Data::Dumper;
+	#print Dumper $scan;
 	is_deeply($scan, $snpResult->{$snpid},"check SNP result");
 }
 
 # check_coord with a range checks SnpDB::getSNPbyRange()
+=pod
+## Generic 1-based input no longer accepted ##
+
 for my $rng (keys %$sampleRange) {
 	($format, $chk) = $cntrl->check_coord($rng);
 	is($format, 'Generic - 1 Based', "check format (generic range)");
 	is_deeply($chk, $sampleRange->{$rng}, "Check Generic range -> SNP ($rng)");
 }
-
+=cut
 for my $gff (keys %$sampleGFFrange) {
 	($format, $chk) = $cntrl->check_coord($gff);
 	is($format, 'GFF - 1 Based', "check format (gff range)");

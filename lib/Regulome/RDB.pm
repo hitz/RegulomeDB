@@ -70,7 +70,7 @@ sub submit {
 							 chunk => 0,
 							 ninp => 0,
 							 nsnps => 0,
-							 estimated_time_remaining => 10*($size/$ENV{MOJO_CHUNK_SIZE}),
+							 estimated_time_remaining => 1.0*($size/$ENV{MOJO_CHUNK_SIZE}),
 							 remnant => '',
 							 error => [],
 			);
@@ -398,7 +398,7 @@ sub process_chunk {
 
 		for my $snp (@$snps) {
 			my $res      = $self->rdb->process($snp);
-			my $score          = $self->rdb->score($res);
+			my $score          = $self->rdb->score($res,$snp->[0]);
 			my $coordRange =
 			    $snp->[0] . ':'
 			  . ( $snp->[1] - $BROWSE_PADDING ) . '-'
@@ -409,8 +409,9 @@ sub process_chunk {
 			  [
 				$snp->[0].':'.$snp->[1], #chromosome:position
 			    $self->snpdb->getRsid($snp) || "n/a",
-				$score,
+				$score->{score},
 				$coordRange,
+			        $score
 			  ];
 		}
 	}
@@ -536,6 +537,7 @@ sub download {
     $fn = "regulome_short.$sid.raw.json" unless (-e "$resultsDir/$fn");
 
     open(FH, "$resultsDir/$fn")  || die "Could not find output for session $sid ($fn)!";
+    # turn the the below two lines on to get "autodownload" - perhaps should set up a flag.
     $self->app->types->type(txt => 'application/octet-stream');
     $self->tx->req->headers->header('content-disposition' => "attachment; filename=$fn");
 
@@ -543,15 +545,55 @@ sub download {
 
     my $table = Mojo::JSON->new->decode($results);
 
-    my $snps = [ sort { $a->[2] cmp $b->[2] } @{$table->{'aaData'}} ];
-    use Data::Dumper;
+    my $snps = [];
+    # performance note: downloading very large results (millions) takes time and maybe shoudl be optimized
+
+    $snps = ( $self->param('nosort') ?  $table->{'aaData'} : [ sort { $a->[2] cmp $b->[2] } @{$table->{'aaData'}} ] );
 
     my @out = ();
 
     for (@$snps) {
 	$_->[0] =~/(chr.*):([0-9]+)/;
+	my $ch = $1;
+	my $st = $2;
 	if ($format eq 'bed') {
-	    push @out, join("\t", ($1,$2,$2+1,'SNP',$_->[2],0,'.','.','.',"# rsid: $_->[1]") );
+	    my $intScore = $_->[2];
+	    $intScore =~ s/[^0-9]//g;
+
+            #  seqid start end name score strand (grapics) # comment
+	    push @out, join("\t", 
+	       ($ch,$st,$st+1,'SNP',$intScore,0,'.','.','.',"# rsid: $_->[1]; score: $_->[2]") );
+
+	} elsif ($format eq 'gff') {
+	    my $id = "ExtendedScore=$_->[2];";
+	    $id .= "Rsid=$_->[1];" unless $_->[1] eq 'n/a';
+            # seqid source feature_type start end  score strand phase attributes(key=value;) -- coords in 1-base
+	    my $floatScore = $_->[2];
+	    $floatScore =~ s/[^0-9]//g;
+	    $floatScore = sprintf('%2.1f', $floatScore);
+	    push @out, join( "\t", 
+              ($ch, "regulomedb","SNP",$st+1,$st+1,$floatScore,'.',0,'.',$id) );
+
+	} elsif ($format eq 'full') {
+	    my $res = $_->[4];
+	    @out  = ( join("\t",qw/chromosome coordinate rsid score hits/) ) unless @out;
+	    my $dat = '';
+	    if ($_->[2] ne 7) { 
+		for my $class (qw/Single_Nucleotides Motifs Chromatin_Structure Protein_Binding/) {
+		    # possibly all the join/grep/map stuff here is slow and should be unrolled
+		    $dat .= $class.":";
+		    $dat .= join(":", grep { $_ ne "" } ( map { values %{$_} } @{ $res->{$class}->{hits} }) );
+		    $dat .= ":" if $dat;
+		}
+
+	    } else {
+
+		$dat = "No data";
+
+	    }
+	    # possibly explicitly adding \t and \n is faster
+	    push @out, join("\t", ($ch, $st, $_->[1], $_->[2],$dat) );
+	    
 	} else {
 	    push @out, "Undefined Format: $format";
 	    last;

@@ -3,7 +3,7 @@
 
 <div id='info' class='ui-widget-content ui-corner-all'>
 <h2>Your search is running...</h2><span id="stop">Stop</span>
-<p>Working on the <span id="chunk_no"><%= $session->data->{chunk}+1 %></span>th chunk.</p>
+<p>Working on chunk number <span id="chunk_no"><%= $session->data->{chunk}+1 %></span>.</p>
 <p>This page will periodically refresh.  Your data will be available at <a href="/results/<%= $session->sid %>" title="results"><%= $session->sid %></a> for 48 hours.</p>
 </div>
 <div id='input' class='ui-state-highlight ui-corner-all'>

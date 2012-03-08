@@ -40,8 +40,8 @@
 	<div id="download">
 		<input type="submit" id="dl_trigger" value="Download"/>
 		<input type="radio" id="dl_bed" name="format" value="bed" checked="checked" /><label for="dl_bed">BED</label>
-		<input type="radio" id="dl_vcf" name="format" value="vcf" /><label for="dl_vcf">VCF</label>
 		<input type="radio" id="dl_gff" name="format" value="gff" /><label for="dl_gff">GFF</label>
+		<input type="radio" id="dl_full" name="format" value="full" /><label for="dl_full">Full Output</label>
 	        <input type="hidden" name="sid" value="<%= $session->sid %>" />
 	   <span id="dl_message" class="ui-state-highlight" class='ui-corner-all'>Downloading...</span>
 	</div>
