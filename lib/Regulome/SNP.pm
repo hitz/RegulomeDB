@@ -201,8 +201,6 @@ sub snp_table {
 														aaData => \@data,
 														aoColumns => \@dtColumns,
 														bJQueryUI => 'true',
-														bFilter   => 0,
-														bSort     => 0,
 														bInfo     => 0,
 														bLengthChange => 0,
 														bPaginate => 0,

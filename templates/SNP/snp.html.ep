@@ -46,8 +46,8 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
 <script>
 	var createHelpLinks = function( nHead, aasData, iStart, iEnd, aiDisplay) {
 				$('th div', nHead).each(function(index) {
-					if ($(this).html() && $(this).html().match(/Cell Type/) ) {
-						$(this).html("<a title=\"Help on Cell Type\" href=\"http://genome.ucsc.edu/ENCODE/cellTypes.html\"><span class=\"text-ui-icon ui-icon ui-icon-help\"></span>"+$(this).html());
+					if ($(this).html() && $(this).html().match(/Cell Type/) && !$(this).html().match(/ENCODE/) ) {
+						$(this).html("<a title=\"Help on Cell Type\" href=\"http://genome.ucsc.edu/ENCODE/cellTypes.html\"><span class=\"text-ui-icon ui-icon ui-icon-help\"></span></a>"+$(this).html());
 					}
 				   });
 			     };
@@ -97,10 +97,8 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
       						var snp = <%= $pos %>;
 						index = snp - start + 1;
 					}
-//					var fn = colData.replace(/(.+)/,"/images/PWMLogos/$1"+"_"+index+".png");
 					var fn = "/images/PWMLogos/"+colData+"_"+index+".png";
 						
-//					return "<img src=\""+fn+"\" alt=\"seqlogo\" onerror=\"this.src='/images/blank.png';this.height='1'\">"+colData;
 					return "<a href=\""+fn+"\"><img src=\""+fn+"\" alt=\"seqlogo\" width=150px onerror=\"this.src='/images/blank.png';this.height='1';this.width='1'\"></a>";
 				}
 			     } ,
@@ -116,6 +114,7 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
 			<% if ($sect->{table_id} eq 'motifs') { %>
 			dtParams['aoColumnDefs'].pop();
 			<% } %>
+			$('.fg-toolbar').each(function(){$(this).removeClass('ui-corner-tr ui-corner-tl')});
 		<% } %>
 	});
 	

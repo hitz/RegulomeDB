@@ -159,7 +159,7 @@ sub display {
 								   bJQueryUI => 'true',
 								   aaSorting => [ [ 2, 'asc' ], [ 0, 'asc' ] ],
 								   bFilter   => 0,
-								   #bDeferRender => 1,
+								   bDeferRender => 1,
 								 };
 	
 	if ( (!$data || !$n) && $sid) {
@@ -188,7 +188,6 @@ sub display {
 					remnant => '',
                     snpDataTable => Mojo::JSON->new->encode($dtParams),
 				  } );
-
 
 	$self->render(template => 'RDB/results')
 }
@@ -599,7 +598,8 @@ sub download {
 	    last;
 	}
 
-    }     
+    }
+    $self->cookie(fileDownloadToken => $self->param('download_token_value_id'));
     $self->render(text => join("\n", @out), format => 'txt');
     
 

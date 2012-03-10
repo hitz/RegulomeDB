@@ -43,7 +43,9 @@
 		<input type="radio" id="dl_gff" name="format" value="gff" /><label for="dl_gff">GFF</label>
 		<input type="radio" id="dl_full" name="format" value="full" /><label for="dl_full">Full Output</label>
 	        <input type="hidden" name="sid" value="<%= $session->sid %>" />
-	   <span id="dl_message" class="ui-state-highlight" class='ui-corner-all'>Downloading...</span>
+	        <input type="hidden" id="download_token_value_id" name="download_token_value_id"/>
+	   <span id="dl_error" class='ui-state-error ui-corner-all'>Download Error!</span>
+	   <span id="dl_message" class='ui-state-highlight ui-corner-all'>Downloading...</span>
 	</div>
 
    % end 
@@ -52,6 +54,7 @@
 </div>
 %= javascript "/js/jquery.dataTables.min.js"
 %= javascript "/js/jquery.form.js"
+%= javascript "/js/jquery.cookie.js"
 <script>
 	var externalURL = {
 		ENSEMBL: 'http://uswest.ensembl.org/Homo_sapiens/Location/View?r=',
@@ -113,11 +116,30 @@
 	        table.fnSort( [ [ 2, 'asc'] ]); // redraw for size and sorting
 
 		$( '#dl_message' ).hide();
+	        $( '#dl_error' ).hide();
 
 		//$( '#dl_trigger').button();
-		$( '#dl_form').ajaxForm(function() {
-			$( '#dl_message' ).show();
-			
-		});
+		
+                var formOptions = {
+			beforeSubmit: function() { 
+				$( '#dl_error' ).hide(); 
+				$( '#dl_message' ).show(); 
+				var token = new Date().getTime();
+				$( '#download_token_value_id' ).val(token);
+				//$.blockUI(); // JQuery Block UI Needed?
+				var k = 0;
+				dlTimer = window.setInterval(function () {
+					var cookieValue = $.cookie('fileDownloadToken');
+					if (cookieValue == token) {
+						window.clearInterval(dlTimer);
+						$.cookie('fileDowloadToken',null);
+						//$.unblockUI(); JQuery Block UI Needed???
+						$( '#dl_message' ).hide();
+					}
+				}, 500);
+			} 
+		};
+		$( '#dl_form').ajaxForm(formOptions);
+
 			
 </script>

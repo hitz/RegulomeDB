@@ -55,8 +55,13 @@ div#input {
 }
 
 #download input[type="submit"] {
-padding-top: 6px;
-padding-bottom: 7px;
+    padding-top: 6px;
+    padding-bottom: 7px;
+}
+
+#dl_error, #dl_message {
+    padding: 6px 30px;
+    margin: 3px;
 }
 
 #header, #footer
@@ -234,6 +239,17 @@ div.dataTables_length
 {
     padding: 4px 15px;
 }
+
+div.dataTables_filter
+{
+   padding: 6px;
+}
+
+div.dataTables_processing
+{
+    padding: 6px; 
+}
+
 #snp_detail
 {
     width: 100%;
