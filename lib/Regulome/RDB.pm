@@ -438,13 +438,15 @@ sub check_coord {
 		my $dbSNPid = $1;
 		return ( $format, [ $self->snpdb->getSNPbyRsid($dbSNPid) ] );
 
-	} elsif ( $input =~ /(chr|^)(\d+|[xy])(:|\s+)(\d+)(\.\.|-|\s+)(\d+)(.*)/i )
+	} elsif ( $input =~ /(chr|^)(\d+|[xy])(:|\s+)([,0-9]+)(\.\.|-|\s+)([,0-9]+)(.*)/i )
 	{
 
 		# BED chromsome(space)min(space)max
 		$chr = $2;
 		$min = $4;
 		$max = $6;
+		$min =~ s/,//g;
+		$max =~ s/,//g;
 
 		#Dropping 1 based raw input support (VCF and GFF are still 1 based) - APB
 		# ch:nnnn..mmmm - or ch:nnnn-mmmm # 1 based input, subtract
