@@ -18,7 +18,7 @@ blib
 inc
 Makefile.old
 pm_to_blib
-#*#
+.#*
 log/*.log
 t/benchmark/*
 t/temp.out
@@ -27,6 +27,8 @@ data/SnpDB/*.db
 data/GencodeDB/*.db
 data/PWMLogos
 public/images/PWMLogos/
+public/GWAS/
+public/downloads/
+public/tmp
 *.bk
 nytprof*
-public/tmp

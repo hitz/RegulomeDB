@@ -540,8 +540,8 @@ sub download {
     open(FH, "$resultsDir/$fn")  || die "Could not find output for session $sid ($fn)!";
     # turn the the below two lines on to get "autodownload" - perhaps should set up a flag.
     $self->app->types->type(txt => 'application/octet-stream');
-    $self->tx->req->headers->header('content-disposition' => "attachment; filename=$fn");
-
+    #$self->tx->req->headers->header('content-disposition' => "attachment; filename=regulomedb_results.$format");
+    $self->tx->req->headers->content_disposition("attachment; filename=regulomedb_results.$format");
     my $results = <FH>;
 
     my $table = Mojo::JSON->new->decode($results);
@@ -576,15 +576,31 @@ sub download {
               ($ch, "regulomedb","SNP",$st+1,$st+1,$floatScore,'.',0,'.',$id) );
 
 	} elsif ($format eq 'full') {
+	    my $format_template = {
+		'Single_Nucleotides' => { 'Method' => 1,
+					  'Affected Gene' => 1,},
+		'Motifs'             => { 'Method' => 1,
+					  'Motif' => 1, },
+		'Chromatin_Structure' => { 'Method' => 1 },
+		'Protein_Binding'     => { 'Method' => 1,
+					   'Bound Protein' => 1,},
+		'Related_Data'        => { 'Method' => 1,
+					   'Annotation' => 1},
+	    };
 	    my $res = $_->[4];
-	    @out  = ( join("\t",qw/chromosome coordinate rsid score hits/) ) unless @out;
+	    @out  = ( join("\t",qw/chromosome coordinate rsid hits score/) ) unless @out;
 	    my $dat = '';
 	    if ($_->[2] ne 7) { 
-		for my $class (qw/Single_Nucleotides Motifs Chromatin_Structure Protein_Binding/) {
-		    # possibly all the join/grep/map stuff here is slow and should be unrolled
-		    $dat .= $class.":";
-		    $dat .= join(":", grep { $_ ne "" } ( map { values %{$_} } @{ $res->{$class}->{hits} }) );
-		    $dat .= ":" if $dat;
+		
+		for my $class (keys %$format_template) {
+		    my %outData = ();
+		    for my $hit (@{ $res->{$class}->{hits} } ) {
+			
+			$outData{ join( '|',($class, @$hit{keys %{ $format_template->{$class} }}) ) }++
+		    }
+		    $dat .= ', ' if ($dat && keys %outData);
+		    $dat .= join(', ', keys %outData);
+			
 		}
 
 	    } else {
@@ -593,7 +609,7 @@ sub download {
 
 	    }
 	    # possibly explicitly adding \t and \n is faster
-	    push @out, join("\t", ($ch, $st, $_->[1], $_->[2],$dat) );
+	    push @out, join("\t", ($ch, $st, $_->[1], $dat, $_->[2]) );
 	    
 	} else {
 	    push @out, "Undefined Format: $format";
