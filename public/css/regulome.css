@@ -243,6 +243,7 @@ div.dataTables_length
 div.dataTables_filter
 {
    padding: 6px;
+   float: right;
 }
 
 div.dataTables_processing
@@ -368,6 +369,12 @@ div.evidence_table h3 {
     margin: 12px 0 0 auto;
     font-size: 17px;
 }
+
+span.head_title { 
+    padding:  0 5px;
+// note: replacement for h3 above
+}
+
 
 .ev_dt_table {
     width: 100%;

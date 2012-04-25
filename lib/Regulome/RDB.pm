@@ -541,7 +541,7 @@ sub download {
     # turn the the below two lines on to get "autodownload" - perhaps should set up a flag.
     $self->app->types->type(txt => 'application/octet-stream');
     #$self->tx->req->headers->header('content-disposition' => "attachment; filename=regulomedb_results.$format");
-    $self->tx->req->headers->content_disposition("attachment; filename=regulomedb_results.$format");
+    $self->tx->res->headers->content_disposition("attachment; filename=regulomedb_results.$format");
     my $results = <FH>;
 
     my $table = Mojo::JSON->new->decode($results);

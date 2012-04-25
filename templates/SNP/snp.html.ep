@@ -36,7 +36,7 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
 <% for my $sect (@$sections) { %>
    <% next unless keys %$sect; %>
     <div class='evidence_table'>
-      <h3 class='ui-widget-header ui-corner-top'><%= $sect->{title} %></h3>
+      <!-- h3 class='ui-widget-header ui-corner-top'><%= $sect->{title} %></h3 -->
       <table id='<%= $sect->{table_id} %>' class='display ev_dt_table' cellspacing='0' cellpadding='0' border='0'></table>
    </div>
 <% } %>   
@@ -110,12 +110,19 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
 			<% } %>
 
 			dtParams['fnHeaderCallback'] = createHelpLinks;
+			dtParams['sDom'] = '<"#<%= $sect->{table_id} %>_head"lfr>t<"F"ip>',
+			// if the above seems cryptic, see: http://datatables.net/ref#sDom 
+
 			$('#<%= $sect->{table_id} %>').dataTable(dtParams);
+			$( "div#<%= $sect->{table_id} %>_head" ).prepend("<span class='head_title'><%= $sect->{title} %></span>");
+
 			<% if ($sect->{table_id} eq 'motifs') { %>
-			dtParams['aoColumnDefs'].pop();
+				dtParams['aoColumnDefs'].pop();
 			<% } %>
-			$('.fg-toolbar').each(function(){$(this).removeClass('ui-corner-tr ui-corner-tl')});
+			$( "#<%= $sect->{table_id} %>_head" ).each(function(){$(this).addClass('ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix')});
+			
 		<% } %>
+
 	});
 	
 	// Note that this MUST be done after images are loaded!

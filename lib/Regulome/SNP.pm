@@ -205,6 +205,7 @@ sub snp_table {
 														bLengthChange => 0,
 														bPaginate => 0,
 														iDisplayLength => scalar @data,
+														oLanguage => { sSearch => 'Filter:'},
 													}	
 														);
 		} else {
