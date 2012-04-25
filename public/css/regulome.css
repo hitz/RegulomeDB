@@ -306,23 +306,23 @@ div.dataTables_processing
   padding-bottom: 4px;
 }
 
-#about_content, #info, #snp_content
+.pseudowidget
 {
     width: 880px;
     margin: 22px auto;
 }
 
-#about_content p, #info p, #snp_content p
+.pseudowidget p
 {
     padding: 12px;
 }
 
-#snp_content ul
+.pseudowidget ul, #snp_content ul
 {
     margin: 20px;
 }
 
-#snp_content a[href]
+.pseudowidget a[href], #snp_content a[href]
 {
 	color: #375830;
 	text-decoration: underline;

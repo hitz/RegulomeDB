@@ -58,6 +58,8 @@ sub startup {
 	$r->any( '/search' => sub {} );
 	$r->any( '/about' => sub {} );
 	$r->any( '/help' => sub {} );
+	$r->any( '/downloads' => sub { shift->render({template => 'download'}) } );
+	$r->any( '/GWAS/' => sub { shift->render_static('/GWAS/index.html') } );
 
 	$r->any( '/' => sub { shift->render({template => 'search'}) } );
 	$r->any( '/index' => sub { shift->render({template => 'search'}) } );
