@@ -1,0 +1,10 @@
+% layout 'default';
+% title 'RegulomeDB Downloads';
+<div id="download_content" class='pseudowidget ui-widget-content ui-corner-all'>
+<p>The following links contain all RegulomeDB data from dbSNP132</p>
+<ul>
+<li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category1.txt.gz' => begin %>Category (score) 1a/b/c/d/e/f<% end%></li>
+<li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category2.txt.gz' => begin %>Category (score) 2a/b<% end%></li>
+<li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category3.txt.gz' => begin %>Category (score) 3<% end%></li>
+</ul>
+</div>
