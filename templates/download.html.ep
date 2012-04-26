@@ -7,4 +7,10 @@
 <li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category2.txt.gz' => begin %>Category (score) 2a/b<% end%></li>
 <li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category3.txt.gz' => begin %>Category (score) 3<% end%></li>
 </ul>
+
+<p>Supplemental data from publications that use RegulomeDB</p>
+<ul>
+<li><%= link_to '/public/GWAS/index.html' => begin %>Linking Disease Associations with Regulatory Information in the Human Genome<% end%></li>
+</ul>
+
 </div>

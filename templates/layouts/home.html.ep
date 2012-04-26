@@ -12,7 +12,6 @@
      <div id="logo">
      </div>     
      <div id="headerright">
-        <%= link_to '/GWAS' => begin %>Regulation GWAS<% end %>
 	<%= link_to '/downloads'  => begin %>Download<% end %>
       <%= link_to '/about' => begin %>About<% end %>
 	<%= link_to '/help'  => begin %>Help<% end %>
