@@ -563,17 +563,18 @@ sub download {
 
             #  seqid start end name score strand (grapics) # comment
 	    push @out, join("\t", 
-	       ($ch,$st,$st+1,'SNP',$intScore,0,'.','.','.',"# rsid: $_->[1]; score: $_->[2]") );
+#	       ($ch,$st,$st+1,'SNP',$intScore,0,'.','.','.',"# rsid: $_->[1]; score: $_->[2]") );
+	       ($ch,$st,$st+1,"$_->[1];$_->[2]") );
 
 	} elsif ($format eq 'gff') {
-	    my $id = "ExtendedScore=$_->[2];";
-	    $id .= "Rsid=$_->[1];" unless $_->[1] eq 'n/a';
+	    my $id = "ExtendedScore=$_->[2]";
+	    $id .= ";Rsid=$_->[1]" unless $_->[1] eq 'n/a';
             # seqid source feature_type start end  score strand phase attributes(key=value;) -- coords in 1-base
 	    my $floatScore = $_->[2];
 	    $floatScore =~ s/[^0-9]//g;
 	    $floatScore = sprintf('%2.1f', $floatScore);
 	    push @out, join( "\t", 
-              ($ch, "regulomedb","SNP",$st+1,$st+1,$floatScore,'.',0,'.',$id) );
+              ($ch, "RegulomeDB","snp",$st+1,$st+1,$floatScore,'.','.',$id) );
 
 	} elsif ($format eq 'full') {
 	    my $format_template = {
@@ -588,7 +589,7 @@ sub download {
 					   'Annotation' => 1},
 	    };
 	    my $res = $_->[4];
-	    @out  = ( join("\t",qw/chromosome coordinate rsid hits score/) ) unless @out;
+	    @out  = ( join("\t",qw/#chromosome coordinate rsid hits score/) ) unless @out;
 	    my $dat = '';
 	    if ($_->[2] ne 7) { 
 		
