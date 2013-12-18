@@ -10,7 +10,7 @@
 	<a href='#zerob_example' class='input_example' >0-based</a> coordinates, 
     <a href='#bed_example' class='input_example' >BED</a> files, 
 	<a href='#vcf_example' class='input_example' >VCF</a> files, 
-	<a href='#gff_example' class='input_example' >GFF3</a> files.
+	<a href='#gff_example' class='input_example' >GFF3</a> files (hg19).
 
        % my @attrs = (method => 'POST', enctype => 'multipart/form-data');
        %= form_for results => @attrs => begin
@@ -18,16 +18,6 @@
             % end
           %= submit_button 'Submit'
        % end    
-</div>
-<div id='upload'>
-	  <p class='note'>Or upload a file</p>
-       %= form_for running => @attrs => begin
-       <span class='file-wrapper'>
-           %= file_field 'file_data', id => 'file_upload'
-       <span class='button'>Browse...</span>
-       </span>
-       %= submit_button 'Upload', class=>'alignright'
-       % end
 </div>
 
 <div id='help_section'>
@@ -43,12 +33,12 @@
 	<div id="dbsnpid_help">Enter dbSNP ID(s) (<a class='input_example' href='#dbsnp_example' >example</a>) or 
 	upload a list of dbSNP IDs to identify DNA features and regulatory elements that contain 
 	the coordinate of the SNP(s).</div>
-	<div id="coords_help">Enter coordinates for a single nucleotide as 0-based (<a class='input_example' href='#zerob_single' >example</a>) coordinates or in a  
+	<div id="coords_help">Enter hg19 coordinates for a single nucleotide as 0-based (<a class='input_example' href='#zerob_single' >example</a>) coordinates or in a  
 	BED file (<a class='input_example' href='#bed_single' >example</a>), VCF file (<a class='input_example' href='#vcf_example' >example</a>), 
 	or GFF3 file (<a class='input_example' href='#gff_single' >example</a>).  
 	These coordinates will be mapped to a dbSNP IDs (if available) in addition to 
 	identifying DNA features and regulatory elements that contain the input coordinate(s).</div>
-	<div id="range_help">Enter chromosomal regions, such as a promoter region upstream of a gene, as 0-based (<a class='input_example' href='#zerob_range' >example</a>) coordinates or in a  
+	<div id="range_help">Enter hg19 chromosomal regions, such as a promoter region upstream of a gene, as 0-based (<a class='input_example' href='#zerob_range' >example</a>) coordinates or in a  
 	BED file (<a class='input_example' href='#bed_range' >example</a>) or GFF3 file (<a class='input_example' href='#gff_range' >example</a>).  
 	All dbSNP IDs with an allele frequency >1% that are found in this region will be used to identify DNA features and regulatory elements that contain the coordinate of the SNP(s).
 	</div>

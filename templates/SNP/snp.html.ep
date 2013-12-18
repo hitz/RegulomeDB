@@ -2,7 +2,10 @@
 % title 'Regulome SNP';
 <div id='banner'>
 <h1>Data supporting <%= $chr %>:<%= $pos %> (<%= $snpid %>) </h1>
-<h2>Score: <%= $score->{score} %></h2>
+
+<a title="help on scoring" href="/help#score"> 
+<h2>Score: 
+<%= $score->{score} %></h2></a>
 <%
 my $score_description = "";
 if($score->{score} =~ /1/) { $score_description .= "Likely to affect binding and linked to expression of a gene target" };
@@ -16,7 +19,7 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
   <% my $ensembleLinkURL = 'http://uswest.ensembl.org/Homo_sapiens/Location/View?db=core;r='; %>
   <!-- # must append X:50030991;export=png -->
 
-  <% my $ucscImgURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgRenderTracks?hgS_doLoadUrl=submit&hgS_loadUrlName=http://regulomedb.org:8080/UCSC_Graphic_Session.txt&position='; %>
+  <% my $ucscImgURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgRenderTracks?hgS_doLoadUrl=submit&hgS_loadUrlName=http://regulomedb.org/UCSC_Graphic_Session.txt&position='; %>
   <% my $ucscLinkURL = 'http://genome.cse.ucsc.edu/cgi-bin/hgTracks?leftLabels=on&mrna=hide&intronEst=hide&knownGene=hide&multiz46way=hide&snp132Common=hide&rmsk=dense&snp135Common=hide&pix=740&position='; %>
   <!-- # must append chrX:upstream-downstrem for UCSC -->
   <% $chr =~ s/chr//; %>
@@ -77,7 +80,7 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
     	svg.line(style, 370,0,370,img_height); // bright red
     	svg.line(bracket, 370,0,370,img_height);
     	var vb = "0 0 740 "+img_height;
-    	svg.configure({viewBox: vb}, true);
+    	svg.configure({viewBox: vb, width: 740, height: img_height}, true);
     	$('#genome_svg').height(img_height);
 };
 

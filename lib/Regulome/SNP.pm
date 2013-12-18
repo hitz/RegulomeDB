@@ -35,6 +35,8 @@ sub ajax_rsid {
 	$self->render(json=>{ rsid => $rsid });	
 }
 =pod
+This needs to be updated 
+
 Protein binding
 =============
 Include the following data rows:

@@ -6,11 +6,15 @@
 <li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category1.txt.gz' => begin %>Category (score) 1a/b/c/d/e/f<% end%></li>
 <li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category2.txt.gz' => begin %>Category (score) 2a/b<% end%></li>
 <li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category3.txt.gz' => begin %>Category (score) 3<% end%></li>
+<li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category4.txt.gz' => begin %>Category (score) 4<% end%></li>
+<li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category5.txt.gz' => begin %>Category (score) 5<% end%></li>
+<li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category6.txt.gz' => begin %>Category (score) 6<% end%></li>
+<li><%= link_to '/downloads/RegulomeDB.dbSNP132.Category7.txt.gz' => begin %>Category (score) 7<% end%></li>
 </ul>
 
 <p>Supplemental data from publications that use RegulomeDB</p>
 <ul>
-<li><%= link_to '/public/GWAS/index.html' => begin %>Linking Disease Associations with Regulatory Information in the Human Genome<% end%></li>
+<li><%= link_to '/GWAS/index.html' => begin %>Linking Disease Associations with Regulatory Information in the Human Genome<% end%></li>
 </ul>
 
 </div>

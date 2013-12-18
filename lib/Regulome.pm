@@ -12,7 +12,7 @@ sub startup {
 	#$self->log->level('error');
 	my $regDB;
 	my $snDB;
-	# eval added when DB not available
+	# eval added when DB not available 
 	eval {
 	  $regDB = Regulome::RegulomeDB->new(
 								 {
@@ -24,8 +24,8 @@ sub startup {
 	  $snDB = Regulome::SnpDB->new(
 						   {
 							 type          => 'single',
-							 dbfile_all    => 'data/SnpDB/dbSNP132.db',
-							 dbfile_common => 'data/SnpDB/dbSNP132Common.db',
+							 dbfile_all    => 'data/SnpDB/dbSNP137.db',
+							 dbfile_common => 'data/SnpDB/dbSNP137Common.db',
 						   }
 	  );
 

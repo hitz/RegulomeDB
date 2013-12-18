@@ -16,8 +16,8 @@ my $regDB = RegulomeDB->new({type => 'multi',
 							dbdir => $DBDIR});
 
 my $snDB = SnpDB->new({type => 'single',
-					   dbfile_all => 'SnpDB/dbSNP132.db',
-					   dbfile_common => 'SnpDB/dbSNP132Common.db',
+					   dbfile_all => 'SnpDB/dbSNP137.db',
+					   dbfile_common => 'SnpDB/dbSNP137Common.db',
 						});
 						
 helper rdb => sub { return $regDB };

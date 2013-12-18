@@ -469,7 +469,7 @@
 
 	<h3><a href="#dbsnp_version">What version of dbSNP is RegulomeDB querying?</a></h3>
 	<div id="main_help_text">
-		<p>RegulomeDB is currently querying build 132 of dbSNP.  See NCBI for additional information about <a href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_summary.cgi?view+summary=view+summary&build_id=132" class="input_example">dbSNP132</a>.</p>
+		<p>RegulomeDB is currently querying build 137 of dbSNP.  See NCBI for additional information about <a href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_summary.cgi?view+summary=view+summary&build_id=137" class="input_example">dbSNP137</a>.</p>
 
 	</div>
 
