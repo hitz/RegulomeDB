@@ -27,7 +27,7 @@ data/SnpDB/*.db
 data/SnpDB
 data/GencodeDB/*.db
 data/PWMLogos
-public/images/PWMLogos/
+public/images/PWMLogos
 public/GWAS/
 public/downloads/
 public/tmp
