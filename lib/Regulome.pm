@@ -58,18 +58,18 @@ sub startup {
 	$r->any( '/search' => sub {} );
 	$r->any( '/about' => sub {} );
 	$r->any( '/help' => sub {} );
-	$r->any( '/downloads' => sub { shift->render({template => 'download'}) } );
+	$r->any( '/downloads' => sub { shift->render(template => 'download') } );
 	$r->any( '/GWAS/' => sub { shift->render_static('/GWAS/index.html') } );
 
-	$r->any( '/' => sub { shift->render({template => 'search'}) } );
-	$r->any( '/index' => sub { shift->render({template => 'search'}) } );
+	$r->any( '/' => sub { shift->render(template => 'search') } );
+	$r->any( '/index' => sub { shift->render(template => 'search') } );
 	
 	$r->any('/snp/:id/')->to(controller => 'SNP', action => 'id');
 	$r->any('/snp/:chr/:nt')->to(controller => 'SNP', action => 'coord');
 
 
 	$r->get( 
-	    '/running' => sub { shift->render({template => 'search'})
+	    '/running' => sub { shift->render(template => 'search')
 	    });
 	    
 	$r->post('/results')->to(controller => 'RDB', action => 'submit'); # post without chunking
