@@ -26,8 +26,8 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
   <% my $pos_upstream = $pos-200; %>
   <% my $pos_downstream = $pos+200; %>
    <! -- below needs to skip URL escapes using Mojo::Bytestream!! -->
-  <% my $fullLink = b($ucscLinkURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream); %>
-  <% my $fullImg = b($ucscImgURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream); %>
+  <% my $fullLink = Mojo::ByteStream->new($ucscLinkURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream); %>
+  <% my $fullImg = Mojo::ByteStream->new($ucscImgURL.'chr'.$chr.':'.$pos_upstream.'-'.$pos_downstream); %>
 <div id='genomic_region'>
   <!-- this div is used to get image size and is then hidden when redline is drawn by SVG -->
   <a href="<%==$fullLink %>">
@@ -86,7 +86,7 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
 
 	$(function() {
 		<% for my $sect (@$sections) { next unless keys %$sect; %>
-			var dtParams = <%= b($sect->{data_table}) %>;
+			var dtParams = <%= Mojo::ByteStream->new($sect->{data_table}) %>;
 			<% if ($sect->{table_id} eq 'motifs') { %>
 			   dtParams['aoColumnDefs'] = aoCallBacks; 
 			   dtParams['aoColumnDefs'].push(

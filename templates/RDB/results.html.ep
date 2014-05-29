@@ -65,7 +65,7 @@
 		//must append X:50020991-50040991
 	};
 
-		var dtParams = <%= b($snpDataTable) %>;
+		var dtParams = <%= Mojo::ByteStream->new($snpDataTable) %>;
 	        dtParams['aoColumnDefs'] = [
 			{ "fnRender": function ( oObj ) {
 				if (oObj.aData[2] == 7) {
