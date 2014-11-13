@@ -48,7 +48,9 @@ sub startup {
 	# config
 	my $config = $self->plugin('Config');
 	$self->mode('development'); ## writes log file
-
+	
+	# xhtml type for SNP (uses SVG)
+    $self->types->type(xhtml => 'application/xhtml+xml; charset=utf-8');
 	# Routes
 	my $r = $self->routes;
 

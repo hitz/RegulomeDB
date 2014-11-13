@@ -1,7 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
-<html xmlns:xlink="http://www.w3.org/1999/xlink"
-xmlns:svg="http://www.w3.org/2000/svg" xml:lang="en"
-xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html><html>
   <head><title><%= title %></title>
    %= stylesheet '/css/regulome.css' 
    %= stylesheet '/css/custom-theme/jquery-ui-1.8.16.custom.css'
