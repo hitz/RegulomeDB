@@ -25,5 +25,5 @@ $ENV{MOJO_CHUNK_SIZE} = 262144; # 256K ~2000 VCF lines
 $ENV{MOJO_MAX_MEMORY} = 32000000000; # 32 Gb for production machine
 
 # Start commands
-#Mojolicious::Commands->start;
-Mojolicious::Commands->start_app('Regulome');
+Mojolicious::Commands->start;
+#Mojolicious::Commands->start_app('Regulome');
