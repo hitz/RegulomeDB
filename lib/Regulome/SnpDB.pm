@@ -31,7 +31,9 @@ sub _init {
 	if (!$self->type || $self->type eq 'single') {
 		# common SNPS
 		my $dbh = DBI->connect("dbi:SQLite:dbname=".$self->dbfile_common,"","",
-		{RaiseError => 1, AutoCommit => 0}) or die $DBI::errstr;
+		{RaiseError => 1, AutoCommit => 0,
+		sqlite_use_immediate_transaction => 0, #temporary fix
+		}) or die $DBI::errstr;
 
 		$dbh->do($cache_statement);
 		$dbh->commit;
@@ -45,7 +47,9 @@ sub _init {
 		
 	}
 	my $dbh2 = DBI->connect("dbi:SQLite:dbname=".$self->dbfile_all,"","",
-		{RaiseError => 1, AutoCommit => 0}) or die $DBI::errstr;
+		{RaiseError => 1, AutoCommit => 0,
+		sqlite_use_immediate_transaction => 0, #temporary fix
+		}) or die $DBI::errstr;
 
 	$dbh2->do($cache_statement);
 	$dbh2->commit;	
