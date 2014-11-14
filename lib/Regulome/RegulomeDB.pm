@@ -91,7 +91,9 @@ sub _init_db {
 	if ($self->type eq 'single') {
 		# this is current not used, don't even have the DB.
 		$dbh = DBI->connect("dbi:SQLite:dbname=".$self->dbfile,"","",
-		{RaiseError => 1, AutoCommit => 0}) or die $DBI::errstr;
+		{RaiseError => 1, AutoCommit => 0,
+		sqlite_use_immediate_transaction => 0, #temporary fix
+		}) or die $DBI::errstr;
 
 		$dbh->do($cache_statement);
 		$dbh->commit;
@@ -104,7 +106,10 @@ sub _init_db {
 		for my $chr (@CHRS) {
 			my $stch = "chr" . $chr;
 			my $dbfile = $self->dbdir . "/RegDB." . $chr . ".db";
-			$dbh->{$stch} = DBI->connect("dbi:SQLite:dbname=$dbfile","","",{RaiseError => 1, AutoCommit => 0}) or die $DBI::errstr;
+			$dbh->{$stch} = DBI->connect("dbi:SQLite:dbname=$dbfile","","",
+			{RaiseError => 1, AutoCommit => 0,
+			sqlite_use_immediate_transaction => 0, #temporary fix
+			}) or die $DBI::errstr;
 
 			$dbh->{$stch}->do($cache_statement);
 			$dbh->{$stch}->commit;
