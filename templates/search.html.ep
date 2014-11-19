@@ -3,6 +3,18 @@
 <div id='banner'>
 <%=image '/images/RegulomeLogoFinal.gif', alt => 'Regulome Logo', width => '500px' %>
 
+<CENTER>
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="650px" BGCOLOR="#FFAAAA">
+<TR>
+ <TD>
+		RegulomeDB has been updated to Version 1.1. This includes bringing our database up-to-date with current ENCODE releases: 
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/24243024"> Xie et al. (2013)</a> and <a ref="http://www.ncbi.nlm.nih.gov/pubmed/25164757">Boyle et al. (2014)</a>. We have also added Chromatin States from the Roadmap Epigenome Consortium (unpublished) as well as updates to DNase footprinting, PWMs, and DNA Methylation.
+<BR>
+		
+ </TD>
+</TR>
+</TABLE>
+</CENTER> 
 
 </div>
 <div id='manual_input'>

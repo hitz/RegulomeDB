@@ -90,7 +90,9 @@
 			<li>Position-Weight Matrix for TF binding (PWM)</li>
 			<li>DNase Footprinting</li>
 			<li>DNase sensitivity</li>
+			<li>Chromatin States</li>
 			<li>eQTLs</li>
+			<li>Differentially methylated regions</li>
 			<li>Manually curated regions</li>
 			<li>Validated functional SNPs</li>
 		</ul>
@@ -104,199 +106,9 @@
 
 		<p>
 		<b>Transcription factor binding sites</b><br>
-		ChIP factors:
-		<div id="main_help_list">
-		<ul>
-			<li>AR</li>
-			<li>ATF3</li>
-			<li>BATF</li>
-			<li>BCL11A</li>
-			<li>BCL3</li>
-			<li>BCLAF1</li>
-			<li>BDP1</li>
-			<li>BHLHE40</li>
-			<li>BRCA1</li>
-			<li>BRF1</li>
-			<li>BRF2</li>
-			<li>CCNT2</li>
-			<li>CDX2</li>
-			<li>CEBPB</li>
-			<li>CEBPB_forskolin</li>
-			<li>CHD2</li>
-			<li>CREBBP</li>
-			<li>CTBP2</li>
-			<li>CTCF</li>
-			<li>CTCF_DEX_100nM</li>
-			<li>CTCF_DMSO_0.02pct</li>
-			<li>CTCF_estrogen</li>
-			<li>CTCF_EtOH_0.02pct</li>
-			<li>CTCFL</li>
-			<li>CTCF_vehicle</li>
-			<li>E2F1</li>
-			<li>E2F4</li>
-			<li>E2F6</li>
-			<li>EBF1</li>
-			<li>EGR1</li>
-			<li>ELF1</li>
-			<li>ELK4</li>
-			<li>EP300</li>
-			<li>EP300_DMSO_0.02pct</li>
-			<li>ERG</li>
-			<li>ESR1_Estradiol_10nM</li>
-			<li>ESR1_Genistein_100nM</li>
-			<li>ESRRA_forskolin</li>
-			<li>ETS1</li>
-			<li>EWSR1</li>
-			<li>FAM48A</li>
-			<li>FLI1</li>
-			<li>FOS</li>
-			<li>FOSL1</li>
-			<li>FOSL2</li>
-			<li>FOXA1</li>
-			<li>FOXA1_DMSO_0.02pct</li>
-			<li>FOXA2</li>
-			<li>GABPA</li>
-			<li>GATA1</li>
-			<li>GATA2</li>
-			<li>GATA3_DMSO_0.02pct</li>
-			<li>GATA6</li>
-			<li>GTF2B</li>
-			<li>GTF2F1</li>
-			<li>GTF3C2</li>
-			<li>HDAC2</li>
-			<li>HDAC8</li>
-			<li>HEY1</li>
-			<li>HMGN3</li>
-			<li>HNF4A</li>
-			<li>HNF4A_forskolin</li>
-			<li>HNF4G</li>
-			<li>HSF1</li>
-			<li>HSF1_forskolin</li>
-			<li>IKZF1</li>
-			<li>IRF1_IFNa30</li>
-			<li>IRF1_IFNg6h</li>
-			<li>IRF3</li>
-			<li>IRF4</li>
-			<li>JUN</li>
-			<li>JUNB</li>
-			<li>JUND</li>
-			<li>JUN_IFNa6h</li>
-			<li>JUN_IFNg30</li>
-			<li>JUN_IFNg6h</li>
-			<li>KAT2A</li>
-			<li>MAFF</li>
-			<li>MAFK</li>
-			<li>MAX</li>
-			<li>MEF2A</li>
-			<li>MEF2C</li>
-			<li>MEIS1</li>
-			<li>MXI1</li>
-			<li>MYC</li>
-			<li>MYC_estrogen</li>
-			<li>MYC_IFNa30</li>
-			<li>MYC_IFNa6h</li>
-			<li>MYC_IFNg30</li>
-			<li>MYC_IFNg6h</li>
-			<li>MYC_vehicle</li>
-			<li>NANOG</li>
-			<li>NFE2</li>
-			<li>NFKB1</li>
-			<li>NFKB1_TNFa</li>
-			<li>NFYA</li>
-			<li>NFYB</li>
-			<li>NR2C2</li>
-			<li>NR3C1_DEX_100nM</li>
-			<li>NR3C1_DEX_500pM</li>
-			<li>NR3C1_DEX_50nM</li>
-			<li>NR3C1_DEX_5nM</li>
-			<li>NR3C1_forskolin</li>
-			<li>NR4A1</li>
-			<li>NRF1</li>
-			<li>PAX5</li>
-			<li>PBX3</li>
-			<li>POLR2A</li>
-			<li>POLR2A_DEX_100nM</li>
-			<li>POLR2A_DMSO_0.02pct</li>
-			<li>POLR2A_EtOH_0.01pct</li>
-			<li>POLR2A_EtOH_0.02pct</li>
-			<li>POLR2A_forskolin</li>
-			<li>POLR2A_IFNa30</li>
-			<li>POLR2A_IFNa6h</li>
-			<li>POLR2A_IFNg30</li>
-			<li>POLR2A_IFNg6h</li>
-			<li>POLR2A_pravastatin</li>
-			<li>POLR2A_TAM_1uM_36hr</li>
-			<li>POLR3A</li>
-			<li>POLR3G</li>
-			<li>POU2F2</li>
-			<li>POU5F1</li>
-			<li>PPARGC1A_forskolin</li>
-			<li>PRDM1</li>
-			<li>RAD21</li>
-			<li>RDBP</li>
-			<li>REST</li>
-			<li>RFX3</li>
-			<li>RFX5</li>
-			<li>RUNX1</li>
-			<li>RXRA</li>
-			<li>SETDB1</li>
-			<li>SETDB1_MNaseD</li>
-			<li>SIN3A</li>
-			<li>SIRT6</li>
-			<li>SIX5</li>
-			<li>SMARCA4</li>
-			<li>SMARCB1</li>
-			<li>SMARCC1</li>
-			<li>SMARCC2</li>
-			<li>SMC3</li>
-			<li>SP1</li>
-			<li>SP2</li>
-			<li>SPDEF</li>
-			<li>SPI1</li>
-			<li>SREBF1_insulin</li>
-			<li>SREBF1_pravastatin</li>
-			<li>SREBF2_pravastatin</li>
-			<li>SRF</li>
-			<li>STAT1</li>
-			<li>STAT1_IFNa30</li>
-			<li>STAT1_IFNa6h</li>
-			<li>STAT1_IFNg30</li>
-			<li>STAT1_IFNg6h</li>
-			<li>STAT2_IFNa30</li>
-			<li>STAT2_IFNa6h</li>
-			<li>STAT3</li>
-			<li>STAT3_EtOH_0.01pct</li>
-			<li>STAT3_EtOH_0.01pct_12hr</li>
-			<li>STAT3_EtOH_0.01pct_4hr</li>
-			<li>STAT3_TAM_1uM_36hr</li>
-			<li>SUZ12</li>
-			<li>TAF1</li>
-			<li>TAF7</li>
-			<li>TAL1</li>
-			<li>TBP</li>
-			<li>TCF12</li>
-			<li>TCF4</li>
-			<li>TFAP2A</li>
-			<li>TFAP2C</li>
-			<li>THAP1</li>
-			<li>TRIM28</li>
-			<li>USF1</li>
-			<li>USF1_DEX_100nM</li>
-			<li>USF1_EtOH_0.02pct</li>
-			<li>USF2</li>
-			<li>WRNIP1</li>
-			<li>XRCC4</li>
-			<li>YY1</li>
-			<li>ZBTB33</li>
-			<li>ZBTB7A</li>
-			<li>ZEB1</li>
-			<li>ZNF143</li>
-			<li>ZNF263</li>
-			<li>ZNF274</li>
-			<li>ZZZ3</li>
-		</ul>
-		</div>
-		</p>
+		ChIP factors: 740 unique data sets including most recent ENCODE data release (2012 Freeze).<br>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/24243024"> Xie et al. (2013)</a> and <a ref="http://www.ncbi.nlm.nih.gov/pubmed/25164757">Boyle et al. (2014)</a>
+		</p><br>
 
 		<p>
 		<b>Position-Weight Matrix for TF binding (PWM)</b><br>
@@ -304,135 +116,25 @@
 		<ul>
 			<li>JASPAR CORE</li>
 			<li>TRANSFAC</li>
+			<li>UniPROBE</li>
+			<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/23332764">Jolma et al.</a></li>
 		</ul>
 		</div>		
 		</p>
 
 		<p>
 		<b>DNase sensitivity</b><br>
-		Cell types:
-		<div id="main_help_list">
-		<ul>
-			<li>8988t</li>
-			<li>A549</li>
-			<li>Ag04449</li>
-			<li>Ag04450</li>
-			<li>Ag09309</li>
-			<li>Ag09319</li>
-			<li>Ag10803</li>
-			<li>Aoaf</li>
-			<li>AosmcSerumfree</li>
-			<li>Be2c</li>
-			<li>Bj</li>
-			<li>Caco2</li>
-			<li>Chorion</li>
-			<li>Cll</li>
-			<li>Cmk</li>
-			<li>Fibrobl</li>
-			<li>Fibrop</li>
-			<li>Gliobla</li>
-			<li>Gm06990</li>
-			<li>Gm12864</li>
-			<li>Gm12865</li>
-			<li>Gm12878</li>
-			<li>Gm12891</li>
-			<li>Gm12892</li>
-			<li>Gm18507</li>
-			<li>Gm19238</li>
-			<li>Gm19239</li>
-			<li>Gm19240</li>
-			<li>H1hesc</li>
-			<li>H7es</li>
-			<li>H9es</li>
-			<li>Hac</li>
-			<li>Hae</li>
-			<li>Hah</li>
-			<li>Hasp</li>
-			<li>Hbmec</li>
-			<li>Hcf</li>
-			<li>Hcfaa</li>
-			<li>Hcm</li>
-			<li>Hconf</li>
-			<li>Hcpe</li>
-			<li>Hct116</li>
-			<li>Hee</li>
-			<li>Helas3</li>
-			<li>Helas3Ifna4h</li>
-			<li>Hepatocytes</li>
-			<li>Hepg2</li>
-			<li>Hff</li>
-			<li>Hffmyc</li>
-			<li>Hgf</li>
-			<li>Hipe</li>
-			<li>Hl60</li>
-			<li>Hmec</li>
-			<li>Hmf</li>
-			<li>Hmvecdblad</li>
-			<li>Hmvecdblneo</li>
-			<li>Hmvecdlyad</li>
-			<li>Hmvecdlyneo</li>
-			<li>Hmvecdneo</li>
-			<li>Hmveclbl</li>
-			<li>Hmveclly</li>
-			<li>Hnpce</li>
-			<li>Hpaf</li>
-			<li>Hpde6e6e7</li>
-			<li>Hpdlf</li>
-			<li>Hpf</li>
-			<li>Hrce</li>
-			<li>Hre</li>
-			<li>Hrgec</li>
-			<li>Hrpe</li>
-			<li>Hsmm</li>
-			<li>Hsmmt</li>
-			<li>Htr8</li>
-			<li>Huh7</li>
-			<li>Huh75</li>
-			<li>Huvec</li>
-			<li>Hvmf</li>
-			<li>Ips</li>
-			<li>Jurkat</li>
-			<li>K562</li>
-			<li>Lncap</li>
-			<li>LncapAndro</li>
-			<li>Mcf7</li>
-			<li>Mcf7Hypoxlac</li>
-			<li>Medullo</li>
-			<li>Melano</li>
-			<li>Monocd14</li>
-			<li>Myometr</li>
-			<li>Nb4</li>
-			<li>Nha</li>
-			<li>Nhdfad</li>
-			<li>Nhdfneo</li>
-			<li>Nhek</li>
-			<li>Nhlf</li>
-			<li>Osteobl</li>
-			<li>Panc1</li>
-			<li>Panisd</li>
-			<li>Panislets</li>
-			<li>Phte</li>
-			<li>Progfib</li>
-			<li>Rptec</li>
-			<li>Saec</li>
-			<li>Skmc</li>
-			<li>Sknmc</li>
-			<li>Sknshra</li>
-			<li>Stellate</li>
-			<li>T47d</li>
-			<li>Th1</li>
-			<li>Th2</li>
-			<li>Urotsa</li>
-			<li>UrotsaUt189</li>
-			<li>Werirb1</li>
-			<li>Wi38</li>
-			<li>Wi38Ohtam</li>
-		</ul>		
-		</div>
-		</p>
+		204 unique datasets including most recent ENCODE data release.
+		<a href="https://www.encodeproject.org/">ENCODE Project Consortium</a>
+		</p><br>
 
 		<p>
-		<b>eQTLs</b><br>
+		<b>Chromatin States</b><br>
+		Roadmap Epigenome Consortium 127 standard epigenomes.
+		</p><br>
+
+		<p>
+		<b>eQTLs / dsQTLs</b><br>
 		Tissue types:
 		<div id="main_help_list">
 		<ul>
@@ -452,24 +154,35 @@
 
 		<p>
 		<b>DNase Footprinting</b><br>
-			*Application of all PWMs to all DNase data sets
+		<div id="main_help_list">
+		<ul>
+			<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/21106903">Boyle et al.</a></li>
+			<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/21106904">Pique-Regi et al.</a></li>
+			<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/24071585">Piper et al.</a></li>
+		</ul>		
+		</div>
 		</p>
+
+		<p>
+		<b>Differentially Methylated regions</b><br>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/24561555">Kuleshov et al.</a>
+		</p><br>
 
 		<p>
 		<b>Manually curated regions</b><br>
 
-		</p>
+		</p><br>
 
 		<p>
 		<b>Validated functional SNPs</b><br>
 
-		</p>
+		</p><br>
 
 	</div>
 
 	<h3><a href="#dbsnp_version">What version of dbSNP is RegulomeDB querying?</a></h3>
 	<div id="main_help_text">
-		<p>RegulomeDB is currently querying build 137 of dbSNP.  See NCBI for additional information about <a href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_summary.cgi?view+summary=view+summary&build_id=137" class="input_example">dbSNP137</a>.</p>
+		<p>RegulomeDB is currently querying build 141 of dbSNP.  See NCBI for additional information about <a href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_summary.cgi?view+summary=view+summary&build_id=141" class="input_example">dbSNP141</a>.</p>
 
 	</div>
 
