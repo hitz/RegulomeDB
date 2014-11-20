@@ -62,7 +62,9 @@ if($score->{score} =~ /[456]/) { $score_description .= "Minimal binding evidence
 					return  colData.replace(/PMID([\d]+)/,"<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/$1\">$1</a>");
            		    	} else if (colData.match(/NCP000/)) {
 					return '<a href=\"http://www.genome.gov/10005107\">ENCODE</a>';
-				}
+										} else if (colData.match(/REMC/)) {
+					return '<a href=\"http://www.roadmapepigenomics.org/\">REMC</a>';
+										}
 			     },
 			  "aTargets": [ -1 ]
 			  }

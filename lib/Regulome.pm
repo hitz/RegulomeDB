@@ -24,8 +24,8 @@ sub startup {
 	  $snDB = Regulome::SnpDB->new(
 						   {
 							 type          => 'single',
-							 dbfile_all    => 'data/SnpDB/dbSNP137.db',
-							 dbfile_common => 'data/SnpDB/dbSNP137Common.db',
+							 dbfile_all    => 'data/SnpDB/dbSNP141.db',
+							 dbfile_common => 'data/SnpDB/dbSNP141Common.db',
 						   }
 	  );
 

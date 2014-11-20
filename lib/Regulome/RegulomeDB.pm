@@ -69,9 +69,9 @@ sub new {
         Histone_Modification => {
                 columns => [ { 'Method' => 0 },
                                 { 'Location' => '' },
-                                { 'Histone Mark' => 1 },
-                                { 'Cell Type' => 2 },
-                                { 'Additional Info' => 3 },
+                                { 'Chromatin State' => 1 },
+                                { 'Tissue Group' => 2 },
+                                { 'Tissue' => 3 },
                                 { 'Reference' => 4 },
                         ]
         }
