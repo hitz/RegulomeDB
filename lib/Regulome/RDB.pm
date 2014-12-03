@@ -579,14 +579,21 @@ sub download {
 	} elsif ($format eq 'full') {
 	    my $format_template = {
 		'Single_Nucleotides' => { 'Method' => 1,
-					  'Affected Gene' => 1,},
-		'Motifs'             => { 'Method' => 1,
-					  'Motif' => 1, },
-		'Chromatin_Structure' => { 'Method' => 1 },
+					  			'Affected Gene' => 1,
+									'Cell Type' => 1,},
+		'Motifs'	=> { 'Method' => 1,
+					  			'Motif' => 1, 
+									'Cell Type' => 1,},
+		'Chromatin_Structure' => { 'Method' => 1,
+							'Cell Type' => 1,
+							'Additional Info' => 1,},
 		'Protein_Binding'     => { 'Method' => 1,
-					   'Bound Protein' => 1,},
+							'Bound Protein' => 1,
+							'Cell Type' => 1,
+							'Additional Info' => 1,},
 		'Related_Data'        => { 'Method' => 1,
-					   'Annotation' => 1},
+					   'Annotation' => 1,
+						'Cell Type' => 1,},
 	    };
 	    my $res = $_->[4];
 	    @out  = ( join("\t",qw/#chromosome coordinate rsid hits score/) ) unless @out;
